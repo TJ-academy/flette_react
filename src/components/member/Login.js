@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../../css/member/login.css';
 
 function Login() {
   const [userId, setUserId] = useState('');
   const [passwd, setPasswd] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
-  const navigate = useNavigate();  // useHistory를 useNavigate로 변경
+  const navigate = useNavigate();
 
   const logincheck = () => {
     if (userId === '') {
@@ -17,30 +18,38 @@ function Login() {
       return;
     }
 
-    // 서버에 로그인 정보 보내기 (예: fetch나 axios로 로그인 처리)
-    fetch('/login_check.do', {
+    fetch('/api/member/login', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/json',
       },
-      body: new URLSearchParams({
-        user_id: userId,
+      body: JSON.stringify({
+        userid: userId,
         passwd: passwd,
       }),
     })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.message === 'error') {
-          setErrorMsg('아이디 또는 비밀번호가 일치하지 않습니다.');
-        } else if (data.message === 'logout') {
-          setErrorMsg('로그아웃되었습니다.');
+      .then((response) => {
+        // HTTP 응답 상태 코드에 따라 성공/실패를 명확히 구분
+        if (response.ok) {
+          return response.json();
         } else {
-          setErrorMsg('');
-          navigate('/dashboard'); // 로그인 후 대시보드로 리다이렉트
+          // 서버에서 401 Unauthorized 에러를 보냈을 때
+          throw new Error('아이디 또는 비밀번호가 일치하지 않습니다.');
         }
       })
+      .then((data) => {
+        // Correctly store user data returned from the backend in sessionStorage
+        sessionStorage.setItem('loginId', data.userid);
+        sessionStorage.setItem('loginName', data.username);
+
+        // Clear error message
+        setErrorMsg('');
+
+        // Redirect to the home page or dashboard
+        navigate('/');
+      })
       .catch((err) => {
-        setErrorMsg('서버 오류. 다시 시도해주세요.');
+        setErrorMsg(err.message);
       });
   };
 
@@ -54,7 +63,7 @@ function Login() {
             <input
               type="text"
               id="userid"
-              name="user_id"
+              name="userid" // name 속성을 'userid'로 수정
               value={userId}
               onChange={(e) => setUserId(e.target.value)}
               autoComplete="username"
@@ -64,7 +73,7 @@ function Login() {
             <input
               type="password"
               id="passwd"
-              name="passwd"
+              name="passwd" // name 속성을 'passwd'로 수정
               value={passwd}
               onChange={(e) => setPasswd(e.target.value)}
               autoComplete="current-password"

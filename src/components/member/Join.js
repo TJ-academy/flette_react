@@ -33,12 +33,12 @@ function Join() {
     fetch(`/api/member/exist?userid=${encodeURIComponent(userid)}`)
       .then(response => response.text())
       .then(result => {
-        if (result === '사용 가능') {
+        if (result === 'false') {
           setIdCheckMsg('사용할 수 있는 아이디입니다.');
           setIsIdChecked(true);
         } else {
           setIdCheckMsg('이미 사용 중인 아이디입니다.');
-          setIsIdChecked(true); //수정해야 됨
+          setIsIdChecked(false); //수정해야 됨
         }
       })
       .catch(() => {

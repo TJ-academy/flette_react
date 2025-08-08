@@ -1,0 +1,83 @@
+/* 로그인 텍스트 스타일 */
+.login_text {
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+  color: #9C6B4F;
+  margin-top: 30px;
+}
+
+/* 로그인 박스 */
+.login_box {
+  background-color: #F7EAD9;
+  padding: 40px;
+  border-radius: 10px;
+  max-width: 400px;
+  margin: 50px auto;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 로그인 폼 컨테이너 */
+.login_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 레이블 스타일 */
+label {
+  font-size: 16px;
+  color: #6B4F3B;
+  margin-bottom: 8px;
+  align-self: flex-start;
+}
+
+/* 입력 필드 스타일 */
+input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  border: 1px solid #9C6B4F;
+  font-size: 14px;
+  color: #6B4F3B;
+}
+
+input:focus {
+  outline: none;
+  border-color: #733512;
+}
+
+/* 로그인 버튼 스타일 */
+button {
+  width: 100%;
+  padding: 12px;
+  background-color: #9C6B4F;
+  color: white;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #733512;
+}
+
+/* 에러 메시지 */
+.message.error {
+  color: red;
+  margin-top: 10px;
+}
+
+/* 회원가입 링크 */
+.signup-link {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #9C6B4F;
+  cursor: pointer;
+}
+
+.signup-link:hover {
+  text-decoration: underline;
+}
