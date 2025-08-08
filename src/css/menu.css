@@ -1,0 +1,79 @@
+/* 메뉴바 스타일 */
+.custom-navbar-bg {
+  background-color: #F7EAD9;
+  border-bottom: 1px solid #9C6B4F;
+}
+
+.navbar-brand img {
+  width: 120px;
+}
+
+.navbar-nav {
+  margin-left: auto;
+}
+
+.nav-link {
+  font-size: 16px;
+  color: #6B4F3B;
+  margin-left: 20px;
+}
+
+.nav-link:hover {
+  color: #9C6B4F;
+}
+
+.navbar-toggler {
+  border-color: #9C6B4F;
+}
+
+.navbar-toggler-icon {
+  background-color: #9C6B4F;
+}
+
+/* 활성화된 메뉴 스타일 */
+.nav-link.active {
+  color: #9C6B4F;
+  font-weight: bold;
+}
+
+/* 드롭다운 메뉴 */
+.dropdown-menu {
+  background-color: #F7EAD9;
+  border: 1px solid #9C6B4F;
+}
+
+.dropdown-item {
+  color: #6B4F3B;
+  font-size: 14px;
+}
+
+.dropdown-item:hover {
+  background-color: #9C6B4F;
+  color: white;
+}
+
+/* 로그인/회원가입 링크 */
+.user-nav-items .nav-item {
+  margin-left: 10px;
+}
+
+.user-nav-items .nav-link {
+  color: #6B4F3B;
+}
+
+.user-nav-items .nav-link:hover {
+  color: #9C6B4F;
+}
+
+.navbar-nav .nav-item .nav-link {
+  font-size: 16px;
+  color: #6B4F3B;
+}
+
+.nav-item .nav-link {
+  color: #6B4F3B;
+}
+
+.nav-item .nav-link:hover {
+  color: #9C6B4F;
+}
