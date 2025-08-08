@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../../css/member/joinfinish.css'; // CSS 파일 경로 추가
 
 function JoinFinish() {
   const navigate = useNavigate();
@@ -9,62 +10,21 @@ function JoinFinish() {
   };
 
   return (
-    <div
-      style={{
-        backgroundColor: '#F7EAD9',
-        margin: 0,
-        fontFamily: "'Noto Sans KR', sans-serif",
-        color: '#6B4F3B',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center', // 가로 가운데 정렬
-      }}
-    >
-      <div style={{ marginBottom: '134px' }}></div>
-      <img src="../../resources/images/suho.PNG" alt="Suho" />
-      <br />
-      <p
-        style={{
-          color: '#9C6B4F',
-          fontWeight: 'bold',
-          fontSize: '32px',
-        }}
-      >
-        환영합니다!
+    <div className="join-finish-container">
+      <p className="join-finish-title">회원가입이 완료되었습니다! 🌸</p>
+
+      <p className="join-finish-message">
+        이제 당신만의 감정, 성격, 취향을 담은 꽃다발을 만나볼 수 있어요. <br />
+        꽃처럼 피어나는 당신의 이야기를 함께 만들어 볼게요. <br />
+        지금부터 Flette와 함께, 나만의 꽃을 시작해 보세요.
       </p>
-      <p
-        style={{
-          fontSize: '19px',
-          color: '#2E2E2E',
-          textAlign: 'center',
-        }}
-      >
-        마을의 새로운 수호자님.
-        <br />
-        사라지는 설화를 지키는 여정에 함께 해주셔서 감사합니다.
-      </p>
-      <br />
-      <br />
+
       <button
         type="button"
-        className="login_btn"
-        style={{
-          width: '146px',
-          height: '57px',
-          background: '#9C6B4F',
-          color: 'white',
-          borderRadius: '20px',
-          border: 'none',
-        }}
-        onMouseOver={(e) => {
-          e.target.style.background = '#733512'; // Hover effect
-        }}
-        onMouseOut={(e) => {
-          e.target.style.background = '#9C6B4F'; // Revert hover effect
-        }}
-        onClick={handleLoginClick}
+        className="join-finish-button"
+        onClick={() => navigate('/')} // 메인 페이지('/')로 이동하도록 수정
       >
-        로그인
+        메인으로
       </button>
     </div>
   );

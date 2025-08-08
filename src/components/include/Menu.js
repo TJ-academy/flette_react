@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../../css/menu.css';
 import logo from '../../resources/images/flette_logo.png';
 
 function Menu() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginName, setLoginName] = useState(''); // 사용자 이름 상태 추가
+  const navigate = useNavigate(); // useNavigate 추가
 
   useEffect(() => {
     const storedLoginId = sessionStorage.getItem('loginId');
@@ -19,6 +20,26 @@ function Menu() {
       setLoginName('');
     }
   }, []);
+
+  const handleLogout = () => {
+    // 1. 클라이언트에서 세션 데이터 삭제
+    sessionStorage.removeItem('loginId');
+    sessionStorage.removeItem('loginName');
+
+    // 2. 서버로 로그아웃 요청
+    fetch('/api/member/logout', {
+      method: 'POST',
+    })
+      .then(() => {
+        // 3. 로그아웃 후 리다이렉트
+        setIsLoggedIn(false);
+        setLoginName('');
+        navigate('/'); // 홈 페이지로 이동
+      })
+      .catch((error) => {
+        console.error('로그아웃 실패:', error);
+      });
+  };
 
   return (
     <nav className="navbar">
@@ -35,7 +56,7 @@ function Menu() {
           {isLoggedIn ? (
             <>
               <span>안녕하세요, {loginName} 님</span>
-              <Link to="/member/logout" className="logout-btn">로그아웃</Link>
+              <button onClick={handleLogout} className="logout-btn">로그아웃</button>
             </>
           ) : (
             <>
