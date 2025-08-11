@@ -21,6 +21,10 @@ import MyReviewDetail from './components/mypage/MyReviewDetail';
 import MyQuestionList from './components/mypage/MyQuestionList';
 import MyQuestionDetail from './components/mypage/MyQuestionDetail';
 
+//설문조사
+import StartSurvey from './components/mbti_flower/StartSurvey';
+import FirstSurvey from './components/mbti_flower/FirstSurvey';
+
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginName, setLoginName] = useState('');
@@ -77,6 +81,10 @@ function App() {
         <Route path="/mypage/review/detail/:id" element={<MyReviewDetail />} />
         <Route path="/mypage/question" element={<MyQuestionList />} />
         <Route path="/mypage/question/detail/:id" element={<MyQuestionDetail />} />
+
+        <Route path="/survey/start" element={<StartSurvey/>} />
+        <Route path="/survey/first" element={<FirstSurvey/>} />
+        
       </Routes>
       <Footer />
     </Router>
