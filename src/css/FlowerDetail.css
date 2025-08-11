@@ -20,7 +20,7 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: #f8bbd0; /* 연핑크 */
+  background: #F2778C; /* 지정 메인컬러 */
   color: white;
   border: none;
   border-radius: 50%;
@@ -45,7 +45,7 @@
 }
 
 .nav-btn:hover {
-  background: #f48fb1; /* 진한 핑크 */
+  background: #d85f73; /* 진한 버전 */
   transform: translateY(-50%) scale(1.05);
 }
 
@@ -53,20 +53,29 @@
 .category {
   display: block;
   font-size: 14px;
-  color: #f48fb1;
+  color: #F2778C;
   margin-top: 24px;
+  margin-bottom: 4px; /* ← 기존보다 간격 확 줄임 */
   font-weight: bold;
   letter-spacing: 1px;
 }
 
-/* 밑줄 */
+.flower-detail-info h1 {
+  margin-top: 0; /* 위쪽 여백 없애기 */
+}
+
+/* 밑줄 (기본) */
 .pink-line {
-  width: 60px;
-  height: 3px;
-  background-color: #f48fb1;
+  height: 1px;
+  background-color: #F2778C;
   border: none;
   margin: 12px auto 24px auto;
   border-radius: 3px;
+}
+
+/* 길게 늘린 밑줄 */
+.long-line {
+  width: 80%;
 }
 
 /* 설명/스토리 */
@@ -80,20 +89,20 @@
 
 /* 뒤로가기 버튼 */
 .back-btn {
-  display: block;              /* 버튼을 블록으로 변경해서 중앙정렬 가능 */
-  margin: 40px auto 0;          /* auto로 좌우 중앙 */
-  background-color: #f48fb1;    /* 메인컬러 */
+  display: block;
+  margin: 40px auto 0;
+  background-color: #F2778C;
   color: white;
   border: none;
   border-radius: 24px;
   padding: 12px 32px;
-  font-size: 18px;              /* 글자 크기 키움 */
-  font-weight: bold;            /* 굵게 */
-  text-align: center;           /* 글씨 중앙정렬 */
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
   cursor: pointer;
   transition: background 0.2s ease;
 }
 
 .back-btn:hover {
-  background-color: #ec407a;
+  background-color: #d85f73;
 }

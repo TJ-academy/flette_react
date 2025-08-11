@@ -10,6 +10,13 @@ const CATEGORY_FOLDER = {
   "잎사귀": "foliage"
 };
 
+// 카테고리 한글 → 영어 대문자 매핑
+const CATEGORY_EN = {
+  "메인": "MAIN",
+  "서브": "SUB",
+  "잎사귀": "FOLIAGE"
+};
+
 const IMAGE_BASE = process.env.PUBLIC_URL + "/img/flower";
 
 export default function FlowerDetail() {
@@ -52,13 +59,23 @@ export default function FlowerDetail() {
       </div>
 
       <div className="flower-detail-info">
-        <span className="category">{data.category}</span>
+        {/* 카테고리 영어 대문자로 표시 */}
+        <span className="category">
+          {CATEGORY_EN[data.category] || data.category}
+        </span>
         <h1>{data.flowerName}</h1>
-        <hr className="pink-line" />
+
+        {/* 구분선 길이 늘림 */}
+        <hr className="pink-line long-line" />
+
         <p className="description">{data.description}</p>
         <p className="story">{data.story}</p>
       </div>
 
+      {/* 뒤로 가기 버튼 위에 구분선 추가 */}
+      <hr className="pink-line long-line" style={{ marginTop: "30px" }} />
+
+      {/* 뒤로가기 버튼 */}
       <button className="back-btn" onClick={() => navigate(-1)}>뒤로가기</button>
     </div>
   );
