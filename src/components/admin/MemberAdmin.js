@@ -1,29 +1,40 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom"; // Link 컴포넌트 추가
-import { format } from "date-fns"; // 날짜 형식을 더 깔끔하게 처리하기 위한 라이브러리
+import { Link } from "react-router-dom";
+import { format } from "date-fns";
+import ConfirmModal from "./ConfirmModal";
+import '../../css/admin/admin.css';
 
 export default function MemberAdmin() {
   const [list, setList] = useState([]);
-  const [currentPage, setCurrentPage] = useState(0); // 현재 페이지 (0부터 시작)
-  const [totalPages, setTotalPages] = useState(1);  // 총 페이지 수
-  const [selected, setSelected] = useState(null);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const [selectedId, setSelectedId] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [modalState, setModalState] = useState({ isOpen: false, title: "", message: "", onConfirm: null });
 
-  // 페이지가 변경될 때마다 회원 목록을 불러오는 함수
-  const fetchMembers = async (page) => {
+  const showModal = (title, message, onConfirm = null) => {
+    setModalState({ isOpen: true, title, message, onConfirm });
+  };
+
+  const closeModal = () => {
+    setModalState({ isOpen: false, title: "", message: "", onConfirm: null });
+  };
+
+  const fetchMembers = async (page = 0) => {
     setLoading(true);
     try {
-      const response = await axios.get("/api/admin/members", {
-        params: { page: page, size: 10 },
+      const { data } = await axios.get("/api/admin/members", {
+        params: { page, size: 10 },
       });
-      const { content, totalPages: fetchedTotalPages } = response.data;
+      const { content = [], totalPages = 1, number = page } = data || {};
       setList(content);
-      setTotalPages(fetchedTotalPages);
-      setCurrentPage(page);
+      setTotalPages(totalPages);
+      setCurrentPage(number);
+      setSelectedId(null);
     } catch (e) {
-      console.error("회원 목록 조회 실패:", e);
-      alert("회원 목록을 불러오는 데 실패했습니다.");
+      console.error("회원 목록 조회 실패:", e.response?.data || e);
+      showModal("오류", "회원 목록을 불러오는 데 실패했습니다.");
       setList([]);
     } finally {
       setLoading(false);
@@ -31,126 +42,147 @@ export default function MemberAdmin() {
   };
 
   useEffect(() => {
-    fetchMembers(currentPage);
-  }, [currentPage]);
+    fetchMembers(0);
+  }, []);
 
-  // 회원 삭제 함수
   const onDelete = async (userid) => {
-    if (!window.confirm(`정말 ${userid} 회원을 삭제하시겠습니까?`)) {
-      return;
-    }
-    try {
-      await axios.delete(`/api/admin/members/${userid}`);
-      alert("회원 삭제에 성공했습니다.");
-      // 삭제 후 목록 새로고침
-      fetchMembers(currentPage);
-      // 상세보기 패널 닫기
-      if (selected?.userid === userid) setSelected(null);
-    } catch (e) {
-      console.error("회원 삭제 실패:", e);
-      alert("회원 삭제에 실패했습니다.");
-    }
+    showModal(
+      "회원 삭제", 
+      `정말 ${userid} 회원을 삭제하시겠습니까?`,
+      async () => {
+        try {
+          await axios.delete(`/api/admin/members/${userid}`);
+          showModal("성공", "회원 삭제에 성공했습니다.");
+          await fetchMembers(currentPage);
+        } catch (e) {
+          console.error("회원 삭제 실패:", e.response?.data || e);
+          showModal("오류", "회원 삭제에 실패했습니다.");
+        }
+      }
+    );
   };
 
-  // 가입일 형식을 yyyy-MM-dd로 변환
   const formatDate = (dateStr) => {
-    return dateStr ? format(new Date(dateStr), 'yyyy-MM-dd') : "-";
+    if (!dateStr) return "-";
+    const d = new Date(dateStr);
+    if (isNaN(d)) return dateStr;
+    return format(d, "yyyy-MM-dd");
   };
-  
-  // 페이지네이션 버튼 렌더링을 위한 배열 생성
+
   const pageNumbers = Array.from({ length: totalPages }, (_, i) => i);
 
   return (
-    <main style={st.page}>
-      <section style={st.wrap}>
-        <h2 style={st.title}>회원관리</h2>
+    <main className="page">
+      <section className="wrap">
+        <h2 className="title">회원관리</h2>
 
-        {/* 목록 테이블 */}
-        <div style={st.tableWrap}>
-          <table style={st.table}>
+        <div className="table-wrap">
+          <table className="table">
             <thead>
               <tr>
-                <th style={st.th}>아이디</th>
-                <th style={st.th}>이름</th>
-                <th style={st.th}>가입일</th>
-                <th style={st.th}>상세 관리</th>
+                <th className="th">아이디</th>
+                <th className="th">이름</th>
+                <th className="th">가입일</th>
+                <th className="th">상세 관리</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={4} style={st.empty}>불러오는 중…</td></tr>
+                <tr>
+                  <td colSpan={4} className="empty">불러오는 중…</td>
+                </tr>
               ) : list.length === 0 ? (
-                <tr><td colSpan={4} style={st.empty}>회원이 없습니다.</td></tr>
+                <tr>
+                  <td colSpan={4} className="empty">회원이 없습니다.</td>
+                </tr>
               ) : (
                 list.map((m) => (
-                  <tr key={m.userid} style={st.row}>
-                    <td style={st.td}>{m.userid}</td>
-                    <td style={st.td}>{m.username}</td>
-                    <td style={st.td}>{formatDate(m.joinedAt)}</td>
-                    <td style={st.td}>
-                      <button
-                        type="button"
-                        onClick={() => setSelected(m)}
-                        style={st.outlineBtn}
-                      >
-                        상세보기
-                      </button>
-                    </td>
-                  </tr>
+                  <React.Fragment key={m.userid}>
+                    <tr className="row">
+                      <td className="td">{m.userid}</td>
+                      <td className="td">{m.username}</td>
+                      <td className="td">{formatDate(m.joinedAt)}</td>
+                      <td className="td">
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setSelectedId((prev) => (prev === m.userid ? null : m.userid))
+                          }
+                          className="outline-btn"
+                        >
+                          {selectedId === m.userid ? "닫기" : "상세보기"}
+                        </button>
+                      </td>
+                    </tr>
+
+                    {selectedId === m.userid && (
+                      <tr>
+                        <td colSpan={4} className="p-0">
+                          <div className="detail-card">
+                            <h3 className="detail-title">상세보기</h3>
+
+                            <div className="detail-row">
+                              <span className="label">아이디</span>
+                              <span>{m.userid}</span>
+                            </div>
+                            <div className="detail-row">
+                              <span className="label">이름</span>
+                              <span>{m.username}</span>
+                            </div>
+                            <div className="detail-row">
+                              <span className="label">가입일</span>
+                              <span>{formatDate(m.joinedAt)}</span>
+                            </div>
+                            <div className="detail-row">
+                              <span className="label">주소</span>
+                              <span>
+                                {[
+                                  m.zipcode,
+                                  m.address1,
+                                  m.address2
+                                ]
+                                  .filter(Boolean)
+                                  .join(" ") || "-"}
+                              </span>
+                            </div>
+                            <div className="detail-row">
+                              <span className="label">연락번호</span>
+                              <span>{m.tel || "-"}</span>
+                            </div>
+
+                            <div className="detail-btns">
+                              <Link
+                                to={`/admin/members/edit/${m.userid}`}
+                                className="gray-btn no-underline"
+                              >
+                                수정
+                              </Link>
+                              <button
+                                type="button"
+                                className="primary-btn"
+                                onClick={() => onDelete(m.userid)}
+                              >
+                                삭제
+                              </button>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                  </React.Fragment>
                 ))
               )}
             </tbody>
           </table>
         </div>
 
-        {/* 상세보기 패널 */}
-        {selected && (
-          <div style={st.detailCard}>
-            <h3 style={st.detailTitle}>상세보기</h3>
-            <div style={st.detailRow}>
-              <span style={st.label}>아이디</span>
-              <span>{selected.userid}</span>
-            </div>
-            <div style={st.detailRow}>
-              <span style={st.label}>이름</span>
-              <span>{selected.username}</span>
-            </div>
-            <div style={st.detailRow}>
-              <span style={st.label}>가입일</span>
-              <span>{formatDate(selected.joinedAt)}</span>
-            </div>
-            <div style={st.detailRow}>
-              <span style={st.label}>주소</span>
-              <span>{`${selected.zipcode} ${selected.address1} ${selected.address2}` ?? "-"}</span>
-            </div>
-            <div style={st.detailRow}>
-              <span style={st.label}>연락번호</span>
-              <span>{selected.tel ?? "-"}</span>
-            </div>
-
-            <div style={st.detailBtns}>
-              <Link to={`/admin/members/edit/${selected.userid}`} style={{ ...st.grayBtn, textDecoration: 'none' }}>
-                수정
-              </Link>
-              <button
-                type="button"
-                style={st.primaryBtn}
-                onClick={() => onDelete(selected.userid)}
-              >
-                삭제
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* 페이지네이션 */}
-        <div style={st.paging}>
+        <div className="paging">
           {pageNumbers.map((p) => (
             <button
               key={p}
               type="button"
               onClick={() => fetchMembers(p)}
-              style={{ ...st.pageDot, ...(currentPage === p ? st.pageActive : {}) }}
+              className={`page-dot ${currentPage === p ? 'page-active' : ''}`}
               aria-current={currentPage === p ? "page" : undefined}
             >
               {p + 1}
@@ -158,63 +190,18 @@ export default function MemberAdmin() {
           ))}
         </div>
       </section>
+      <ConfirmModal 
+        isOpen={modalState.isOpen}
+        title={modalState.title}
+        message={modalState.message}
+        onConfirm={() => {
+          if (modalState.onConfirm) {
+            modalState.onConfirm();
+          }
+          closeModal();
+        }}
+        onCancel={closeModal}
+      />
     </main>
   );
-}
-
-/* ========= styles ========= */
-const st = {
-  page: { display: "grid", placeItems: "center", padding: "24px 16px", background: "#fff" },
-  wrap: { width: "min(920px, 94vw)" },
-
-  title: {
-    width: 160, margin: "0 auto 16px", textAlign: "center",
-    background: "#ff88a0", color: "#fff", padding: "10px 0",
-    borderRadius: 999, fontSize: 16, fontWeight: 700
-  },
-
-  tableWrap: { borderTop: "1px solid #f2b9c2", paddingTop: 10, marginTop: 6 },
-  table: { width: "100%", borderCollapse: "collapse" },
-  th: { padding: "10px 8px", color: "#666", fontWeight: 700, borderBottom: "1px solid #eee", fontSize: 14 },
-  row: { borderBottom: "1px solid #f4f4f4" },
-  td: { padding: "10px 8px", textAlign: "center", fontSize: 14 },
-  empty: { padding: "28px 8px", textAlign: "center", color: "#999" },
-
-  outlineBtn: {
-    padding: "8px 14px", border: "1px solid #f4b7c0", borderRadius: 999,
-    background: "#fff", cursor: "pointer", color: "#444"
-  },
-
-  detailCard: {
-    marginTop: 18, padding: 20, border: "1.5px solid #f4b7c0",
-    background: "#fff6f8", borderRadius: 12, maxWidth: 560, marginInline: "auto"
-  },
-  detailTitle: { textAlign: "center", margin: "0 0 14px 0", fontSize: 18, fontWeight: 700 },
-  detailRow: { display: "grid", gridTemplateColumns: "120px 1fr", gap: 8, padding: "6px 2px" },
-  label: { color: "#666" },
-
-  detailBtns: { display: "flex", gap: 12, justifyContent: "center", marginTop: 14 },
-  grayBtn: {
-    padding: "10px 20px", borderRadius: 999, border: "none",
-    background: "#f2f2f2", color: "#333", cursor: "pointer"
-  },
-  primaryBtn: {
-    padding: "10px 20px", borderRadius: 999, border: "none",
-    background: "#ff88a0", color: "#fff", cursor: "pointer", fontWeight: 700
-  },
-
-  paging: { textAlign: "center", marginTop: 18, color: "#aaa" },
-  pageDot: { border: "none", background: "transparent", cursor: "pointer", padding: "4px 8px", borderRadius: 6 },
-  pageActive: { color: "#ff7f93", fontWeight: 700 }
-};
-
-/* ========= utils ========= */
-function formatDate(d) {
-  if (!d) return "";
-  const date = new Date(d);
-  if (isNaN(date)) return d; // 이미 yyyy-MM-dd 형태면 그대로
-  const y = String(date.getFullYear()).slice(2);
-  const m = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${y}-${m}-${day}`;
 }
