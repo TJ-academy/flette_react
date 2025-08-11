@@ -17,6 +17,7 @@ import OrderDetail from './components/mypage/OrderDetail';
 import OrderDelivery from './components/mypage/OrderDelivery';
 import OrderReview from './components/mypage/OrderReview';
 import MyReviewList from './components/mypage/MyReviewList';
+import MyReviewWrite from './components/mypage/MyReviewWrite';
 import MyReviewDetail from './components/mypage/MyReviewDetail';
 import MyQuestionList from './components/mypage/MyQuestionList';
 import MyQuestionDetail from './components/mypage/MyQuestionDetail';
@@ -24,8 +25,6 @@ import MyQuestionDetail from './components/mypage/MyQuestionDetail';
 //설문조사
 import StartSurvey from './components/mbti_flower/StartSurvey';
 import FirstSurvey from './components/mbti_flower/FirstSurvey';
-
-import ShopApp from './ShopApp';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -80,6 +79,7 @@ function App() {
         <Route path="/mypage/order/delivery/:id" element={<OrderDelivery />} />
         <Route path="/mypage/order/review_write/:id" element={<OrderReview />} />
         <Route path="/mypage/review" element={<MyReviewList />} />
+        <Route path="/mypage/reviews/write/:purchaseId" element={<MyReviewWrite />} />
         <Route path="/mypage/review/detail/:id" element={<MyReviewDetail />} />
         <Route path="/mypage/question" element={<MyQuestionList />} />
         <Route path="/mypage/question/detail/:id" element={<MyQuestionDetail />} />
@@ -87,8 +87,6 @@ function App() {
         <Route path="/survey/start" element={<StartSurvey/>} />
         <Route path="/survey/first" element={<FirstSurvey/>} />
         
-
-        <Route path="/shop/*" element={<ShopApp />} />
       </Routes>
       <Footer />
     </Router>
