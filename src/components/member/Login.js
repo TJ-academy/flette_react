@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../css/member/login.css';
 
-function Login() {
+// Receive handleLogin function as a prop
+function Login({ handleLogin }) {
   const [userId, setUserId] = useState('');
   const [passwd, setPasswd] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
@@ -28,29 +29,29 @@ function Login() {
         passwd: passwd,
       }),
     })
-      .then((response) => {
-        // HTTP 응답 상태 코드에 따라 성공/실패를 명확히 구분
-        if (response.ok) {
-          return response.json();
-        } else {
-          // 서버에서 401 Unauthorized 에러를 보냈을 때
-          throw new Error('아이디 또는 비밀번호가 일치하지 않습니다.');
-        }
-      })
-      .then((data) => {
-        // Correctly store user data returned from the backend in sessionStorage
-        sessionStorage.setItem('loginId', data.userid);
-        sessionStorage.setItem('loginName', data.username);
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('아이디 또는 비밀번호가 일치하지 않습니다.');
+      }
+    })
+    .then((data) => {
+      // Correctly store user data in sessionStorage
+      sessionStorage.setItem('loginId', data.userid);
+      sessionStorage.setItem('loginName', data.username);
+      
+      // Call the handleLogin prop to update the state in App.js
+      handleLogin(data.username);
 
-        // Clear error message
-        setErrorMsg('');
-
-        // Redirect to the home page or dashboard
-        navigate('/');
-      })
-      .catch((err) => {
-        setErrorMsg(err.message);
-      });
+      setErrorMsg('');
+      
+      // Redirect to the home page
+      navigate('/');
+    })
+    .catch((err) => {
+      setErrorMsg(err.message);
+    });
   };
 
   return (
