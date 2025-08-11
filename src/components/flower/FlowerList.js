@@ -11,7 +11,20 @@ const CATEGORY_FOLDER = {
   "잎사귀": "foliage"
 };
 
-const TAB_TO_KOR = { MAIN: "메인", SUB: "서브", FOLIAGE: "잎사귀" };
+// UI에 표시할 영어 텍스트
+const TAB_LABELS = {
+  MAIN: "MAIN",
+  SUB: "SUB",
+  FOLIAGE: "FOLIAGE"
+};
+
+// API 데이터에서 필터링에 쓸 한글 매핑
+const TAB_TO_KOR = {
+  MAIN: "메인",
+  SUB: "서브",
+  FOLIAGE: "잎사귀"
+};
+
 const IMAGE_BASE = process.env.PUBLIC_URL + "/img/flower";
 
 export function FlowerList() {
@@ -34,26 +47,26 @@ export function FlowerList() {
     <div className="flower-container">
       <header className="flower-header">꽃 알아보기</header>
       <div className="flower-tabs">
-        {Object.entries(TAB_TO_KOR).map(([eng, kor]) => (
+        {Object.entries(TAB_LABELS).map(([eng, label]) => (
           <button
             key={eng}
             onClick={() => setTab(eng)}
             className={`flower-tab ${tab === eng ? "active" : ""}`}
           >
-            {kor}
+            {label}
           </button>
         ))}
       </div>
 
-      {loading && <p>로딩중...</p>}
-      {error && <p style={{ color: "red" }}>불러오기 오류: {error}</p>}
+      {loading && <p>Loading...</p>}
+      {error && <p style={{ color: "red" }}>Error: {error}</p>}
 
       {!loading && !error && (
         <div className="flower-grid">
           {pageItems.map((f) => (
             <FlowerCard key={f.flowerId} f={f} />
           ))}
-          {pageItems.length === 0 && <p>표시할 항목 없음</p>}
+          {pageItems.length === 0 && <p>No items to display</p>}
         </div>
       )}
 
