@@ -32,7 +32,7 @@ function Menu({ isLoggedIn, loginName, userLevel, handleLogout }) {
         <ul className="nav-links">
           <li><Link to="/shop">커스텀 꽃다발 제작</Link></li>
           <li><Link to="/survey/start">나와 어울리는 꽃 찾기</Link></li>
-          <li><Link to="/">꽃 알아보기</Link></li>
+          <li><Link to="/flower/list">꽃 알아보기</Link></li>
           <li className="admin-menu-item">
             <Link to="/">관리자 기능</Link>
             {/* 관리자 레벨(10)일 때만 관리자 메뉴를 렌더링합니다. */}
