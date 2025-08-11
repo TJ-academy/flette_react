@@ -21,6 +21,8 @@ import MyReviewDetail from './components/mypage/MyReviewDetail';
 import MyQuestionList from './components/mypage/MyQuestionList';
 import MyQuestionDetail from './components/mypage/MyQuestionDetail';
 
+import ShopApp from './ShopApp';
+
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginName, setLoginName] = useState('');
@@ -77,6 +79,8 @@ function App() {
         <Route path="/mypage/review/detail/:id" element={<MyReviewDetail />} />
         <Route path="/mypage/question" element={<MyQuestionList />} />
         <Route path="/mypage/question/detail/:id" element={<MyQuestionDetail />} />
+
+        <Route path="/shop/*" element={<ShopApp />} />
       </Routes>
       <Footer />
     </Router>
