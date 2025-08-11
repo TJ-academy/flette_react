@@ -1,0 +1,130 @@
+.flower-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.flower-header {
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+.flower-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.flower-tab {
+  border: none;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-size: 14px;
+  cursor: pointer;
+  background: #f2f2f2;
+  color: #555;
+  transition: background 0.3s, color 0.3s;
+}
+
+.flower-tab:hover {
+  background-color: #ec407a;
+  color: white;
+}
+
+.flower-tab.active {
+  background: #f48fb1;
+  color: white;
+}
+
+.flower-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 25px;
+}
+
+.flower-card {
+  width: 200px; /* 카드 가로 고정 */
+  height: 200px; /* 카드 세로 고정 (정사각형) */
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.flower-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 상하좌우 여백 없이 꽉 채움 */
+  display: block; /* img 아래 기본 여백 제거 */
+}
+
+.flower-card:hover img {
+  transform: scale(1.05);
+}
+
+.flower-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(244, 143, 177, 0.85);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  text-align: center;
+}
+
+.flower-card:hover .flower-overlay {
+  opacity: 1;
+}
+
+.flower-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.flower-name {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.flower-desc {
+  font-size: 12px;
+  opacity: 0.9;
+  line-height: 1.4;
+}
+
+.pagination {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.pagination button {
+  border: 1px solid #ddd;
+  background: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.pagination button.active {
+  border-color: #f48fb1;
+  color: #f48fb1;
+}
+
