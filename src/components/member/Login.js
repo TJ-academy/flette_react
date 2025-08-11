@@ -60,11 +60,11 @@ function Login({ handleLogin }) {
 
   return (
     <div>
-      <p className="login_text">로그인</p>
       <div className="login_box">
+        <p className="login_text">로그인</p>
         <div className="login_container">
           <form onSubmit={(e) => { e.preventDefault(); logincheck(); }}>
-            <label htmlFor="userid">아이디를 입력하세요.</label>
+            <label htmlFor="userid" class="loginLabel">아이디를 입력하세요.</label>
             <input
               type="text"
               id="userid"
@@ -72,19 +72,21 @@ function Login({ handleLogin }) {
               value={userId}
               onChange={(e) => setUserId(e.target.value)}
               autoComplete="username"
+              class="inputClass"
             />
 
-            <label htmlFor="passwd">비밀번호를 입력하세요.</label>
+            <label htmlFor="passwd" class="loginLabel">비밀번호를 입력하세요.</label>
             <input
               type="password"
               id="passwd"
               name="passwd"
               value={passwd}
               onChange={(e) => setPasswd(e.target.value)}
+              class="inputClass"
               autoComplete="current-password"
             />
 
-            <button type="submit">로그인</button>
+            <button type="submit" class="btnLogin">로그인</button>
 
             {errorMsg && <div className="message error">{errorMsg}</div>}
 
