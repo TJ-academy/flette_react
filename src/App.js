@@ -25,6 +25,7 @@ import OrderDetail from './components/mypage/OrderDetail';
 import OrderDelivery from './components/mypage/OrderDelivery';
 import OrderReview from './components/mypage/OrderReview';
 import MyReviewList from './components/mypage/MyReviewList';
+import MyReviewWrite from './components/mypage/MyReviewWrite';
 import MyReviewDetail from './components/mypage/MyReviewDetail';
 import MyQuestionList from './components/mypage/MyQuestionList';
 import MyQuestionDetail from './components/mypage/MyQuestionDetail';
@@ -43,6 +44,7 @@ import MemberAdmin from './components/admin/MemberAdmin';
 import FlowerAdmin from './components/admin/FlowerAdmin';
 import OrderAdmin from './components/admin/OrderAdmin';
 import QuestionAdmin from './components/admin/QuestionAdmin';
+
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -112,6 +114,7 @@ function App() {
         <Route path="/mypage/order/delivery/:id" element={<OrderDelivery />} />
         <Route path="/mypage/order/review_write/:id" element={<OrderReview />} />
         <Route path="/mypage/review" element={<MyReviewList />} />
+        <Route path="/mypage/reviews/write/:purchaseId" element={<MyReviewWrite />} />
         <Route path="/mypage/review/detail/:id" element={<MyReviewDetail />} />
         <Route path="/mypage/question" element={<MyQuestionList />} />
         <Route path="/mypage/question/detail/:id" element={<MyQuestionDetail />} />
