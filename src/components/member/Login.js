@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../css/member/login.css';
 
-// Receive handleLogin function as a prop
+// handleLogin 함수를 props로 받습니다.
 function Login({ handleLogin }) {
   const [userId, setUserId] = useState('');
   const [passwd, setPasswd] = useState('');
@@ -33,20 +33,24 @@ function Login({ handleLogin }) {
       if (response.ok) {
         return response.json();
       } else {
+        // 서버에서 아이디 또는 비밀번호 불일치 시 에러 메시지를 보냅니다.
         throw new Error('아이디 또는 비밀번호가 일치하지 않습니다.');
       }
     })
     .then((data) => {
-      // Correctly store user data in sessionStorage
+      // 서버 응답(data)에는 'userid', 'username', 'level' 등의 정보가 포함되어 있습니다.
+      // sessionStorage에 사용자 데이터를 저장합니다.
       sessionStorage.setItem('loginId', data.userid);
       sessionStorage.setItem('loginName', data.username);
+      sessionStorage.setItem('userLevel', data.level); // 레벨 정보도 추가로 저장합니다.
       
-      // Call the handleLogin prop to update the state in App.js
-      handleLogin(data.username);
+      // App.js에서 받은 handleLogin 함수를 호출하여 상태를 업데이트합니다.
+      // 이때 username과 level 정보를 함께 전달합니다.
+      handleLogin(data.username, data.level);
 
       setErrorMsg('');
       
-      // Redirect to the home page
+      // 로그인 성공 후 홈페이지로 이동합니다.
       navigate('/');
     })
     .catch((err) => {
@@ -64,7 +68,7 @@ function Login({ handleLogin }) {
             <input
               type="text"
               id="userid"
-              name="userid" // name 속성을 'userid'로 수정
+              name="userid"
               value={userId}
               onChange={(e) => setUserId(e.target.value)}
               autoComplete="username"
@@ -74,7 +78,7 @@ function Login({ handleLogin }) {
             <input
               type="password"
               id="passwd"
-              name="passwd" // name 속성을 'passwd'로 수정
+              name="passwd"
               value={passwd}
               onChange={(e) => setPasswd(e.target.value)}
               autoComplete="current-password"

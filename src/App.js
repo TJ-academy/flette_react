@@ -27,47 +27,61 @@ import FirstSurvey from './components/mbti_flower/FirstSurvey';
 
 import ShopApp from './ShopApp';
 
+import MemberAdmin from './components/admin/MemberAdmin';
+import FlowerAdmin from './components/admin/FlowerAdmin';
+import OrderAdmin from './components/admin/OrderAdmin';
+import QuestionAdmin from './components/admin/QuestionAdmin';
+
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loginName, setLoginName] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loginName, setLoginName] = useState('');
+  // 관리자 레벨 상태 추가
+  const [userLevel, setUserLevel] = useState(1); 
 
-  // This function will be passed to the Login component.
-  const handleLogin = (name) => {
-    setIsLoggedIn(true);
-    setLoginName(name);
-  };
+  const handleLogin = (name, level) => {
+    setIsLoggedIn(true);
+    setLoginName(name);
+    // 로그인 시 레벨 상태 업데이트
+    setUserLevel(level);
+  };
 
-  const handleLogout = () => {
-    sessionStorage.removeItem('loginId');
-    sessionStorage.removeItem('loginName');
-    setIsLoggedIn(false);
-    setLoginName('');
-  };
+  const handleLogout = () => {
+    sessionStorage.removeItem('loginId');
+    sessionStorage.removeItem('loginName');
+    // 로그아웃 시 레벨 상태 초기화
+    sessionStorage.removeItem('userLevel');
+    setIsLoggedIn(false);
+    setLoginName('');
+    setUserLevel(1);
+  };
 
-  // Check for session data on initial load
-  useEffect(() => {
-    const storedLoginId = sessionStorage.getItem('loginId');
-    const storedLoginName = sessionStorage.getItem('loginName');
-    
-    if (storedLoginId) {
-      setIsLoggedIn(true);
-      setLoginName(storedLoginName);
-    } else {
-      setIsLoggedIn(false);
-      setLoginName('');
-    }
-  }, []);
+  useEffect(() => {
+    const storedLoginId = sessionStorage.getItem('loginId');
+    const storedLoginName = sessionStorage.getItem('loginName');
+    // 세션 스토리지에서 레벨 정보도 불러옴
+    const storedUserLevel = sessionStorage.getItem('userLevel');
+    
+    if (storedLoginId) {
+      setIsLoggedIn(true);
+      setLoginName(storedLoginName);
+      // 저장된 레벨이 있으면 상태에 적용
+      setUserLevel(storedUserLevel ? parseInt(storedUserLevel, 10) : 1);
+    } else {
+      setIsLoggedIn(false);
+      setLoginName('');
+      setUserLevel(1);
+    }
+  }, []);
 
-  return (
-    <Router>
-      <Menu isLoggedIn={isLoggedIn} loginName={loginName} handleLogout={handleLogout} />
-      <Routes>
-        {/* Pass the handleLogin function to the Login component */}
-        
-
+  return (
+    <Router>
+      {/* Menu 컴포넌트에 userLevel props 전달 */}
+      <Menu isLoggedIn={isLoggedIn} loginName={loginName} userLevel={userLevel} handleLogout={handleLogout} />
+      <Routes>
+        {/* Login 컴포넌트에 handleLogin 함수를 전달 */}
+        <Route path="/member/login" element={<Login handleLogin={handleLogin} />} />
+      
         <Route path="/" element={<Main />} />
-        {/* 로그인 컴포넌트는 로그인 상태를 직접 변경하지 않습니다. sessionStorage만 조작합니다. */}
-        <Route path="/member/login" element={<Login handleLogin={handleLogin} />} />
         <Route path="/member/join" element={<Join />} />
         <Route path="/member/joinNext" element={<JoinNext />} />
         <Route path="/member/joinFinish" element={<JoinFinish />} />
@@ -89,6 +103,11 @@ function App() {
         
 
         <Route path="/shop/*" element={<ShopApp />} />
+
+        <Route path="/admin/member" element={<MemberAdmin />} />
+        <Route path="/admin/flower" element={<FlowerAdmin />} />
+        <Route path="/admin/order" element={<OrderAdmin />} />
+        <Route path="/admin/question" element={<QuestionAdmin />} />
       </Routes>
       <Footer />
     </Router>

@@ -76,3 +76,41 @@
   /* loginName님 텍스트가 줄바꿈되지 않도록 설정 */
   white-space: nowrap;
 }
+
+/* 관리자 메뉴 항목 스타일 */
+.nav-links li.admin-menu-item {
+  position: relative; /* 서브메뉴를 위한 기준점 */
+}
+
+.nav-links li.admin-menu-item .submenu {
+  display: none; /* 기본적으로 서브메뉴 숨김 */
+  position: absolute;
+  top: 100%; /* 부모 요소 아래에 위치 */
+  left: 0;
+  background-color: #F7EAD9;
+  border: 1px solid #9C6B4F;
+  list-style: none;
+  padding: 10px;
+  min-width: 150px;
+  z-index: 10;
+}
+
+/* 관리자 메뉴에 마우스를 올렸을 때 서브메뉴 표시 */
+.nav-links li.admin-menu-item:hover .submenu {
+  display: block;
+}
+
+.nav-links li.admin-menu-item .submenu li {
+  margin-bottom: 5px;
+}
+
+.nav-links li.admin-menu-item .submenu a {
+  color: #6B4F3B;
+  text-decoration: none;
+  display: block;
+  padding: 5px;
+}
+
+.nav-links li.admin-menu-item .submenu a:hover {
+  background-color: #ede2d4;
+}
