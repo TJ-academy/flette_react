@@ -25,6 +25,8 @@ import MyQuestionDetail from './components/mypage/MyQuestionDetail';
 import StartSurvey from './components/mbti_flower/StartSurvey';
 import FirstSurvey from './components/mbti_flower/FirstSurvey';
 
+import ShopApp from './ShopApp';
+
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginName, setLoginName] = useState('');
@@ -85,6 +87,8 @@ function App() {
         <Route path="/survey/start" element={<StartSurvey/>} />
         <Route path="/survey/first" element={<FirstSurvey/>} />
         
+
+        <Route path="/shop/*" element={<ShopApp />} />
       </Routes>
       <Footer />
     </Router>

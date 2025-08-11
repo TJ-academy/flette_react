@@ -30,7 +30,7 @@ function Menu({ isLoggedIn, loginName, handleLogout }) {
       <div className="container">
         <Link to="/" className="logo"><img src={logo} alt="플레트 로고" /></Link>
         <ul className="nav-links">
-          <li><Link to="/">커스텀 꽃다발 제작</Link></li>
+          <li><Link to="/shop">커스텀 꽃다발 제작</Link></li>
           <li><Link to="/survey/start">나와 어울리는 꽃 찾기</Link></li>
           <li><Link to="/">꽃 알아보기</Link></li>
         </ul>
