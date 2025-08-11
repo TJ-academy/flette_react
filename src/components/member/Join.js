@@ -1,6 +1,7 @@
 // Join.js
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../../css/member/join.css';
 
 function Join() {
   const [userid, setUserid] = useState('');
@@ -69,13 +70,12 @@ function Join() {
 
   return (
     <div>
-      <p className="join_text">회원가입</p>
       <div className="join_box">
-        <div className="join_container d-flex justify-content-center">
+        <p className="join_text">회원가입</p>
+        <div className="join_container">
           {/* form 태그 제거, 또는 onSubmit 이벤트 제거 */}
-          <div> 
-            <label>아이디를 입력하세요.</label>
-            <div className="input-group">
+            <label className="joinLabel">아이디를 입력하세요.</label>
+            <div className="input-group" style={{ margin: 0}}>
               <input
                 type="text"
                 value={userid}
@@ -84,51 +84,46 @@ function Join() {
                   setIdCheckMsg('');
                   setIsIdChecked(false);
                 }}
-                style={{ width: '209px' }}
+                className="inputClass"
               />
               <button
                 type="button"
                 onClick={checkIdDuplicate}
                 className="dupliBtn"
-                style={{ borderRadius: '0 10px 10px 0' }}
               >
                 중복체크
               </button>
-              <br />
             </div>
-            <span id="idCheckMsg" className="error">{idCheckMsg}</span>
+            <span className="error" style={{ marginBottom: 10}}>{idCheckMsg}</span>
 
-            <label>비밀번호를 입력하세요.</label>
+            <label className="joinLabel">비밀번호를 입력하세요.</label>
             <div className="input-group">
               <input
                 type="password"
                 value={passwd}
                 onChange={(e) => setPasswd(e.target.value)}
-                style={{ width: '338px' }}
+                className="inputClass"
               />
             </div>
-            <label>비밀번호를 다시 입력하세요.</label>
-            <div className="input-group">
+            <label className="joinLabel">비밀번호를 다시 입력하세요.</label>
+            <div className="input-group" style={{ margin: 0}}>
               <input
                 type="password"
                 value={confirmPasswd}
                 onChange={(e) => setConfirmPasswd(e.target.value)}
-                style={{ width: '338px' }}
+                className="inputClass"
               />
             </div>
-            <p id="errorMsg" className="error" style={{ marginTop: 0 }}>
-              {errorMsg}
-            </p>
+            <p className="error">{errorMsg}</p>
             <p className="text1">아이디와 비밀번호는 영문/숫자로 이루어져야 합니다.</p>
-            <button 
-              type="button" 
-              id="submitBtn" 
+            <button
+              type="button"
+              id="submitBtn"
               onClick={handleNext}
               disabled={!isIdChecked || !passwd || passwd !== confirmPasswd}
             >
-              다음으로 ✔
+              다음으로
             </button>
-          </div>
         </div>
       </div>
     </div>

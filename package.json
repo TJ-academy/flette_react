@@ -8,6 +8,8 @@
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.11.0",
+    "date-fns": "^4.1.0",
+    "lucide-react": "^0.539.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-router-dom": "^7.7.1",
@@ -38,5 +40,8 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:80"
+  "proxy": "http://localhost:80",
+  "devDependencies": {
+    "transliteration": "^2.3.5"
+  }
 }
