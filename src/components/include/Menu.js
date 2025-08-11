@@ -32,7 +32,7 @@ function Menu({ isLoggedIn, loginName, handleLogout }) {
         <ul className="nav-links">
           <li><Link to="/">커스텀 꽃다발 제작</Link></li>
           <li><Link to="/survey/start">나와 어울리는 꽃 찾기</Link></li>
-          <li><Link to="/">꽃 알아보기</Link></li>
+          <li><Link to="/flower/list">꽃 알아보기</Link></li>
         </ul>
         <div className="user-actions">
           {/* props로 받은 isLoggedIn 상태에 따라 UI를 렌더링합니다. */}

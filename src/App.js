@@ -1,13 +1,21 @@
 // App.js
-import React, { useState, useEffect } from 'react'; // useState와 useEffect를 import 합니다.
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+// 공통 레이아웃
 import Menu from './components/include/Menu';
 import Footer from './components/include/Footer';
+
+// 메인
 import Main from './components/Main';
+
+// 회원 관련
 import Login from './components/member/Login';
 import Join from './components/member/Join';
 import JoinNext from './components/member/JoinNext';
 import JoinFinish from './components/member/JoinFinish';
+
+// 마이페이지
 import MyPageMain from './components/mypage/MyPageMain';
 import MyInfoEdit from './components/mypage/MyInfoEdit';
 import MyPwdEdit from './components/mypage/MyPwdEdit';
@@ -21,20 +29,25 @@ import MyReviewDetail from './components/mypage/MyReviewDetail';
 import MyQuestionList from './components/mypage/MyQuestionList';
 import MyQuestionDetail from './components/mypage/MyQuestionDetail';
 
-//설문조사
+// 설문조사
 import StartSurvey from './components/mbti_flower/StartSurvey';
 import FirstSurvey from './components/mbti_flower/FirstSurvey';
+
+// 꽃 관련
+import { FlowerList } from './components/flower/FlowerList';
+import FlowerDetail from './components/flower/FlowerDetail'; // 경로 변경됨
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginName, setLoginName] = useState('');
 
-  // This function will be passed to the Login component.
+  // 로그인 처리
   const handleLogin = (name) => {
     setIsLoggedIn(true);
     setLoginName(name);
   };
 
+  // 로그아웃 처리
   const handleLogout = () => {
     sessionStorage.removeItem('loginId');
     sessionStorage.removeItem('loginName');
@@ -42,11 +55,11 @@ function App() {
     setLoginName('');
   };
 
-  // Check for session data on initial load
+  // 초기 세션 확인
   useEffect(() => {
     const storedLoginId = sessionStorage.getItem('loginId');
     const storedLoginName = sessionStorage.getItem('loginName');
-    
+
     if (storedLoginId) {
       setIsLoggedIn(true);
       setLoginName(storedLoginName);
@@ -58,17 +71,22 @@ function App() {
 
   return (
     <Router>
-      <Menu isLoggedIn={isLoggedIn} loginName={loginName} handleLogout={handleLogout} />
+      <Menu
+        isLoggedIn={isLoggedIn}
+        loginName={loginName}
+        handleLogout={handleLogout}
+      />
       <Routes>
-        {/* Pass the handleLogin function to the Login component */}
-        
-
+        {/* 메인 */}
         <Route path="/" element={<Main />} />
-        {/* 로그인 컴포넌트는 로그인 상태를 직접 변경하지 않습니다. sessionStorage만 조작합니다. */}
+
+        {/* 회원 */}
         <Route path="/member/login" element={<Login handleLogin={handleLogin} />} />
         <Route path="/member/join" element={<Join />} />
         <Route path="/member/joinNext" element={<JoinNext />} />
         <Route path="/member/joinFinish" element={<JoinFinish />} />
+
+        {/* 마이페이지 */}
         <Route path="/mypage" element={<MyPageMain />} />
         <Route path="/mypage/edit" element={<MyInfoEdit />} />
         <Route path="/mypage/pwd_edit" element={<MyPwdEdit />} />
@@ -82,9 +100,13 @@ function App() {
         <Route path="/mypage/question" element={<MyQuestionList />} />
         <Route path="/mypage/question/detail/:id" element={<MyQuestionDetail />} />
 
-        <Route path="/survey/start" element={<StartSurvey/>} />
-        <Route path="/survey/first" element={<FirstSurvey/>} />
-        
+        {/* 설문조사 */}
+        <Route path="/survey/start" element={<StartSurvey />} />
+        <Route path="/survey/first" element={<FirstSurvey />} />
+
+        {/* 꽃 */}
+        <Route path="/flower/list" element={<FlowerList />} />
+        <Route path="/flower/:id" element={<FlowerDetail />} />
       </Routes>
       <Footer />
     </Router>
