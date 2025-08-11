@@ -46,6 +46,8 @@
   display: flex;
   align-items: center;
   gap: 15px;
+  /* 부모 요소의 너비가 좁아져도 줄바꿈되지 않도록 설정 */
+  flex-wrap: nowrap;
 }
 
 .login-btn,
@@ -56,6 +58,8 @@
   padding: 8px 15px;
   border-radius: 20px;
   text-decoration: none;
+  /* 버튼 내부 텍스트가 줄바꿈되지 않도록 설정 */
+  white-space: nowrap;
 }
 
 .login-btn:hover,
@@ -65,7 +69,10 @@
 }
 
 /* 로그인 상태에서 버튼 스타일 */
-.user-actions span {
+.user-actions .user-name-link {
   font-size: 14px;
   color: #6B4F3B;
+  text-decoration: none;
+  /* loginName님 텍스트가 줄바꿈되지 않도록 설정 */
+  white-space: nowrap;
 }

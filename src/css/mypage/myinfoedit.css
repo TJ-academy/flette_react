@@ -1,0 +1,158 @@
+/* src/pages/MyInfoEdit.css */
+
+.myinfo-container {
+    width: min(640px, 92vw);
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+.myinfo-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 16px;
+}
+
+.myinfo-header h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.back-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    color: #555;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.info-row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    align-items: center;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.info-row.clickable {
+    grid-template-columns: 120px 1fr 24px;
+}
+
+.info-label {
+    font-size: 15px;
+    font-weight: 500;
+    color: #333;
+}
+
+.info-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.info-input:read-only {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+    color: #666;
+}
+
+.clickable-btn {
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 8px 0;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+    color: #444;
+}
+
+.nav-arrow-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: #555;
+    padding: 0;
+}
+
+.phone-edit-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+}
+
+.phone-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.text-btn {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 6px 8px;
+    font-size: 14px;
+    color: #007bff;
+    font-weight: 500;
+}
+
+.text-btn:hover {
+    text-decoration: underline;
+}
+
+.save-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 16px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    width: 100%;
+    margin-top: 24px;
+}
+
+.myinfo-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 16px;
+    justify-content: flex-start; /* 왼쪽 정렬 추가 */
+}
+
+/* ... (나머지 스타일 유지) ... */
+
+.save-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 16px; /* 패딩을 조금 더 크게 */
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    width: 100%;
+    margin-top: 24px;
+    transition: background-color 0.2s;
+}
+.save-btn:hover {
+    background-color: #0056b3;
+}
