@@ -5,7 +5,7 @@ import '../../css/menu.css';
 import logo from '../../resources/images/flette_logo.png';
 
 // App.js로부터 props를 받습니다.
-function Menu({ isLoggedIn, loginName, handleLogout }) {
+function Menu({ isLoggedIn, loginName, userLevel, handleLogout }) {
   const navigate = useNavigate();
 
   const handleClientLogout = () => {
@@ -32,14 +32,24 @@ function Menu({ isLoggedIn, loginName, handleLogout }) {
         <ul className="nav-links">
           <li><Link to="/shop">커스텀 꽃다발 제작</Link></li>
           <li><Link to="/survey/start">나와 어울리는 꽃 찾기</Link></li>
-          <li><Link to="/">꽃 알아보기</Link></li>
+          <li><Link to="/flower/list">꽃 알아보기</Link></li>
+          <li className="admin-menu-item">
+            <Link to="/">관리자 기능</Link>
+            {/* 관리자 레벨(10)일 때만 관리자 메뉴를 렌더링합니다. */}
+            {userLevel === 10 && (
+              <ul className="submenu">
+                <li><Link to="/admin/member">회원 관리</Link></li>
+                <li><Link to="/admin/flower">꽃 관리</Link></li>
+                <li><Link to="/admin/order">주문 관리</Link></li>
+                <li><Link to="/admin/question">문의 관리</Link></li>
+              </ul>
+            )}
+          </li>
         </ul>
         <div className="user-actions">
           {/* props로 받은 isLoggedIn 상태에 따라 UI를 렌더링합니다. */}
-          {isLoggedIn ? (
+           {isLoggedIn ? (
             <>
-              {/* === 변경된 부분 === */}
-              {/* loginName을 클릭하면 '/mypage'로 이동하도록 <Link> 컴포넌트로 감쌌습니다. */}
               <Link to="/mypage" className="user-name-link">{loginName} 님</Link>
               <button onClick={handleClientLogout} className="logout-btn">로그아웃</button>
             </>

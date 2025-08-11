@@ -1,0 +1,99 @@
+.flower-detail {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+/* 이미지 & 화살표 */
+.flower-detail-image {
+  position: relative;
+  display: inline-block;
+}
+
+.flower-detail-image img {
+  width: 500px;
+  max-width: 90vw;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #f8bbd0; /* 연핑크 */
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  font-size: 22px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.nav-btn.left {
+  left: -60px;
+}
+
+.nav-btn.right {
+  right: -60px;
+}
+
+.nav-btn:hover {
+  background: #f48fb1; /* 진한 핑크 */
+  transform: translateY(-50%) scale(1.05);
+}
+
+/* 카테고리 텍스트 */
+.category {
+  display: block;
+  font-size: 14px;
+  color: #f48fb1;
+  margin-top: 24px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+/* 밑줄 */
+.pink-line {
+  width: 60px;
+  height: 3px;
+  background-color: #f48fb1;
+  border: none;
+  margin: 12px auto 24px auto;
+  border-radius: 3px;
+}
+
+/* 설명/스토리 */
+.description, .story {
+  max-width: 640px;
+  margin: 15px auto;
+  line-height: 1.7;
+  font-size: 15px;
+  color: #555;
+}
+
+/* 뒤로가기 버튼 */
+.back-btn {
+  display: block;              /* 버튼을 블록으로 변경해서 중앙정렬 가능 */
+  margin: 40px auto 0;          /* auto로 좌우 중앙 */
+  background-color: #f48fb1;    /* 메인컬러 */
+  color: white;
+  border: none;
+  border-radius: 24px;
+  padding: 12px 32px;
+  font-size: 18px;              /* 글자 크기 키움 */
+  font-weight: bold;            /* 굵게 */
+  text-align: center;           /* 글씨 중앙정렬 */
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.back-btn:hover {
+  background-color: #ec407a;
+}
