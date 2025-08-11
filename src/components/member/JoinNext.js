@@ -1,7 +1,7 @@
 // JoinNext.js
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import '../../css/member/joinNext.css';
 
 function JoinNext() {
   const location = useLocation();
@@ -86,15 +86,15 @@ function JoinNext() {
 
   return (
     <div>
-      <p className="join_text">회원가입</p>
       <div className="join_box">
+        <p className="join_text">회원가입</p>
         <div className="join_container d-flex justify-content-center">
           <form onSubmit={handleSubmit}>
             <input type="hidden" name="userid" value={userid} />
             <input type="hidden" name="passwd" value={passwd} />
 
-            <label>이름</label>
-            <div className="input-group">
+            <label className='labelNext'>이름</label>
+            <div className="input-group2">
               <input
                 type="text"
                 name="name"
@@ -102,11 +102,12 @@ function JoinNext() {
                 onChange={(e) => setName(e.target.value)}
                 style={{ width: '337px' }}
                 required
+                className='inputStyle2'
               />
             </div>
 
-            <label>주소</label>
-            <div className="input-group">
+            <label className='labelNext'>주소</label>
+            <div className="input-group2">
               <input
                 type="text"
                 name="zipcode"
@@ -115,8 +116,9 @@ function JoinNext() {
                 style={{ width: '150px' }}
                 required
                 readOnly
+                className='inputStyle2'
               />
-              <button type="button" onClick={handlePostcodeSearch} className="search_btn" style={{ borderRadius: '0 15px 15px 0' }}>
+              <button type="button" onClick={handlePostcodeSearch} className="search_btn2" style={{ borderRadius: '0 15px 15px 0' }}>
                 우편번호 검색
               </button>
               <br />
@@ -129,8 +131,8 @@ function JoinNext() {
                 style={{ width: '337px', borderRadius: '10px' }}
                 required
                 readOnly
+                className='inputStyle2'
               />
-              <br />
               <input
                 type="text"
                 name="address2"
@@ -139,11 +141,12 @@ function JoinNext() {
                 placeholder="상세 주소를 입력하세요."
                 style={{ width: '337px', borderRadius: '10px' }}
                 required
+                className='inputStyle2'
               />
             </div>
             
-            <label>전화번호</label>
-            <div className="input-group">
+            <label className='labelNext'>전화번호</label>
+            <div className="input-group2">
               <input
                 type="text"
                 name="tel"
@@ -152,6 +155,7 @@ function JoinNext() {
                 placeholder="ex) 010-1234-5678"
                 style={{ width: '337px', borderRadius: '10px' }}
                 required
+                className='inputStyle2'
               />
             </div>
 
