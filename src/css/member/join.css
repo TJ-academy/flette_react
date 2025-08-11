@@ -1,0 +1,98 @@
+.join_box {
+  background-color: #FFF9FB;
+  padding: 30px 40px;
+  border-radius: 20px;
+  max-width: 400px;   /* 사진 기준으로 최대너비 조절 */
+  margin: 50px auto;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #C2B8BA;
+  font-family: 'Noto Sans KR', sans-serif; /* 예쁜 한글 글꼴 추천 */
+}
+
+.join_text {
+  text-align: center;
+  font-size: 24px;     /* 사진보다 약간 작게 맞춤 */
+  font-weight: 700;
+  color: #403433;
+}
+
+.join_container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.joinLabel {
+  font-size: 15px;
+  color: #403433;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.inputClass {
+  flex: 1;
+  border-radius: 20px;
+  border: 1px solid #F3D0D4;
+  font-size: 14px;
+  color: #6B4F3B;
+  transition: border-color 0.3s ease;
+}
+
+.inputClass:focus {
+  outline: none;
+  border-color: #F2778C;
+}
+
+.dupliBtn {
+  margin-left: 10px;
+  padding: 8px 15px;
+  background-color: #F2778C;
+  border: none;
+  color: white;
+  font-weight: 600;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  height: 42px;
+}
+
+.dupliBtn:hover {
+  background-color: #E56470;
+}
+
+.error {
+  color: #F57485;
+  font-size: 13px;
+  margin-top: 0;
+}
+
+.text1 {
+  font-size: 12px;
+  color: #C2B8BA;
+  text-align: left;
+  margin-top: 0 !important;
+}
+
+#submitBtn {
+  background-color: #F2778C;
+  border-radius: 20px;
+  border: none;
+  padding: 12px 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: white;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+#submitBtn:disabled {
+  background-color: #F3D0D4;
+  cursor: not-allowed;
+}

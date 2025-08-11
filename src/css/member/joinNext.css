@@ -1,0 +1,100 @@
+.join_box {
+  background-color: #FFF9FB;
+  padding: 30px 40px;
+  border-radius: 20px;
+  max-width: 400px;
+  margin: 50px auto;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #C2B8BA;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.join_text {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  color: #403433;
+  margin-bottom: 25px;
+}
+
+.join_container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* label 스타일 */
+.labelNext {
+  font-size: 15px;
+  color: #403433;
+  font-weight: 500;
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* input 상자 공통 스타일 */
+.inputStyle2 {
+  width: 100%;
+  padding: 8px 15px;
+  font-size: 14px;
+  border: 1px solid #F3D0D4;
+  border-radius: 20px;
+  color: #6B4F3B;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.inputStyle2:focus {
+  outline: none;
+  border-color: #F2778C;
+}
+
+/* 우편번호 검색 버튼 */
+.search_btn2 {
+  padding: 8px 15px;
+  background-color: #F2778C;
+  border: none;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 0 15px 15px 0;
+  margin-left: 0; /* 버튼과 input 붙도록 */
+  transition: background-color 0.3s ease;
+}
+
+.search_btn2:hover {
+  background-color: #E56470;
+}
+
+/* input-group : 우편번호 및 주소 라인 정렬 */
+.input-group2 {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+/* 상세 주소 등 단일 input */
+.input-group2 input:not([name="zipcode"]) {
+  flex: 1 1 100%;
+}
+
+/* 저장하기 버튼 */
+#submitBtn {
+  background-color: #F2778C;
+  border-radius: 20px;
+  border: none;
+  padding: 12px 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: white;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+}
+
+#submitBtn:disabled {
+  background-color: #F3D0D4;
+  cursor: not-allowed;
+}
