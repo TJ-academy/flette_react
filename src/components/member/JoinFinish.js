@@ -11,7 +11,7 @@ function JoinFinish() {
 
   return (
     <div className="join-finish-container">
-      <p className="join-finish-title">회원가입이 완료되었습니다! 🌸</p>
+      <p className="join-finish-title">회원가입이 완료되었어요! 🌷</p>
 
       <p className="join-finish-message">
         이제 당신만의 감정, 성격, 취향을 담은 꽃다발을 만나볼 수 있어요. <br />
