@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import '../../css/SurveyStart.css';
+import '../../css/test/StartSurvey.css';
 
 const StartSurvey = () => {
     return (
