@@ -52,6 +52,7 @@ function Menu({ isLoggedIn, loginName, userLevel, handleLogout }) {
           {/* props로 받은 isLoggedIn 상태에 따라 UI를 렌더링합니다. */}
            {isLoggedIn ? (
             <>
+              <Link to="/cart">장바구니</Link>
               <Link to="/mypage" className="user-name-link">{loginName} 님</Link>
               <button onClick={handleClientLogout} className="logout-btn">로그아웃</button>
             </>

@@ -30,6 +30,9 @@ import MyReviewDetail from './components/mypage/MyReviewDetail';
 import MyQuestionList from './components/mypage/MyQuestionList';
 import MyQuestionDetail from './components/mypage/MyQuestionDetail';
 
+//장바구니
+import CartList from './components/cart/CartList';
+
 // 설문조사
 import StartSurvey from './components/mbti_flower/StartSurvey';
 import FirstSurvey from './components/mbti_flower/FirstSurvey';
@@ -129,6 +132,9 @@ function App() {
 
         {/* 쇼핑몰 */}
         <Route path="/shop/*" element={<ShopApp />} />
+
+        {/* 장바구니 */}
+        <Route path="/cart" element={<CartList />} />
 
         {/* 관리자 */}
         <Route path="/admin/member" element={<MemberAdmin />} />
