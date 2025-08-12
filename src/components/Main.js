@@ -90,7 +90,7 @@ function Main() {
           style={styles.bannerImg}
         />
         <div style={styles.bannerContent}>
-          <Link to="/test" style={styles.primaryBtnSm}>테스트 하러 가기</Link>
+          <Link to="/survey/start" style={styles.primaryBtnSm}>테스트 하러 가기</Link>
           <div style={styles.bannerCopy}>find the flower<br/>for you</div>
         </div>
       </section>
