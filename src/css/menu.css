@@ -53,19 +53,21 @@
 .login-btn,
 .signup-btn,
 .logout-btn {
-  background-color: #584245;
+  background-color: #F2778C;
   color: white;
   padding: 8px 15px;
   border-radius: 20px;
   text-decoration: none;
   /* 버튼 내부 텍스트가 줄바꿈되지 않도록 설정 */
   white-space: nowrap;
+  border: none;       /* ← 테두리 제거 */
+  outline: none;
 }
 
 .login-btn:hover,
 .signup-btn:hover,
 .logout-btn:hover {
-  background-color: #733512;
+  background-color: #ff4564;
 }
 
 /* 로그인 상태에서 버튼 스타일 */
