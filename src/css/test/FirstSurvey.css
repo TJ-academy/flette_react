@@ -1,0 +1,33 @@
+.survey-option {
+  background-color: #fff;
+  color: #333;
+  border: 1.5px solid #ddd;
+  border-radius: 999px; /* 완전 둥근 pill 형태 */
+  padding: 14px;
+  width: 350px;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: -0.5px;
+  cursor: pointer;
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  min-width: 250px; /* 버튼 최소 너비 */
+  margin: 0 auto; /* 중앙 정렬 */
+}
+
+.survey-option:hover {
+  background-color: #F2778C;
+  color: #fff;
+  border-color: transparent;
+}
+
+.survey-option:active {
+  background-color: #f7a0af; /* 클릭 시 연한 색 */
+}
+
+.survey-option.selected {
+  background-color: #F2778C;
+  color: #fff;
+  border-color: transparent;
+}
