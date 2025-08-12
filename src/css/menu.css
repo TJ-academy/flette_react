@@ -5,7 +5,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #9C6B4F;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .navbar .container {
@@ -33,7 +33,7 @@
 }
 
 .nav-links a {
-  color: #6B4F3B;
+  color: #584245;
   text-decoration: none;
 }
 
@@ -53,7 +53,7 @@
 .login-btn,
 .signup-btn,
 .logout-btn {
-  background-color: #9C6B4F;
+  background-color: #584245;
   color: white;
   padding: 8px 15px;
   border-radius: 20px;

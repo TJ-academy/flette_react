@@ -141,6 +141,9 @@ function App() {
         <Route path="/admin/flower" element={<FlowerAdmin />} />
         <Route path="/admin/order" element={<OrderAdmin />} />
         <Route path="/admin/question" element={<QuestionAdmin />} />
+      
+        <Route path="/" element={<Main />} />
+        <Route path="/survey/start" element={<StartSurvey />} />
       </Routes>
       <Footer />
     </Router>
