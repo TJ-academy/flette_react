@@ -2,6 +2,7 @@
 import React, { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import "../../css/ReviewsIndex.css";
+import { ZoomIn } from "react-feather";
 
 const PAGE_SIZE = 8;
 
@@ -90,19 +91,17 @@ export default function ReviewsIndex() {
                 alt={review.reviewId}
                 className="rv-thumb"
               />
-              <div className="rv-thumb-overlay">
-                {/* 돋보기 클릭 시 상세로 이동 */}
-                <Link
-                  to={`/mypage/review/detail/${review.reviewId}`}
-                  className="rv-zoom"
-                  aria-label="리뷰 상세 보기"
-                  style={{ textDecoration: "none" }}
-                >
-                  🔍
-                </Link>
-              </div>
+          <div className="rv-thumb-overlay">
+  <Link
+    to={`/mypage/review/detail/${review.reviewId}`} // 상세 페이지 경로
+    className="flower-icon" // 아이콘 스타일
+    style={{ textDecoration: "none" }}
+  >
+    <ZoomIn color="white" size={20} />
+  </Link>
+</div>
             </div>
-        
+      
         {/* 내용 */}
         <div className="rv-body">
           <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
