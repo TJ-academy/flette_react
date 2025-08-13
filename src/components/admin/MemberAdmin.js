@@ -151,12 +151,6 @@ export default function MemberAdmin() {
                             </div>
 
                             <div className="detail-btns">
-                              <Link
-                                to={`/admin/members/edit/${m.userid}`}
-                                className="gray-btn no-underline"
-                              >
-                                수정
-                              </Link>
                               <button
                                 type="button"
                                 className="primary-btn"
