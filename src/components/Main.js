@@ -47,10 +47,12 @@ function Main() {
           </Link>
         </div>
       </section>
+      <br></br>
+      <br></br>
       {/* PHOTO REVIEW */}
       <section className="reviews">
         <h3 className="section-title">포토 리뷰 보기</h3>
-
+        <br></br>
         <div className="carousel-wrap">
           <button aria-label="prev" onClick={() => move(-1)} className="arrow-btn">
             <img src="/img/arrow_left.png" alt="이전" className="arrow-icon" />
