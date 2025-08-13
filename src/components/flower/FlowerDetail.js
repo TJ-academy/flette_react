@@ -4,6 +4,9 @@ import "../../css/FlowerDetail.css";
 import imageNameMap from "../../image-name-map.json";
 import { useFlowerDetail, useFlowerList } from "./FlowerHooks"; // 훅 분리
 
+// IMAGE_BASE 경로를 백엔드 서버의 정적 파일 경로로 수정
+const IMAGE_BASE = "http://localhost/img/flower"; // 백엔드 API가 있는 곳의 도메인 + 경로
+
 const CATEGORY_FOLDER = {
   "메인": "main",
   "서브": "sub",
@@ -16,8 +19,6 @@ const CATEGORY_EN = {
   "서브": "SUB",
   "잎사귀": "FOLIAGE"
 };
-
-const IMAGE_BASE = process.env.PUBLIC_URL + "/img/flower";
 
 export default function FlowerDetail() {
   const { id } = useParams();
