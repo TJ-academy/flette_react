@@ -1,5 +1,6 @@
 // src/components/shop/ReviewsIndex.jsx
 import React, { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import "../../css/ReviewsIndex.css";
 
 const PAGE_SIZE = 8;
@@ -26,7 +27,7 @@ export default function ReviewsIndex() {
       reviewContent:
         "꽃이 너무 예쁘고 포장도 깔끔했어요. 사장님이 친절해서 기분 좋게 구매했습니다.",
       reviewDate: "2025-08-10",
-      reviewImage: "https://via.placeholder.com/300x200",
+      reviewImage: null,
       likes: 10,
     },
   ]);
@@ -76,22 +77,33 @@ export default function ReviewsIndex() {
         ? review.reviewContent.slice(0, 100) + "..."
         : review.reviewContent;
 
-    return (
-      <article className="rv-card">
-        <div className="rv-thumb-wrap">
-          <img
-            src={
-              review.reviewImage ||
-              "https://picsum.photos/seed/product/600/400"
-            }
-            alt={review.reviewId}
-            className="rv-thumb"
-          />
-          <div className="rv-thumb-overlay">
-            <span className="rv-zoom">🔍</span>
-          </div>
-        </div>
-
+        return (
+          <article className="rv-card">
+            {/* 이미지 */}
+            <div className="rv-thumb-wrap">
+              <img
+                src={
+                  review.productImageUrl || // ✅ 상품 이미지 우선
+                  review.reviewImage ||     // 리뷰 이미지 없으면
+                  "https://picsum.photos/seed/product/600/400" // 마지막 fallback
+                }
+                alt={review.reviewId}
+                className="rv-thumb"
+              />
+              <div className="rv-thumb-overlay">
+                {/* 돋보기 클릭 시 상세로 이동 */}
+                <Link
+                  to={`/mypage/review/detail/${review.reviewId}`}
+                  className="rv-zoom"
+                  aria-label="리뷰 상세 보기"
+                  style={{ textDecoration: "none" }}
+                >
+                  🔍
+                </Link>
+              </div>
+            </div>
+        
+        {/* 내용 */}
         <div className="rv-body">
           <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
             <StarRating rating={review.score} />
@@ -104,10 +116,7 @@ export default function ReviewsIndex() {
             </span>
           </div>
 
-          <p
-            className="rv-text"
-            onClick={() => onExpandToggle(review.reviewId)}
-          >
+          <p className="rv-text" onClick={() => onExpandToggle(review.reviewId)}>
             {shortText}
             {review.reviewContent.length > 100 && (
               <span style={{ color: "gray" }}>
@@ -116,15 +125,18 @@ export default function ReviewsIndex() {
             )}
           </p>
 
+          {/* 상품 썸네일 + 좋아요 */}
           <div className="rv-foot">
-            <img
-              className="rv-avatar"
-              src={
-                review.reviewImage ||
-                "https://picsum.photos/seed/productthumb/50/50"
-              }
-              alt="상품 썸네일"
-            />
+          <img
+  className="rv-avatar"
+  src={
+    review.productImageUrl || 
+    review.reviewImage ||     
+    "https://picsum.photos/seed/productthumb/50/50" 
+  }
+  alt="상품 썸네일"
+/>
+
             <button
               onClick={() => onLike(review.reviewId)}
               style={{
@@ -144,24 +156,12 @@ export default function ReviewsIndex() {
 
   return (
     <main className="rv-page">
-      {/* 히어로 영역 */}
       <section className="rv-hero">
-      <img
-    src="/img/reviews/reviews.png"  
+        <img
+          src="/img/reviews/reviews.png"
           alt="Photo Reviews"
           className="rv-hero-img"
         />
-        <div
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            textAlign: "center",
-            color: "#333",
-          }}
-        >
-        </div>
       </section>
 
       {/* 툴바 */}
