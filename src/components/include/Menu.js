@@ -32,7 +32,7 @@ function Menu({ isLoggedIn, loginName, userLevel, handleLogout }) {
 
           {userLevel === 10 && (
             <li className="admin-menu-item">
-              <Link to="/">관리자 기능</Link>
+              <Link to="/admin">관리자 기능</Link>
               <ul className="submenu">
                 <li><Link to="/admin/member">회원 관리</Link></li>
                 <li><Link to="/admin/flower">꽃 관리</Link></li>

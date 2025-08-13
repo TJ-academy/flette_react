@@ -10,8 +10,8 @@ function Footer() {
                 <div className="footer-info">
                     <span className="footer-item">고객센터 1234-5678</span>
                     <span className="footer-item">운영시간 월~금 09:00~18:00 (주말·공휴일 휴무)</span>
-                    <span className="footer-item">이메일: suhodan@gmail.com</span>
-                    <span className="footer-item">Team suhodan | 주소: 서울 종로구 우정국로 21 9층</span>
+                    <span className="footer-item">이메일: palette@gmail.com</span>
+                    <span className="footer-item">Team palette | 주소: 서울 종로구 우정국로 21 9층</span>
                 </div>
             </div>
         </footer>
