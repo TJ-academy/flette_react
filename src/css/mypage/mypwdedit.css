@@ -1,0 +1,173 @@
+/* 전체 페이지 배경 및 정렬 */
+body {
+  background-color: #f7f7f7;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 비밀번호 재설정 컨테이너 */
+.pwd-edit-container {
+  width: 100%;
+  max-width: 500px;
+  padding: 1rem; /* 간격 최소화 */
+  background-color: #fff;
+  border-radius: 0.75rem; /* 모서리 둥근 정도 줄임 */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  border: 1px solid #ffc0cb;
+}
+
+/* 헤더 스타일 */
+.pwd-edit-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  margin-bottom: 0.75rem; /* 간격 최소화 */
+}
+
+.pwd-edit-header .back-btn {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1.1rem; /* 폰트 크기 줄임 */
+  color: #333;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.pwd-edit-header h2 {
+  font-size: 0.9rem; /* 폰트 크기 줄임 */
+  font-weight: 700;
+  color: #333;
+  text-align: center;
+  margin: 0;
+}
+
+/* 폼 스타일 */
+.pwd-edit-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* 입력 필드 그룹 */
+.pwd-edit-field {
+  margin-bottom: 0.3rem; /* 간격 최소화 */
+}
+
+.pwd-edit-label {
+  font-size: 0.75rem; /* 폰트 크기 줄임 */
+  color: #555;
+  margin-bottom: 0.15rem; /* 간격 최소화 */
+  display: block;
+}
+
+.pwd-edit-input {
+  width: 100%;
+  padding: 0.3rem 0.5rem; /* 패딩 최소화 */
+  border: 1px solid #ccc;
+  border-radius: 0.3rem; /* 모서리 둥근 정도 줄임 */
+  font-size: 0.8rem; /* 폰트 크기 줄임 */
+  color: #333;
+  box-sizing: border-box;
+}
+
+/* 상태 메시지 */
+.status-message-container {
+  min-height: 1rem;
+  margin-top: 0.3rem;
+  margin-bottom: 0.3rem; /* 간격 최소화 */
+  font-size: 0.7rem; /* 폰트 크기 줄임 */
+  text-align: center;
+}
+
+.status-message.success {
+  color: #28a745;
+}
+
+.status-message.error {
+  color: #dc3545;
+}
+
+/* 저장 버튼 */
+.save-pwd-btn {
+  width: 100%;
+  padding: 0.5rem; /* 패딩 최소화 */
+  background-color: #ffc0cb;
+  color: white;
+  border: none;
+  border-radius: 0.3rem; /* 모서리 둥근 정도 줄임 */
+  font-size: 0.8rem; /* 폰트 크기 줄임 */
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.save-pwd-btn:hover {
+  background-color: #ff99b0;
+}
+
+.save-pwd-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* 다른 컴포넌트와 동일한 스타일을 사용하도록 기존 클래스 재활용 */
+.info-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.2rem; /* 간격 최소화 */
+}
+
+.info-label {
+  width: 5rem; /* 너비 줄임 */
+  font-size: 0.8rem;
+  color: #555;
+}
+
+.info-input {
+  flex-grow: 1;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 0.3rem;
+  font-size: 0.8rem;
+  color: #333;
+}
+
+.info-input:read-only {
+  background-color: #f0f0f0;
+  cursor: not-allowed;
+}
+
+/* 헤더에 뒤로가기 버튼을 추가 */
+.header-back-btn {
+  font-size: 1.1rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* 새로운 MyPwdEdit.jsx에 맞춰 버튼 스타일을 변경 */
+.pwd-save-btn {
+  width: 120px; /* 너비 줄임 */
+  height: 30px; /* 높이 줄임 */
+  background-color: #ccc;
+  color: white;
+  border: none;
+  border-radius: 15px; /* 모서리 둥근 정도 조절 */
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  align-self: center;
+}
+
+.pwd-save-btn:enabled {
+  background-color: #ffc0cb;
+}

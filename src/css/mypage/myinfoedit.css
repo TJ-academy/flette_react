@@ -1,158 +1,188 @@
-/* src/pages/MyInfoEdit.css */
+/* src/css/mypage/myinfoedit.css */
 
-.myinfo-container {
-    width: min(640px, 92vw);
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
+/* 전체 페이지 배경 및 정렬 */
+body {
+  background-color: #f7f7f7;
 }
 
+.myinfo-container {
+  width: 100%;
+  max-width: 600px;
+  background-color: white;
+  border-radius: 20px;
+  border: 1px solid #ffc0cb;
+  padding: 30px;
+  box-sizing: border-box;
+  margin: 0 auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative; /* 자식 요소 포지셔닝을 위해 */
+}
+
+/* MyInfoEdit.jsx의 메인 컨테이너 */
+.myinfo-container {
+  width: 100%;
+  max-width: 500px;
+  padding: 2.5rem;
+  background-color: #fff;
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  border: 1px solid #ffc0cb;
+}
+
+/* 헤더 스타일 */
 .myinfo-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 24px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.myinfo-header .back-btn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #333;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
 }
 
 .myinfo-header h2 {
-    margin: 0;
-    font-size: 20px;
-    font-weight: 700;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #333;
 }
 
-.back-btn {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 24px;
-    color: #555;
-    padding: 0;
-    display: flex;
-    align-items: center;
-}
-
+/* 정보 로우 (이름, 아이디, 핸드폰 번호) */
 .info-row {
-    display: grid;
-    grid-template-columns: 120px 1fr;
-    align-items: center;
-    gap: 12px;
-    margin-top: 16px;
-}
-
-.info-row.clickable {
-    grid-template-columns: 120px 1fr 24px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
 }
 
 .info-label {
-    font-size: 15px;
-    font-weight: 500;
-    color: #333;
+  width: 8rem;
+  font-size: 1rem;
+  color: #555;
 }
 
 .info-input {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 14px;
-    box-sizing: border-box;
+  flex-grow: 1;
+  padding: 0.75rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  color: #333;
 }
 
 .info-input:read-only {
-    background-color: #f5f5f5;
-    cursor: not-allowed;
-    color: #666;
+  background-color: #f0f0f0;
+  cursor: not-allowed;
 }
 
-.clickable-btn {
-    width: 100%;
-    text-align: left;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 8px 0;
-    border-bottom: 1px solid #ddd;
-    font-size: 14px;
-    color: #444;
+/* NavRow (비밀번호, 주소) 스타일 */
+.info-row.clickable {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+}
+
+.info-row.clickable:hover {
+  background-color: #f9f9f9;
 }
 
 .nav-arrow-btn {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 20px;
-    color: #555;
-    padding: 0;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #aaa;
+  cursor: pointer;
+  padding: 0;
 }
 
-.phone-edit-container {
+/* 회원 탈퇴 버튼 */
+.text-btn {
+  background: none;
+  border: none;
+  color: #888;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* 수정 및 탈퇴 버튼 스타일 */
+.save-btn {
+  width: 100%;
+  padding: 1rem;
+  background-color: #ffc0cb;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 1rem;
+}
+
+.save-btn:hover {
+  background-color: #ff99b0;
+}
+
+/* 기타 스타일 */
+.back-btn {
+  font-size: 1.5rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* 상태 메시지 */
+.status-message {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+/* 추가된 헤더 및 로그아웃 버튼 */
+.header-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 24px;
+    padding: 1rem 2rem;
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
 }
 
-.phone-buttons {
-    display: flex;
-    gap: 8px;
-}
-
-.text-btn {
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    padding: 6px 8px;
-    font-size: 14px;
-    color: #007bff;
-    font-weight: 500;
-}
-
-.text-btn:hover {
-    text-decoration: underline;
-}
-
-.save-btn {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 10px 16px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 600;
-    width: 100%;
-    margin-top: 24px;
-}
-
-.myinfo-header {
+.header-logo {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 24px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 16px;
-    justify-content: flex-start; /* 왼쪽 정렬 추가 */
+    font-size: 1.5rem;
+    font-weight: bold;
 }
 
-/* ... (나머지 스타일 유지) ... */
+.header-nav {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
 
-.save-btn {
-    background-color: #007bff;
-    color: white;
+.header-nav button {
+    background: none;
     border: none;
-    border-radius: 6px;
-    padding: 12px 16px; /* 패딩을 조금 더 크게 */
     cursor: pointer;
-    font-size: 16px;
-    font-weight: 600;
-    width: 100%;
-    margin-top: 24px;
-    transition: background-color 0.2s;
+    font-size: 1rem;
 }
-.save-btn:hover {
-    background-color: #0056b3;
+
+.header-nav .icon {
+    font-size: 1.5rem;
+}
+
+.header-nav .logout-btn {
+    color: #555;
+    text-decoration: none;
 }
