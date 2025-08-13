@@ -28,11 +28,6 @@
     margin-bottom: 5px;
 }
 
-.footer-item:hover {
-    color: #9C6B4F;
-    text-decoration: underline;
-}
-
 .footer-text,
 .footer-info {
     margin-top: 20px;
