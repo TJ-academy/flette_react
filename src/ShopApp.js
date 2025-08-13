@@ -10,7 +10,7 @@ function ShopApp(){
     return (
         <Routes>
             <Route path="" element={<ShopList />} />
-            <Route path=":productId" element={<ShopDetail />} />
+            <Route path=":productId/detail" element={<ShopDetail />} />
             <Route path=":productId/review" element={<ShopReview />} />
             <Route path=":productId/qa" element={<ShopQa />} />
             <Route path=":productId/qa/write" element={<ShopQaWrite />} />

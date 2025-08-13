@@ -4,43 +4,40 @@ import {useNavigate, useParams} from 'react-router-dom';
 
 function useFetch(url) {
     const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         axios.get(url)
         .then((response) => {
             setData(response.data);
-            setLoading(false);
         });
     }, [url]);
-    return [data, loading];
+    return data;
 }
 
-const ShopReview = () => {
+function ShopReview() {
     const [expandedReviewId, setExpandedReviewId] = useState(null);
     const {productId} = useParams();
-    //const [reviews, setReviews] = useFetch('http://localhost/api/shop/${productId}/review');
-    const [reviews, setReviews] = useState([
-        {
-            reviewId: 1,
-            score: 4,
-            writer: "user123",
-            reviewContent: "정말 좋았습니다! 다시 방문할게요. "
-                        +"\n가격도 적당하고 품질이 좋아서 만족합니다. 뭐라고 글씨를 더 써야하는데 뭐라고 쓸까요. 꽃다발 참 예뻤다고 하네요. 여기서 더 적어야 한다니 100자라는 것은 생각보다 많은 양이군요. 아 언제까지 써야하지. 의느이ㅏㅡ니아ㅡ린",
-            reviewDate: "2025-08-12",
-            reviewImage: null,
-            luv: 5
-        },
-        {
-            reviewId: 2,
-            score: 5,
-            writer: "flowerlover",
-            reviewContent: "꽃이 너무 예쁘고 포장도 깔끔했어요. 사장님이 친절해서 기분 좋게 구매했습니다.",
-            reviewDate: "2025-08-10",
-            reviewImage: "https://via.placeholder.com/150",
-            luv: 10
-        }
-    ]);
+    const data = useFetch(`http://localhost/api/shop/${productId}/review`);
+    const [reviews, setReviews] = useState([]);
+    setReviews = data?.rlist || [{
+        reviewId: 1,
+        score: 4,
+        writer: "user123",
+        reviewContent: "정말 좋았습니다! 다시 방문할게요. "
+                    +"\n가격도 적당하고 품질이 좋아서 만족합니다. 뭐라고 글씨를 더 써야하는데 뭐라고 쓸까요. 꽃다발 참 예뻤다고 하네요. 여기서 더 적어야 한다니 100자라는 것은 생각보다 많은 양이군요. 아 언제까지 써야하지. 의느이ㅏㅡ니아ㅡ린",
+        reviewDate: "2025-08-12",
+        reviewImage: null,
+        luv: 5
+    },
+    {
+        reviewId: 2,
+        score: 5,
+        writer: "flowerlover",
+        reviewContent: "꽃이 너무 예쁘고 포장도 깔끔했어요. 사장님이 친절해서 기분 좋게 구매했습니다.",
+        reviewDate: "2025-08-10",
+        reviewImage: "https://via.placeholder.com/150",
+        luv: 10
+    }]; 
 
     // 별점 컴포넌트
     const StarRating = ({ rating, max = 5 }) => {
@@ -55,7 +52,7 @@ const ShopReview = () => {
 
     // 고객 총 평점
     const getFinalScore = () => {
-        // if (!reviews || reviews.length === 0) return 0;
+        if (!reviews || reviews.length === 0) return 0;
         const total = reviews.reduce((sum, r) => sum + r.score, 0);
         return (total / reviews.length).toFixed(1);
     };
@@ -141,7 +138,7 @@ const ShopReview = () => {
         );
     };
 
-    if(!reviews || reviews.rcount === 0) {
+    if(!reviews || reviews.length === 0) {
         return <p><strong>등록된 리뷰가 없습니다.</strong></p>
     }
 
@@ -155,11 +152,7 @@ const ShopReview = () => {
                 
                 <p>전체 리뷰 수: {reviews.length}개</p>
             </div>
-            {/* <div>
-                {reviews.rlist.map((review) => (
-                    <ReviewCard key={review.reviewId} review={review} />
-                ))}
-            </div> */}
+
             <div>
                 {reviews.map((review) => (
                     <ReviewCard key={review.reviewId} review={review} />
