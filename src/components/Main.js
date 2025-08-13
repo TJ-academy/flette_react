@@ -36,7 +36,7 @@ function Main() {
             메인 꽃과 서브 꽃, 포장 방식까지<br/>
             직접 골라 마음을 전해 보세요!          </p>
           <Link
-            to="/custom"
+            to="/shop"
             className="primary-btn"
             onMouseEnter={() => setDim(true)}
             onMouseLeave={() => setDim(false)}
