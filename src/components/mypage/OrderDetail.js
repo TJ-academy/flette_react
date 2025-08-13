@@ -64,13 +64,16 @@ export default function OrderDetail() {
         ))}
       </div>
 
-      {/* 주문자 정보 박스 */}
-      <div className="orderdetail-container">
-        <p>
-          주문자 정보 <strong>{customerName || "로그인 필요"}</strong> | {phoneNumber || ""}
-        </p>
-        <p>결제 정보<br />{totalPrice}</p>
-      </div>
-    </div>
-  );
+{/* 주문자 정보 박스 */}
+<div className="orderdetail-container">
+  <p>
+    주문자 정보 | <strong>{customerName || "로그인 필요"}</strong> {phoneNumber || ""}
+  </p>
+  <p>
+    결제 정보<br />
+    {totalPrice}
+  </p>
+</div>
+</div>
+);
 }
