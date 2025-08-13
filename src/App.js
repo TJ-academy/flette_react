@@ -47,7 +47,8 @@ import MemberAdmin from './components/admin/MemberAdmin';
 import FlowerAdmin from './components/admin/FlowerAdmin';
 import OrderAdmin from './components/admin/OrderAdmin';
 import QuestionAdmin from './components/admin/QuestionAdmin';
-
+import ReviewsIndex from './components/shop/ReviewsIndex';
+ 
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -121,6 +122,9 @@ function App() {
         <Route path="/mypage/review/detail/:id" element={<MyReviewDetail />} />
         <Route path="/mypage/question" element={<MyQuestionList />} />
         <Route path="/mypage/question/detail/:id" element={<MyQuestionDetail />} />
+
+        {/* 리뷰 */}
+        <Route path="/reviews" element={<ReviewsIndex />} />
 
         {/* 설문조사 */}
         <Route path="/survey/start" element={<StartSurvey />} />
