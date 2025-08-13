@@ -2,6 +2,20 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import {Link} from 'react-router-dom';
 
+function useFetch(url) {
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        axios.get(url)
+        .then((response) => {
+            setData(response.data);
+            setLoading(false);
+        });
+    }, [url]);
+    return [data, loading];
+}
+
 function ShopList() {
     const [products, setProducts] = useState([]);
 
@@ -33,7 +47,7 @@ function ShopList() {
                         <tr key={product.productId}>
                             <td>{product.productId}</td>
                             <td>
-                                <Link to={`/shop/${product.productId}`}>{product.productName}</Link>
+                                <Link to={`/shop/${product.productId}/detail`}>{product.productName}</Link>
                             </td>
                             <td>{product.imageName}</td>
                             <td>{product.basicPrice}</td>

@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import {useNavigate, useParams} from 'react-router-dom';
 import ShopReview from "./ShopReview";
+import ShopQa from "./ShopQA";
 
 function useFetch(url) {
     const [data, setData] = useState(null);
@@ -19,7 +20,7 @@ function useFetch(url) {
 
 function ShopDetail() {
     const {productId} = useParams();
-    const [data, loading] = useFetch('http://localhost/api/shop/' + productId);
+    const [data, loading] = useFetch('http://localhost/api/shop/' + productId + '/detail');
     const [activeTab, setActiveTab] = useState('details');
     //const [expandedReviewId, setExpandedReviewId] = useState(null);
     const navigate = useNavigate();
@@ -36,11 +37,7 @@ function ShopDetail() {
             case 'reviews' :
                 return <ShopReview />;
             case 'qa' :
-                return (
-                    <div>
-                        Q&A
-                    </div>
-                );
+                return <ShopQa />;
             default:
                 return null;
         }
@@ -48,21 +45,23 @@ function ShopDetail() {
 
     if(loading) {
         return <div>loading</div>;
+    } else if(!data || !data.dto) {
+        return <div>상품 정보를 불러올 수 없습니다.</div>;
     } else {
-        let src = '';
-        let image_url = '';
-        if(data.dto.imageName !== '') {
-            src = `http://localhost/images/${data.dto.imageName}`;
-            image_url = `<img src=${src} width='300px' height='300px' />`;
-        } else {
-            image_url = '';
-        }
-
         return (
             <>
                 <div>
                     꽃다발 이미지
+                    {data.dto.imageName && (
+                        <img
+                            src={`http://localhost/images/${data.dto.imageName}`}
+                            alt="상품 이미지"
+                            width={300}
+                            height={300}
+                        />
+                    )}
                     <p><strong>{data.dto.productName}</strong></p>
+                    <p>{data.dto.basicPrice.toLocaleString()} ~ </p>
                 </div>
                 <div>
                     <button onClick={() => setActiveTab('details')}>상세정보</button>
