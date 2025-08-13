@@ -70,9 +70,21 @@ function ShopQa() {
     return (
         <>
             <h2>회원만 작성 가능한 게시판입니다.</h2>
-            <Link to={`/shop/${productId}/qa/write`}>
-                <button>Q&A 작성하기</button>
-            </Link>
+            
+            <button onClick={(e) => {
+                const isLoggedIn = sessionStorage.getItem('loginId') !== null;
+                console.log("로그인했나요? => " + isLoggedIn);
+                if(!isLoggedIn) {
+                    e.preventDefault();
+                    const goLogin = window.confirm("로그인이 필요한 서비스입니다. 로그인하겠습니까?");
+                    if(goLogin) {
+                        navigate("/member/login");
+                    }
+                } else {
+                    navigate(`/shop/${productId}/qa/write`);
+                }
+            }}>Q&A 작성하기</button>
+
             <table>
                 <thead>
                     <tr>
