@@ -72,8 +72,19 @@ export default function FlowerDetail() {
         {/* 구분선 */}
         <hr className="pink-line long-line" />
 
-        <p className="description">{data.description}</p>
-        <p className="story">{data.story}</p>
+        {/* 소개 */}
+        <div className="flower-section">
+          <h4>소개</h4>
+          <p dangerouslySetInnerHTML={{ __html: data.description }} />
+        </div>
+
+        {/* 회색 구분선 */}
+        <hr className="gray-line" />
+
+        {/* 꽃말 */}
+        <div className="flower-section">
+          <p dangerouslySetInnerHTML={{ __html: data.story }} />
+        </div>
       </div>
 
       {/* 구분선 */}

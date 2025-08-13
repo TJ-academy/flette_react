@@ -76,6 +76,8 @@
 /* 길게 늘린 밑줄 */
 .long-line {
   width: 80%;
+  margin-top: 50px;
+  margin-bottom: 50px;
 }
 
 /* 설명/스토리 */
@@ -119,4 +121,15 @@
 
 .status-off {
   color: red;
+}
+
+.gray-line {
+  height: 1px;
+  background-color: #c7c7c7;
+  border: none;
+  margin: 12px auto 24px auto;
+  border-radius: 3px;
+  width: 60%;
+  margin-top: 50px;
+  margin-bottom: 50px;
 }
