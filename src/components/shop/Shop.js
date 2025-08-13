@@ -21,7 +21,7 @@ function ShopList() {
 
     const loadProducts = async () => {
         const res = await axios.get('http://localhost/api/shop');
-        console.log(JSON.stringify(res.data));
+        //console.log(JSON.stringify(res.data));
         setProducts(res.data);
     };
 

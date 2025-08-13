@@ -11,7 +11,7 @@ function useFetch(url) {
     useEffect(() => {
         axios.get(url)
         .then((response) => {
-            console.log( 'data:'+JSON.stringify(response.data));
+            //console.log( 'data:'+JSON.stringify(response.data));
             setData(response.data);
             setLoading(false);
         });

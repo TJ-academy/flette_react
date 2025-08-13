@@ -10,6 +10,7 @@ function ShopQa() {
     const [expandedId, setExpandedId] = useState(null);
     const [details, setDetails] = useState({});
     const [passwordInputs, setPasswordInputs] = useState({});
+    const formattedDate = (isoString) => isoString.slice(2, 10);
     const navigate = useNavigate();
 
     const loadLists = async () => {
@@ -93,7 +94,7 @@ function ShopQa() {
                                     </div>
                                 </td>
                                 <td>{maskId(list.userid)}</td>
-                                <td>{list.questionDate}</td>
+                                <td>{formattedDate(list.questionDate)}</td>
                             </tr>
 
                             {expandedId === list.questionId && (
@@ -102,7 +103,10 @@ function ShopQa() {
                                         {/* 비밀글 → 비밀번호 확인 필요 */}
                                         {list.passwd && !details[list.questionId] ? (
                                             <div>
-                                                <form onSubmit={checkPassword(list.questionId)}>
+                                                <form onSubmit={(e) => {
+                                                    e.preventDefault();
+                                                    checkPassword(list.questionId);
+                                                }}>
                                                     <input type="password" placeholder="비밀번호 입력"
                                                         value={passwordInputs[list.questionId] || ""}
                                                         onChange={(e) =>
@@ -114,6 +118,7 @@ function ShopQa() {
                                                     />
                                                     <button type="submit">확인</button>
                                                 </form>
+                                                
                                                 {errorMessages[list.questionId] && (
                                                     <div style={{ color: "red" }}>
                                                         {errorMessages[list.questionId]}

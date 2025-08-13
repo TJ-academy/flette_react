@@ -8,20 +8,21 @@ const ShopQaWrite = () => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [passwd, setPasswd] = useState('');
-    const [userid, setUserid] = useState('');
+    const [userid, setUserid] = useState(sessionStorage.getItem('loginId') || '');
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         try {
-                await axios.post(`http://localhost/api/shop/${productId}/qa/write`, {
-                    productId,
-                    userid,
-                    title,
-                    content,
-                    passwd: passwd.trim() === '' ? null : passwd
-                });
-            navigate('http://localhost/api/shop/${productId}/qa/');
+            console.log({ productId, userid, title, content, passwd });
+            await axios.post(`http://localhost/api/shop/${productId}/qa/write`, {
+                productId,
+                userid,
+                title,
+                content,
+                passwd: passwd.trim() === '' ? null : passwd
+            });
+            navigate(`/shop/${productId}/qa/`);
         } catch(error) {
             console.error('Q&A 작성 중 오류 발생: ', error);
         }
@@ -40,7 +41,6 @@ const ShopQaWrite = () => {
                 <label>내용: 
                     <textarea value={content} onChange={(e) => setContent(e.target.value)} required />
                 </label><br />
-                
                 <button type="submit">작성</button>
             </form>
         </div>
