@@ -4,6 +4,7 @@ import '../../css/test/StartSurvey.css';
 const StartSurvey = () => {
     return (
         <div className="survey-start-container">
+            
             <div className="survey-card">
                 <h2 className="survey-title">나와 어울리는 꽃 찾기</h2>
                 <img

@@ -214,7 +214,8 @@ const FirstSurvey = () => {
             backgroundColor: '#f0f0f0',
             display: 'flex',
             justifyContent: 'center',
-            fontFamily: 'Arial, sans-serif'
+            fontFamily: 'Arial, sans-serif',
+            padding: '80px 0'
         }}>
             <div style={{
                 backgroundColor: '#fff',
