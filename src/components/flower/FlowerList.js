@@ -25,7 +25,8 @@ const TAB_TO_KOR = {
   FOLIAGE: "잎사귀"
 };
 
-const IMAGE_BASE = process.env.PUBLIC_URL + "/img/flower";
+// IMAGE_BASE 경로를 백엔드 서버의 정적 파일 경로로 수정
+const IMAGE_BASE = "http://localhost/img/flower";
 
 export function FlowerList() {
   const { data, loading, error } = useFlowerList();
@@ -92,7 +93,7 @@ export function FlowerList() {
 
 function FlowerCard({ f }) {
   const folder = CATEGORY_FOLDER[f.category] || "main";
-  const mappedName = imageNameMap[f.imageName] || f.imageName;
+  const mappedName = f.imageName; // imageNameMap을 사용하지 않으므로, f.imageName을 직접 사용합니다.
   const imgSrc = `${IMAGE_BASE}/${folder}/${mappedName}`;
 
   return (

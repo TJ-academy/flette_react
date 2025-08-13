@@ -292,6 +292,10 @@
   max-width: 400px;
   width: 90%;
   text-align: center;
+
+  /* 이 두 줄을 추가하세요 */
+  max-height: 80vh; /* 화면 높이의 80%로 최대 높이 제한 */
+  overflow-y: auto; /* 내용이 넘치면 스크롤바 생성 */
 }
 
 .modal-title {
@@ -309,4 +313,36 @@
   display: flex;
   justify-content: center;
   gap: 12px;
+}
+
+/* pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pagination-btn {
+  padding: 8px 12px;
+  margin: 0 4px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.pagination-btn:hover {
+  background-color: #f0f0f0;
+}
+
+.pagination-btn.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.pagination-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
 }
