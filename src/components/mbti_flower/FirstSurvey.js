@@ -140,7 +140,7 @@ const mbtiResults = {
     flowerMeaning: "사랑의 고백, 영원한 애정",
   },
   ENFP: {
-    flowerId: 8, // 작약 (코스모스는 DB에 없음 → 유사 꽃 매칭)
+    flowerId: 22, // 작약 (코스모스는 DB에 없음 → 유사 꽃 매칭)
     flower: "코스모스",
     image: cosmos,
     description:
@@ -148,7 +148,7 @@ const mbtiResults = {
     flowerMeaning: "순정, 평화, 사랑",
   },
   ENFJ: {
-    flowerId: 1, // 백합은 DB에 없음 → 임시로 국화 ID, 추후 교체
+    flowerId: 23, // 백합은 DB에 없음 → 임시로 국화 ID, 추후 교체
     flower: "백합",
     image: backhap,
     description:
