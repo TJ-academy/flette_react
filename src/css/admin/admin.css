@@ -346,3 +346,20 @@
   cursor: not-allowed;
   opacity: 0.5;
 }
+
+.admin-link-btn {
+  padding: 14px 16px;
+  border: 1px solid #ddd;
+  border-radius: 50px;
+  text-decoration: none;
+  color: #111;
+  background: #fff;
+  text-align: center;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.admin-link-btn:hover {
+  background-color: #F2778C; /* hover 시 진핑크 */
+  transform: translateY(-1px); /* 살짝 뜨는 효과 */
+  color: #ddd;
+}
