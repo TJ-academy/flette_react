@@ -147,7 +147,11 @@ function WrittenCard({ item }) {
           <span style={styles.snippet}>{item.text}</span>
         </div>
       </div>
-      <Link to={`/mypage/reviews/${item.id}`} style={styles.arrowBtn} aria-label="리뷰 상세">
+      <Link
+        to={`/reviews/${item.id}`} 
+        style={styles.arrowBtn}
+        aria-label="리뷰 상세"
+      >
         ›
       </Link>
     </div>
