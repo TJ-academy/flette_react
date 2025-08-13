@@ -1,6 +1,247 @@
+/* ===== Base ===== */
 body {
-  background-color: #fdf6f8; /* 연한 핑크 배경 */
+  background-color: #fdf6f8;
   margin: 0;
   font-family: 'Noto Sans KR', sans-serif;
   color: #333;
+}
+
+.page {
+  padding-bottom: 60px;
+  background: #fff;
+}
+
+/* ===== HERO (Main Banner) ===== */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 480px;                 /* 피그마 비율 */
+  overflow: hidden;
+}
+
+/* 배경 이미지 */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 배경 딤 오버레이 (항상 뒤, 콘텐츠 앞) */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  transition: background 0.25s ease;
+  z-index: 1;
+}
+
+/* 클릭 등 JS로 강제 딤 주고 싶으면 .is-dim 추가 */
+
+.hero.is-dim::after {
+  background: rgba(0, 0, 0, 0.3); /* 불투명도 50% */
+}
+
+/* 텍스트/버튼 레이어 */
+.hero-overlay {
+  position: relative;
+  z-index: 2;                    /* 오버레이보다 위 */
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 60px;
+  color: #29402d;
+}
+
+.hero-title {
+  margin: 0;
+  font-size: 72px;
+  line-height: 1.1;
+  letter-spacing: 1px;
+  font-weight: 800;
+}
+
+.hero-desc {
+  margin-top: 20px;
+  font-size: 18px;
+  color: #5a5a5a;
+}
+
+/* 메인 배너 버튼 */
+.primary-btn {
+  display: inline-block;
+  margin-top: 28px;
+  padding: 14px 50px;
+  font-size: 18px;
+  background-color: #ff8092;
+  color: #fff;
+  font-weight: 700;
+  border-radius: 999px;
+  text-decoration: none;
+  width: fit-content;     /* 내용 길이에 맞춤 */
+  margin-right: 20px;            /* 오른쪽 여백 */
+  position: relative;
+  z-index: 3;                    /* 딤보다 위 */
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.08s ease;
+}
+
+.primary-btn:hover { background-color: #ffc1cb; }   /* 연핑크 */
+.primary-btn:active { background-color: #e5677c; transform: translateY(1px); }
+
+/* ===== Reviews ===== */
+.reviews { padding: 36px 24px; }
+
+.section-title {
+  text-align: center;
+  margin: 0 0 14px 0;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.carousel-wrap {
+  display: grid;
+  grid-template-columns: 40px 1fr 40px;
+  align-items: center;
+  gap: 8px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.arrow-btn {
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  width: 20px;
+  height: 48px;
+}
+
+.arrow-icon {
+  width: 100%;
+  height: auto;
+  margin: 0 12px;
+}
+
+.arrow-right {
+  transform: rotate(180deg);
+}
+
+.carousel {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+
+.thumb-card {
+  display: block;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+.thumb-img {
+  width: 100%;
+  height: 120px;
+    aspect-ratio: 1 / 1;  /* 정사각형 비율 */
+  object-fit: cover;
+  display: block;
+}
+
+.outline-btn {
+  display: inline-block;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid #ddd !important; /* 강제 회색 */  /* 회색 */
+  color: #333;
+  text-decoration: none;
+  background: #fff;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+/* hover 상태 - 핑크색 테두리 */
+.outline-btn:hover {
+  border-color: #ff8092;   /* 핑크색 */
+  color: #ff8092;          /* 글자색도 핑크로 맞추면 깔끔함 */
+}
+
+/* ===== Test Banner ===== */
+.banner {
+  position: relative;
+  width: 100%;                   /* 가로 전체 사용 */
+  max-width: 800px;             /* 더 넓게 */
+  margin: 28px auto 0;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.banner-img {
+  width: 100%;
+  height: 180px;                 /* 약간 키움(선택) */
+  object-fit: cover;
+  filter: saturate(95%);
+}
+
+.banner-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 28px;
+}
+
+/* 왼쪽 영역을 세로 배치로 변경 */
+.banner-left {
+  display: flex;
+  flex-direction: column;  /* 세로 배치 */
+  align-items: flex-start; /* 왼쪽 정렬 */
+  padding-left: 20px;      /* 왼쪽 여백 */
+}
+
+.banner-ment {
+  font-size:18px;
+  color: #3b1a1a;
+  margin-bottom: 8px; /* 멘트와 버튼 간격 */
+  font-weight: 500;
+}
+/* 테스트 배너 버튼: 위/아래 14px로 확정 */
+.primary-btn-sm {
+  padding: 10px 50px;            /* 위아래 14px, 좌우 20px */
+  border-radius: 999px;
+  background: #fff;
+  margin-top: 10px;
+  font-size: 18px;
+  color: #331d16;
+  text-decoration: none;
+  border: 1px solid #d4caca;
+  font-weight: 700;
+  transition: background-color 0.2s ease, transform 0.08s ease;
+}
+
+.primary-btn-sm:hover {
+  background-color: #ffc1cb;
+  color: #fdfdfd;
+ }
+.primary-btn-sm:active {
+  background-color: #e5677c;
+  transform: translateY(1px); }
+
+.banner-copy {
+  color: #fff;
+  text-align: right;
+  font-size: 40px;
+  line-height: 1.1;
+  text-shadow: 0 2px 8px rgba(96, 45, 45, 0.5);
+  font-weight: 800;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 900px) {
+  .hero-title { font-size: 48px; }
+  .hero { height: 380px; }
+  .banner-img { height: 200px; }
 }
