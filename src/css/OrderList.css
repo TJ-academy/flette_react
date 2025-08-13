@@ -1,0 +1,127 @@
+.orderlist {
+  display: flex;
+  justify-content: center;
+  padding: 40px 16px;
+  background: #fff;
+}
+
+.orderlist-container {
+  width: min(720px, 92vw);
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.orderlist-title {
+  font-size: 22px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 26px;
+  color: #59514F;
+}
+
+
+.orderlist-status-wrap {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.orderlist-status-card {
+  flex: 1;
+  text-align: center;
+  padding: 12px 0;
+  background: #fff;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.orderlist-status-label {
+  font-size: 13px;
+  margin-bottom: 4px;
+  color: #59514F;
+  font-weight: normal;
+}
+
+.orderlist-status-num {
+  font-size: 18px;
+  color: #333;
+}
+
+.orderlist-list {
+  margin-top: 20px;
+}
+
+.orderlist-group {
+  border: 1px solid #eee;
+  border-radius: 25px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.orderlist-date {
+  font-weight: bold;
+  font-size: 19px;
+  margin-bottom: 10px;
+  color: #59514F;
+}
+
+.orderlist-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+ 
+}
+
+
+.orderlist-thumb {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 12px;
+}
+
+.orderlist-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.orderlist-name {
+  font-size: 13px;
+  font-weight: 500;
+  font-weight: normal;
+  color: #59514F;
+}
+
+.orderlist-status {
+  font-size: 13px;
+  margin: 4px 0;
+  font-weight: bold;
+}
+
+.orderlist-status.배송중 {
+  color: #ff7f93;
+}
+
+.orderlist-status.배송완료 {
+  color: #6c757d;
+}
+
+.orderlist-status.취소/반품 {
+  color: #999;
+}
+
+.orderlist-price {
+  font-size: 16px;
+  font-weight: 600;
+  color: #59514F;
+}
+
+.orderlist-arrow {
+  background: none;
+  border: none;
+  font-size: 22px;
+  color: #999;
+  cursor: pointer;
+}

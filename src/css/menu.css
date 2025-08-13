@@ -25,7 +25,8 @@
 .nav-links {
   list-style: none;
   display: flex;
-  gap: 20px;
+  gap: 25px;
+  font-weight: 700; /* 이름 굵게 */
 }
 
 .nav-links li {
@@ -46,13 +47,12 @@
   display: flex;
   align-items: center;
   gap: 15px;
+  padding: 0px 30px;
   /* 부모 요소의 너비가 좁아져도 줄바꿈되지 않도록 설정 */
   flex-wrap: nowrap;
 }
 
-.login-btn,
-.signup-btn,
-.logout-btn {
+.login-btn,.logout-btn {
   background-color: #F2778C;
   color: white;
   padding: 8px 15px;
@@ -71,7 +71,8 @@
 }
 
 /* 로그인 상태에서 버튼 스타일 */
-.user-actions .user-name-link {
+.user-actions, .user-name {
+  font-weight: 700; /* 이름 굵게 */
   font-size: 14px;
   color: #6B4F3B;
   text-decoration: none;
@@ -79,8 +80,10 @@
   white-space: nowrap;
 }
 
+
 /* 관리자 메뉴 항목 스타일 */
 .nav-links li.admin-menu-item {
+  font-weight: 700;
   position: relative; /* 서브메뉴를 위한 기준점 */
 }
 
@@ -89,8 +92,8 @@
   position: absolute;
   top: 100%; /* 부모 요소 아래에 위치 */
   left: 0;
-  background-color: #F7EAD9;
-  border: 1px solid #9C6B4F;
+  background-color: #f3eef0;
+  border: 1px solid #ff6c85;
   list-style: none;
   padding: 10px;
   min-width: 150px;
@@ -114,5 +117,18 @@
 }
 
 .nav-links li.admin-menu-item .submenu a:hover {
-  background-color: #ede2d4;
+  background-color: #ffa7b6;
+  color: #ffffff;
+}
+
+.icon-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px; /* 아이콘과 글자 사이 간격 */
+}
+
+.icon-img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
 }

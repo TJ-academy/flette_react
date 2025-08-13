@@ -196,6 +196,7 @@ export default function MyReviewWrite() {
               </div>
             )}
           </div>
+          <hr style={styles.divider} />
 
           {/* 제출 */}
           <div style={{ marginTop: 20, textAlign: "center" }}>
@@ -266,14 +267,6 @@ const styles = {
     color: "#8a8a8a",
     marginTop: 4,
   },
-
-  // 섹션 구분선
-  divider: {
-    margin: "20px 0",
-    border: 0,
-    borderTop: "1px solid #ffc9d3",  
-  },
-
 
   sectionTitle: {
     fontWeight: 700,
@@ -355,18 +348,21 @@ const styles = {
   divider: {
     margin: "20px 0",
     border: 0,
-    borderTop: "1px solid #ffc9d3",   
-  },
-
+    borderTop: "1px solid #ffc9d3",
+    width: "calc(100% + 48px)", // 패딩 24px * 2 만큼 더 넓게
+    marginLeft: "-24px",        // 왼쪽으로 당겨서 중앙 정렬
+  },  
 
   submitBtn: {
-    minWidth: 100,
+    minWidth: 300,
     height: 48,
-    borderRadius: 20,
+    borderRadius: 25,
     background: "#ff7f93",
     color: "#fff",
     fontWeight: 700,
     cursor: "pointer",
-   
+    border: "none",          // ✅ 겉 테두리 제거
+    outline: "none",         // ✅ 포커스 시 기본 외곽선 제거
+    boxShadow: "none",       // ✅ 그림자 제거
   },
 };

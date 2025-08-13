@@ -1,95 +1,67 @@
-// src/pages/OrderHistory.jsx
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
+import "../../css/OrderList.css"; 
 
 function OrderList() {
   const navigate = useNavigate();
 
-  // 더미 데이터 (실제론 API로 불러오기)
   const orders = [
     {
       date: "2025.08.03",
       items: [
-        { name: "컬러 테라피", price: "19,800원", status: "배송중", id: 1 },
+        { name: "카드 꽃다발 (소)", price: "19,800원", status: "배송중", id: 1, img: "/images/flower1.jpg" },
       ],
     },
     {
       date: "2025.07.31",
       items: [
-        { name: "예쁜 꽃", price: "19,800원", status: "배송완료", id: 2 },
-        { name: "예쁜 꽃", price: "19,800원", status: "배송완료", id: 3 },
-        { name: "그림꽃", price: "19,800원", status: "배송완료", id: 4 },
+        { name: "카드 꽃다발 (소)", price: "19,800원", status: "배송완료", id: 2, img: "/images/flower2.jpg" },
+        { name: "카드 꽃다발 (중)", price: "19,800원", status: "배송완료", id: 3, img: "/images/flower3.jpg" },
+        { name: "그림꽃", price: "19,800원", status: "배송완료", id: 4, img: "/images/flower4.jpg" },
       ],
     },
     {
       date: "2025.05.03",
       items: [
-        { name: "예쁜꽃", price: "19,800원", status: "취소/반품", id: 5 },
-        { name: "그림꽃", price: "19,800원", status: "취소/반품", id: 6 },
+        { name: "카드 꽃다발 (소)", price: "19,800원", status: "취소/반품", id: 5, img: "/images/flower5.jpg" },
+        { name: "그림꽃", price: "19,800원", status: "취소/반품", id: 6, img: "/images/flower6.jpg" },
       ],
     },
   ];
 
   return (
-    <main style={{ padding: "24px 16px" }}>
-      <section
-        style={{
-          width: "min(560px, 92vw)",
-          border: "1px solid #ddd",
-          borderRadius: 12,
-          padding: 24,
-        }}
-      >
+    <main className="orderlist">
+      <section className="orderlist-container">
+
+      <h2 className="orderlist-title">주문내역</h2>
+
         {/* 상태별 주문 개수 */}
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div className="orderlist-status-wrap">
           <StatusCount label="배송중" count={1} />
           <StatusCount label="배송완료" count={2} />
           <StatusCount label="취소/반품" count={0} />
         </div>
 
         {/* 주문 목록 */}
-        <div style={{ marginTop: 16 }}>
+        <div className="orderlist-list">
           {orders.map((order, index) => (
-            <div key={index} style={{ marginBottom: 24 }}>
-              <div
-                style={{
-                  fontWeight: "bold",
-                  marginBottom: 8,
-                  fontSize: 16,
-                }}
-              >
-                {order.date}
-              </div>
+            <div key={index} className="orderlist-group">
+              <div className="orderlist-date">{order.date}</div>
               {order.items.map((item) => (
-                <div
-                  key={item.id}
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    borderBottom: "1px solid #ddd",
-                    paddingBottom: 8,
-                    paddingTop: 8,
-                  }}
-                >
-                  <div>
-                    <div>{item.name}</div>
-                    <div style={{ fontSize: 12, color: "#aaa" }}>
-                      {item.status}
-                    </div>
+                <div key={item.id} className="orderlist-item">
+                  <img src={item.img} alt={item.name} className="orderlist-thumb" />
+                  <div className="orderlist-info">
+                  <div className={`orderlist-status ${item.status}`}>{item.status}</div>
+                    <div className="orderlist-name">{item.name}</div>
+                    <div className="orderlist-price">{item.price}</div>
                   </div>
-                  <div>{item.price}</div>
                   <button
-                    onClick={() => navigate(`/order/detail/${item.id}`)}
-                    style={{
-                      background: "transparent",
-                      border: "none",
-                      color: "#f76c6c",
-                      cursor: "pointer",
-                    }}
-                  >
-                    <span></span>
-                  </button>
+  onClick={() => navigate(`/mypage/order/detail/${item.id}`)}
+  className="orderlist-arrow"
+>
+  ›
+</button>
+
                 </div>
               ))}
             </div>
@@ -100,20 +72,12 @@ function OrderList() {
   );
 }
 
-// 상태별 주문 개수 컴포넌트
+// 상태별 주문 개수
 function StatusCount({ label, count }) {
   return (
-    <div
-      style={{
-        textAlign: "center",
-        flex: 1,
-        padding: "8px 16px",
-        backgroundColor: "#f3f3f3",
-        borderRadius: 6,
-      }}
-    >
-      <div style={{ fontWeight: "bold" }}>{label}</div>
-      <div style={{ fontSize: 16, fontWeight: "bold" }}>{count}</div>
+    <div className="orderlist-status-card">
+      <div className="orderlist-status-label">{label}</div>
+      <div className="orderlist-status-num">{count}</div>
     </div>
   );
 }

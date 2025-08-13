@@ -1,11 +1,9 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "../../css/FlowerDetail.css";
-import imageNameMap from "../../image-name-map.json";
-import { useFlowerDetail, useFlowerList } from "./FlowerHooks"; // 훅 분리
+import { useFlowerDetail, useFlowerList } from "./FlowerHooks";
 
-// IMAGE_BASE 경로를 백엔드 서버의 정적 파일 경로로 수정
-const IMAGE_BASE = "http://localhost/img/flower"; // 백엔드 API가 있는 곳의 도메인 + 경로
+const IMAGE_BASE = "http://localhost/img/flower";
 
 const CATEGORY_FOLDER = {
   "메인": "main",
@@ -13,7 +11,6 @@ const CATEGORY_FOLDER = {
   "잎사귀": "foliage"
 };
 
-// 카테고리 한글 → 영어 대문자 매핑
 const CATEGORY_EN = {
   "메인": "MAIN",
   "서브": "SUB",
@@ -31,10 +28,9 @@ export default function FlowerDetail() {
   if (!data) return null;
 
   const folder = CATEGORY_FOLDER[data.category] || "main";
-  const mappedName = imageNameMap[data.imageName] || data.imageName;
+  const mappedName = data.imageName;
   const imgSrc = `${IMAGE_BASE}/${folder}/${mappedName}`;
 
-  // 현재 index 찾기
   const currentIndex = listData
     ? listData.findIndex((f) => String(f.flowerId) === String(id))
     : -1;
@@ -66,14 +62,32 @@ export default function FlowerDetail() {
         </span>
         <h1>{data.flowerName}</h1>
 
-        {/* 구분선 길이 늘림 */}
+        {/* 판매 상태 표시 */}
+        <div className="status">
+          {data.show
+            ? <span className="status-on">판매 중</span>
+            : <span className="status-off">Sold Out</span>}
+        </div>
+
+        {/* 구분선 */}
         <hr className="pink-line long-line" />
 
-        <p className="description">{data.description}</p>
-        <p className="story">{data.story}</p>
+        {/* 소개 */}
+        <div className="flower-section">
+          <h4>소개</h4>
+          <p dangerouslySetInnerHTML={{ __html: data.description }} />
+        </div>
+
+        {/* 회색 구분선 */}
+        <hr className="gray-line" />
+
+        {/* 꽃말 */}
+        <div className="flower-section">
+          <p dangerouslySetInnerHTML={{ __html: data.story }} />
+        </div>
       </div>
 
-      {/* 뒤로 가기 버튼 위에 구분선 추가 */}
+      {/* 구분선 */}
       <hr className="pink-line long-line" style={{ marginTop: "30px" }} />
 
       {/* 뒤로가기 버튼 */}

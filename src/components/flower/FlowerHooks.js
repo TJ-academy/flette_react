@@ -14,7 +14,7 @@ export function useFlowerList() {
       .then((res) => {
         if (!alive) return;
         const arr = Array.isArray(res.data) ? res.data : [];
-        setData(arr.filter((f) => f?.show !== false));
+        setData(arr); // 🔹 필터링 제거 → 숨김처리된 것도 전부 포함
       })
       .catch((e) => {
         if (!alive) return;

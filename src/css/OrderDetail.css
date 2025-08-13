@@ -1,0 +1,95 @@
+.orderdetail {
+  padding: 40px 16px;
+  background: #ffffff;
+  font-family: 'Noto Sans KR', sans-serif;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.orderdetail-title {
+  font-size: 22px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 32px;
+  color: #59514F;
+}
+
+/* 공통 박스 스타일 */
+.orderdetail-container {
+  border: 1px solid #E4E0DD;
+  border-radius: 25px;
+  padding: 18px 20px;
+  background: #fff;
+  margin-bottom: 20px;
+}
+
+/* 개별 아이템 */
+.orderdetail-item {
+  padding: 15px 0;
+  border-bottom: 1px solid #eee;
+}
+.orderdetail-item:last-child {
+  border-bottom: none;
+}
+
+/* 상태 텍스트 */
+.orderdetail-status {
+  font-size: 14px;
+  font-weight: 500;
+  color: #FF7F93;
+  margin-bottom: 12px;
+}
+
+/* 상품 정보 flex */
+.orderdetail-body {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* 상품 이미지 */
+.orderdetail-thumb {
+  width: 92px;
+  height: 92px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+/* 텍스트 영역 */
+.orderdetail-text {
+  flex: 1;
+}
+
+/* 상품명 */
+.orderdetail-name {
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #2E2E2E;
+}
+
+/* 가격 */
+.orderdetail-price {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2E2E2E;
+}
+
+/* 버튼 */
+.orderdetail-btn {
+  background: #fff;                  /* 배경 흰색 */
+  border: 1px solid #F2778C;         /* 핑크 테두리 */
+  border-radius: 25px;               /* 둥근 버튼 */
+  padding: 8px 48px;                 /* 좌우 여백 넉넉히 */
+  font-size: 13px;
+  font-weight: 500;
+  color: #F2778C;                    /* 기본 글자색 핑크 */
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease-in-out;
+}
+
+.orderdetail-btn:hover {
+  background: #F2778C;               /* hover 시 배경 핑크 */
+  color: #fff;                       /* 글자 흰색 */
+}
