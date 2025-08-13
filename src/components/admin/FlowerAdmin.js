@@ -153,7 +153,7 @@ export default function FlowerAdmin() {
   return (
     <div className="page">
       <div className="wrap">
-        <div className="title">관리자 꽃</div>
+        <div className="title">꽃 관리</div>
 
         {/* 상단 필터 */}
         <div className="unanswered-toggle">

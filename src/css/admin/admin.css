@@ -359,7 +359,7 @@
 }
 
 .admin-link-btn:hover {
-  background-color: #e5677c; /* hover 시 진핑크 */
+  background-color: #F2778C; /* hover 시 진핑크 */
   transform: translateY(-1px); /* 살짝 뜨는 효과 */
   color: #ddd;
 }

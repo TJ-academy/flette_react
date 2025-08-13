@@ -5,7 +5,7 @@ function Footer() {
     return (
         <footer className="footer">
             <div className="footer-container">
-                <p className="footer-text">© 2025 suhodan. All rights reserved.</p>
+                <p className="footer-text">© 2025 palette. All rights reserved.</p>
                 <p className="footer-text">당신의 하루에 향기를 더하는 맞춤형 꽃 플랫폼</p>
                 <div className="footer-info">
                     <span className="footer-item">고객센터 1234-5678</span>

@@ -8,8 +8,7 @@ function StatCard({ title, value }) {
     <div style={{
       padding: '16px',
       borderRadius: '12px',
-      boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
-      border: '1px solid #eee',
+      border: '1px solid #eee', 
       display: 'grid',
       gap: '6px',
       background: '#fff',
@@ -41,7 +40,7 @@ export default function MainAdmin() {
   }, []);
 
   return (
-    <div style={{ padding: '24px' }}>
+    <div style={{ padding: '80px' }}>
       <br></br>
       <h1 style={{ fontSize: '22px', fontWeight: 700, marginBottom: '20px', textAlign: 'center' }}>관리자 대시보드</h1>
       <br></br>
@@ -49,7 +48,7 @@ export default function MainAdmin() {
       {/* 빠른 링크 */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
         gap: '12px',
         marginBottom: '28px'
       }}>
