@@ -81,6 +81,46 @@ export default function MyInfoEdit() {
       });
   };
 
+  // 회원 탈퇴 API 호출 함수
+  const handleDeleteMember = async () => {
+    const loginId = sessionStorage.getItem("loginId");
+    if (!loginId) {
+      setStatusMessage("로그인 상태가 유효하지 않습니다.");
+      return;
+    }
+
+    const confirmed = window.confirm("정말 탈퇴하시겠습니까?");
+    if (!confirmed) {
+      return;
+    }
+
+    setStatusMessage("");
+
+    try {
+      const response = await fetch(`/api/mypage/member/delete/${loginId}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      const serverMessage = await response.text(); // 서버에서 보낸 문구 읽기
+
+      if (response.ok) {
+        setStatusMessage(serverMessage); // 서버 문구 그대로 표시
+        sessionStorage.removeItem("loginId");
+
+        // 잠깐 문구 보여주고 메인으로 이동
+        setTimeout(() => {
+          navigate("/");
+        }, 1500);
+      } else {
+        setStatusMessage(`❌ 탈퇴 실패: ${serverMessage}`);
+      }
+    } catch (error) {
+      console.error("회원 탈퇴 중 오류 발생:", error);
+      setStatusMessage("❌ 네트워크 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+    }
+  };
+
   return (
     <main style={{ display: "grid", placeItems: "center", padding: "24px 16px" }}>
       <section className="myinfo-container">
@@ -144,7 +184,7 @@ export default function MyInfoEdit() {
         </div>
 
         <div style={{ marginTop: 16, textAlign: "center" }}>
-          <button type="button" className="text-btn" onClick={() => alert("회원 탈퇴 진행")}>
+          <button type="button" className="text-btn" onClick={handleDeleteMember}>
             회원 탈퇴
           </button>
         </div>
