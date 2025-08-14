@@ -1,22 +1,29 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {Link, useParams, useNavigate} from 'react-router-dom';
-import ShopQaWrite from "./ShopQaWrite";
+import '../../css/shopQA.css';
 
 function ShopQa() {
     const [lists, setLists] = useState([]);
     const {productId} = useParams();
     const [errorMessages, setErrorMessages] = useState({});
     const [expandedId, setExpandedId] = useState(null);
-    const [details, setDetails] = useState({});
+    //const [details, setDetails] = useState({});
     const [passwordInputs, setPasswordInputs] = useState({});
     const formattedDate = (isoString) => isoString.slice(2, 10);
+    const [totalPages, setTotalPages] = useState(1);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalItems, setTotalItems] = useState(0);
+    const itemsPerPage = 10;
     const navigate = useNavigate();
 
-    const loadLists = async () => {
-        const res = await axios.get(`http://localhost/api/shop/${productId}/qa`);
-        console.log(JSON.stringify(res.data));
-        setLists(res.data);
+    const loadLists = async (page = 1) => {
+        const res = await axios.get(`http://localhost/api/shop/${productId}/qa?page=${page - 1}&size=${itemsPerPage}`);
+        //console.log(JSON.stringify(res.data.qaList));
+        setLists(res.data.list);
+        setTotalPages(res.data.totalPages);
+        setCurrentPage(res.data.currentPage + 1);
+        setTotalItems(res.data.totalItems);
     };
 
     useEffect(() => {
@@ -36,15 +43,7 @@ function ShopQa() {
         // 이미 열려있으면 닫기
         if (expandedId === qid) {
             setExpandedId(null);
-            return;
-        }
-
-        // 공개글인 경우, 그냥 detail 보여주기
-        if (!list.passwd || list.passwd.trim() === "") {
-            setDetails(prev => ({ ...prev, [qid]: list }));
-            setExpandedId(qid);
         } else {
-            // 비밀글인 경우 → 비번 입력 칸만 열기
             setExpandedId(qid);
         }
     };
@@ -55,9 +54,15 @@ function ShopQa() {
                 `http://localhost/api/shop/${productId}/qa/${questionId}/check`,
                 { passwd: passwordInputs[questionId] }
             );
-            if (res.data && res.data.dto) {
-                setDetails(prev => ({ ...prev, [questionId]: res.data.dto }));
+            if (res.data.success) {
                 setErrorMessages(prev => ({ ...prev, [questionId]: "" }));
+                setLists(prev =>
+                    prev.map(item =>
+                        item.questionId === questionId
+                            ? { ...item, passwordVerified: true }
+                            : item
+                    )
+                );
             } else {
                 setErrorMessages(prev => ({ ...prev, [questionId]: res.data.message }));
             }
@@ -88,6 +93,7 @@ function ShopQa() {
             <table>
                 <thead>
                     <tr>
+                        <th>번호</th>
                         <th>답변 상태</th>
                         <th>제목</th>
                         <th>작성자</th>
@@ -95,72 +101,95 @@ function ShopQa() {
                     </tr>
                 </thead>
                 <tbody>
-                    {lists.map((list) => (
+                    {lists.map((list, index) => (
                         <React.Fragment key={list.questionId}>
-                            <tr>
-                                <td>{list.status ? "답변 완료" : "답변 대기"}</td>
-                                <td>
-                                    <div onClick={() => titleClick(list)}
-                                        style={{ cursor: "pointer", color: list.passwd ? "gray" : "black" }}>
-                                        {list.passwd ? "비밀글입니다. 🔒" : list.title}
-                                    </div>
+                            <tr className={expandedId === list.questionId ? "quesSum highlight-row" : "quesSum"}>
+                                <td className="t-index">{totalItems - ((currentPage - 1) * itemsPerPage + index)}</td>
+                                <td className="t-status">{list.status ? "답변 완료" : "답변 대기"}</td>
+                                <td className="t-title" onClick={() => titleClick(list)}>
+                                    {list.passwd ? (
+                                        <div className="secret">
+                                            비밀글입니다. 🔒
+                                        </div>
+                                    ) : (
+                                        <div className="public">
+                                            {list.title}
+                                        </div>
+                                    )}
                                 </td>
-                                <td>{maskId(list.userid)}</td>
-                                <td>{formattedDate(list.questionDate)}</td>
+                                <td className="t-writer">{maskId(list.userid)}</td>
+                                <td className="t-date">{formattedDate(list.questionDate)}</td>
                             </tr>
 
                             {expandedId === list.questionId && (
-                                <tr>
-                                    <td colSpan={4}>
-                                        {/* 비밀글 → 비밀번호 확인 필요 */}
-                                        {list.passwd && !details[list.questionId] ? (
-                                            <div>
-                                                <form onSubmit={(e) => {
-                                                    e.preventDefault();
-                                                    checkPassword(list.questionId);
-                                                }}>
-                                                    <input type="password" placeholder="비밀번호 입력"
-                                                        value={passwordInputs[list.questionId] || ""}
-                                                        onChange={(e) =>
-                                                            setPasswordInputs(prev => ({
-                                                                ...prev,
-                                                                [list.questionId]: e.target.value
-                                                            }))
-                                                        }
-                                                    />
-                                                    <button type="submit">확인</button>
-                                                </form>
-                                                
-                                                {errorMessages[list.questionId] && (
-                                                    <div style={{ color: "red" }}>
-                                                        {errorMessages[list.questionId]}
-                                                    </div>
-                                                )}
-                                            </div>
-                                        ) : (
-                                            // 공개글 detail 또는 비밀번호 확인된 detail
-                                            details[list.questionId] && (
+                                <>
+                                    {/* 비밀글 → 비밀번호 확인 필요 */}
+                                    {list.passwd && !list.passwordVerified ? (
+                                        <tr className="quesPaswd">
+                                            <td colSpan={5}>
                                                 <div>
-                                                    <div><strong>질문 내용:</strong> {details[list.questionId].content}</div>
-                                                    {details[list.questionId].status && (
-                                                        <div style={{ marginTop: "10px", background: "#f4f4f4", padding: "10px" }}>
-                                                            <strong>[답변]</strong><br />
-                                                            {details[list.questionId].answerContent}<br />
-                                                            <span style={{ fontSize: "0.9em", color: "gray" }}>
-                                                                작성자: 판매자 / {details[list.questionId].answerDate}
-                                                            </span>
+                                                    <form onSubmit={(e) => {
+                                                        e.preventDefault();
+                                                        checkPassword(list.questionId);
+                                                    }}>
+                                                        <input type="password" placeholder="비밀번호 입력"
+                                                            value={passwordInputs[list.questionId] || ""}
+                                                            onChange={(e) =>
+                                                                setPasswordInputs(prev => ({
+                                                                    ...prev,
+                                                                    [list.questionId]: e.target.value
+                                                                }))
+                                                            }
+                                                        />
+                                                        <button type="submit">확인</button>
+                                                    </form>
+                                                    
+                                                    {errorMessages[list.questionId] && (
+                                                        <div className="error-message">
+                                                            {errorMessages[list.questionId]}
                                                         </div>
                                                     )}
                                                 </div>
-                                            )
-                                        )}
-                                    </td>
-                                </tr>
+                                            </td>
+                                        </tr>
+                                    ) : (
+                                        <>
+                                            {/* 공개글 detail 또는 비밀번호 확인된 detail */}
+                                            <tr className="quesContent">
+                                                <td colSpan={2}></td>
+                                                <td>{list.content}</td>
+                                                <td colSpan={2}></td>
+                                            </tr>
+                                            
+                                            {list.status && (
+                                                <tr className="answer">
+                                                    <td colSpan={2}></td>
+                                                    <td className="content">
+                                                        <strong>[답변]</strong><br />
+                                                        {list.answerContent}
+                                                    </td>
+                                                    <td>판매자</td>
+                                                    <td>{formattedDate(list.answerDate)}</td>
+                                                </tr>
+                                            )}
+                                        </>
+                                    )}
+                                </>
                             )}
                         </React.Fragment>
                     ))}
                 </tbody>
             </table>
+
+            {/* 페이지네이션 */}
+            <div className="pagination">
+                {Array.from({ length: totalPages }, (_, i) => (
+                    <button
+                        key={i + 1}
+                        onClick={() => loadLists(i + 1)}
+                    >{i + 1}</button>
+                ))}
+            </div>
         </>
     );
 };
