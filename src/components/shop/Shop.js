@@ -62,16 +62,23 @@ function ShopList() {
             />
             <label htmlFor={`product-${product.productId}`} className="product-card-label">
               <img
-                src={`http://localhost:8080/img/product/${product.imageName}`}
+                src={`http://localhost:80/img/product/${product.imageName}`}
                 alt={product.productName}
                 className="product-image"
               />
               <div className="product-info">
                 <h3>{product.productName}</h3>
                 <p className="product-price">
-                  {product.basicPrice} ~ {product.maxPrice} 원
+                  {product.basicPrice.toLocaleString()}원 ~ 
                 </p>
-                <p className="product-summary">{product.summary}</p>
+                <p className="product-summary">
+                {product.summary.split('/').map((item, index) => (
+                    <React.Fragment key={index}>
+                    {item}
+                    <br />
+                    </React.Fragment>
+                ))}
+                </p>
               </div>
             </label>
           </div>

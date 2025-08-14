@@ -28,7 +28,6 @@ import MyReviewList from './components/mypage/MyReviewList';
 import MyReviewWrite from './components/mypage/MyReviewWrite';
 import MyReviewDetail from './components/mypage/MyReviewDetail';
 import MyQuestionList from './components/mypage/MyQuestionList';
-import MyQuestionDetail from './components/mypage/MyQuestionDetail';
 
 //장바구니
 import CartList from './components/cart/CartList';
@@ -121,7 +120,6 @@ function App() {
         <Route path="/mypage/reviews/write/:purchaseId" element={<MyReviewWrite />} />
         <Route path="/mypage/review/detail/:id" element={<MyReviewDetail />} />
         <Route path="/mypage/question" element={<MyQuestionList />} />
-        <Route path="/mypage/question/detail/:id" element={<MyQuestionDetail />} />
 
         {/* 리뷰 */}
         <Route path="/reviews" element={<ReviewsIndex />} />

@@ -1,0 +1,125 @@
+/* ===== utils & styles ===== */
+.page {
+  display: grid;
+  place-items: center;
+  padding: 24px 16px;
+  background: #fafafa;
+}
+
+.wrap {
+  width: min(920px, 94vw);
+}
+
+.heading {
+  background: #ff7f93;
+  color: #fff;
+  text-align: center;
+  padding: 12px 0;
+  border-radius: 8px 8px 0 0;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #f3c6c9;
+  border-top: none;
+}
+
+.headRow {
+  background: #fff3f4;
+}
+
+.th {
+  padding: 12px 8px;
+  border-bottom: 1px solid #f3c6c9;
+  font-size: 14px;
+}
+
+.row {
+  cursor: pointer;
+  border-bottom: 1px solid #f3c6c9;
+}
+
+.td {
+  padding: 10px 8px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.detailCell {
+  background: #fff;
+  padding: 16px;
+  border-bottom: 1px solid #f3c6c9;
+}
+
+.qBox {
+  padding: 12px 14px;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+}
+
+.qTitle {
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.qText {
+  white-space: pre-wrap;
+  line-height: 1.6;
+  color: #444;
+}
+
+.aBox {
+  margin-top: 12px;
+  padding: 14px;
+  background: #f7f7f9;
+  border: 1px solid #eee;
+  border-radius: 8px;
+}
+
+.aLabel {
+  display: inline-block;
+  margin-bottom: 6px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: #333;
+  color: #fff;
+  font-size: 12px;
+}
+
+.aMeta {
+  font-size: 12px;
+  color: #777;
+  margin-bottom: 6px;
+}
+
+.aText {
+  white-space: pre-wrap;
+  line-height: 1.6;
+  color: #333;
+}
+
+.lightBtn {
+  border: 1px solid #ddd;
+  background: #fff;
+  padding: 8px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.paging {
+  text-align: center;
+  padding: 12px;
+  color: #999;
+}
+
+.emptyCell {
+  padding: 36px 8px;
+  text-align: center;
+  color: #888;
+  font-size: 14px;
+}
