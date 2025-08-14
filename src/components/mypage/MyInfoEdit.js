@@ -82,15 +82,15 @@ export default function MyInfoEdit() {
   };
 
   return (
-    <main style={{ display: "grid", placeItems: "center", padding: "24px 16px" }}>
-      <section className="myinfo-container">
-        {/* 헤더 */}
-        <div className="myinfo-header" style={{ justifyContent: 'flex-start' }}>
-          <button type="button" onClick={() => navigate(-1)} aria-label="뒤로가기" className="back-btn">
-            ‹
-          </button>
-          <h2 style={{ margin: 0, fontSize: 20, fontWeight: 700 }}>개인 정보 수정</h2>
-        </div>
+    <main style={{ padding: "24px 16px" }}>
+    <section className="myinfo-container">
+      <div className="myinfo-header">
+        <button type="button" onClick={() => navigate(-1)} aria-label="뒤로가기" className="back-btn">
+          ‹
+        </button>
+        <h2>개인 정보 수정</h2>
+      </div>
+
 
         {/* 이름 */}
         <Row>
