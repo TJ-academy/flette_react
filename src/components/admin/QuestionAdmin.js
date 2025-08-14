@@ -49,19 +49,20 @@ export default function QuestionAdmin() {
   };
 
   const submitAnswer = async (q) => {
-    if (!editor.text.trim()) {
-      showModal("입력 오류", "내용을 입력하세요.");
-      return;
-    }
-    try {
-      await axios.post(`/api/admin/qna/${q.questionId}/answer`, { answerContent: editor.text });
-      await fetchList(page);
-      setEditor({ id: null, text: "" });
-      showModal("성공", "답변이 성공적으로 등록되었습니다.", closeModal);
-    } catch (e) {
-      showModal("오류", "답변 등록에 실패했습니다.");
-    }
-  };
+  if (!editor.text.trim()) {
+    showModal("입력 오류", "내용을 입력하세요.");
+    return;
+  }
+  try {
+    // Send the answer to the backend
+    await axios.post(`/api/admin/qna/${q.questionId}/answer`, { answerContent: editor.text });
+    await fetchList(page); // Reload the list of questions
+    setEditor({ id: null, text: "" }); // Reset editor state
+    showModal("성공", "답변이 성공적으로 등록되었습니다.", closeModal);
+  } catch (e) {
+    showModal("오류", "답변 등록에 실패했습니다.");
+  }
+};
 
   const updateAnswer = async (q) => {
     if (!editor.text.trim()) {
@@ -69,6 +70,7 @@ export default function QuestionAdmin() {
       return;
     }
     try {
+      // 🚨 백틱(``)으로 수정
       await axios.put(`/api/admin/qna/${q.questionId}/answer`, { answerContent: editor.text });
       await fetchList(page);
       setEditor({ id: null, text: "" });
@@ -81,6 +83,7 @@ export default function QuestionAdmin() {
   const deleteAnswer = async (q) => {
     showModal("삭제 확인", "정말 삭제하시겠습니까?", async () => {
       try {
+        // 🚨 백틱(``)으로 수정
         await axios.delete(`/api/admin/qna/${q.questionId}/answer`);
         await fetchList(page);
         showModal("성공", "답변이 삭제되었습니다.");
@@ -124,7 +127,7 @@ export default function QuestionAdmin() {
                     <Badge text={q.answered ? "답변 완료" : "답변 대기"} color={q.answered ? "#ff8aa0" : "#bbb"} />
                   </td>
                   <td className="td text-left">{q.title}</td>
-                  <td className="td">{q.useridMasked}</td>
+                  <td className="td">{q.writerMasked}</td>
                   <td className="td">{fmt(q.questionDate)}</td>
                 </tr>
 
