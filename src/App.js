@@ -50,6 +50,9 @@ import QuestionAdmin from './components/admin/QuestionAdmin';
 import ReviewsIndex from './components/shop/ReviewsIndex';
 import MainAdmin from './components/admin/MainAdmin'; 
 
+// 결제
+import PaymentTestPage from './PaymentTestPage';
+
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginName, setLoginName] = useState('');
@@ -149,6 +152,9 @@ function App() {
         <Route path="/" element={<Main />} />
         <Route path="/survey/start" element={<StartSurvey />} />
         <Route path="/admin" element={<MainAdmin />} />
+
+        {/* 결제 테스트 */}
+        <Route path="/payment" element={<PaymentTestPage />} />
       </Routes>
       <Footer />
     </Router>
