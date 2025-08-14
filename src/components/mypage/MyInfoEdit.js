@@ -110,7 +110,7 @@ export default function MyInfoEdit() {
 
         // 잠깐 문구 보여주고 메인으로 이동
         setTimeout(() => {
-          navigate("/");
+          window.location.href = "/";
         }, 1500);
       } else {
         setStatusMessage(`❌ 탈퇴 실패: ${serverMessage}`);
