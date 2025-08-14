@@ -17,7 +17,7 @@ function useFetch(url) {
             setError(er);
         });
     }, [url]);
-    console.log(JSON.stringify(data));
+    //console.log(JSON.stringify(data));
     return [data, loading, error];
 }
 
@@ -29,7 +29,7 @@ function ShopReview() {
     const randomImg = "https://picsum.photos/150";
 
     useEffect(() => {
-        console.log(JSON.stringify(data));
+        //console.log(JSON.stringify(data));
         if (data && data.rcount !== 0) {
             setReviews(data.rlist);
         } else {
