@@ -1,204 +1,182 @@
-// src/pages/MyQnaList.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import '../../css/mypage/myquestionlist.css'; // CSS 파일을 import 합니다.
 
 export default function MyQuestionList() {
-  const [rows, setRows] = useState([]);
-  const [openId, setOpenId] = useState(null); // 펼친 행의 questionId
+    const [rows, setRows] = useState([]);
+    const [openId, setOpenId] = useState(null); // 펼친 행의 questionId
+    const [currentPage, setCurrentPage] = useState(0); // 현재 페이지
+    const [totalPages, setTotalPages] = useState(1); // 전체 페이지 수
+    const pageSize = 10; // 페이지 크기
 
-  useEffect(() => {
-    const userid = sessionStorage.getItem("loginId") || "guy123"; // 로그인 사용자
-    axios
-      .get("/api/mypage/qna", { params: { userid } })
-      .then(({ data }) => setRows(Array.isArray(data) ? data : []))
-      .catch(() => setRows([]));
-  }, []);
+    useEffect(() => {
+        const userid = sessionStorage.getItem("loginId") || "guy123"; // 로그인 사용자
+        axios
+            .get("http://localhost:80/api/mypage/qna", {
+                params: { userid, page: currentPage, size: pageSize } // 페이지 번호와 크기를 파라미터로 전달
+            })
+            .then(({ data }) => {
+                setRows(data.content || []); // 서버에서 받아온 content 배열
+                setTotalPages(data.totalPages); // 전체 페이지 수
+            })
+            .catch(() => {
+                setRows([]);
+                setTotalPages(1);
+            });
+    }, [currentPage]);
 
-  return (
-    <main style={styles.page}>
-      <section style={styles.wrap}>
-        <h2 style={styles.heading}>Q&amp;A</h2>
+    // 페이지 변경 처리
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
 
-        <table style={styles.table}>
-          <thead>
-            <tr style={styles.headRow}>
-              <th style={styles.th}>답변 상태</th>
-              <th style={{ ...styles.th, textAlign: "left" }}>제목</th>
-              <th style={styles.th}>작성자</th>
-              <th style={styles.th}>작성일</th>
-            </tr>
-          </thead>
+    // 문의 삭제 버튼 클릭 시 백엔드에 삭제 요청을 보내는 함수
+    const handleDelete = (e, questionId) => {
+        e.stopPropagation(); // ✨ 중요: 이벤트 전파 중단
+        axios
+            .delete(`http://localhost:80/api/mypage/qna/${questionId}`)
+            .then(() => {
+                // 삭제 후 목록을 다시 불러오거나 상태를 업데이트
+                setRows((prevRows) => prevRows.filter((row) => row.questionId !== questionId));
+                // 삭제 후 현재 페이지의 데이터가 1개뿐이었다면, 이전 페이지로 이동
+                if (rows.length === 1 && currentPage > 0) {
+                    setCurrentPage(currentPage - 1);
+                }
+            })
+            .catch((error) => {
+                console.error("삭제 실패", error);
+                alert("문의 삭제에 실패했습니다.");
+            });
+    };
 
-          <tbody>
-            {rows.length === 0 ? (
-              <tr>
-                <td colSpan={4} style={styles.emptyCell}>
-                  문의내역이 없습니다.
-                </td>
-              </tr>
-            ) : (
-              rows.map((r) => (
-                <React.Fragment key={r.questionId}>
-                  <tr
-                    style={styles.row}
-                    onClick={() =>
-                      setOpenId(openId === r.questionId ? null : r.questionId)
-                    }
-                  >
-                    <td style={styles.td}>
-                      {r.answered ? (
-                        <Badge color="#ff8aa0" text="답변 완료" />
-                      ) : (
-                        <Badge color="#bbb" text="답변 대기" />
-                      )}
-                    </td>
-                    <td style={{ ...styles.td, textAlign: "left" }}>
-                      {r.title}
-                    </td>
-                    <td style={styles.td}>{r.writerMasked}</td>
-                    <td style={styles.td}>{formatDate(r.questionDate)}</td>
-                  </tr>
+    return (
+        <main className="page">
+            <section className="wrap">
+                <h2 className="heading">Q&amp;A</h2>
 
-                  {openId === r.questionId && (
-                    <tr>
-                      <td colSpan={4} style={styles.detailCell}>
-                        <div style={styles.qBox}>
-                          <div style={styles.qTitle}>질문</div>
-                          <div style={styles.qText}>{r.questionContent}</div>
-                        </div>
+                <table className="table">
+                    <thead>
+                        <tr className="headRow">
+                            <th className="th">답변 상태</th>
+                            <th className="th" style={{ textAlign: "left" }}>제목</th>
+                            <th className="th">작성자</th>
+                            <th className="th">작성일</th>
+                        </tr>
+                    </thead>
 
-                        {r.answered && (
-                          <div style={styles.aBox}>
-                            <div style={styles.aLabel}>답변</div>
-                            <div style={styles.aMeta}>
-                              판매자 · {formatDate(r.answerDate)}
-                            </div>
-                            <div style={styles.aText}>{r.answerContent}</div>
-                          </div>
+                    <tbody>
+                        {rows.length === 0 ? (
+                            <tr>
+                                <td colSpan={4} className="emptyCell">
+                                    문의내역이 없습니다.
+                                </td>
+                            </tr>
+                        ) : (
+                            rows.map((r) => (
+                                <React.Fragment key={r.questionId}>
+                                    <tr
+                                        className="row"
+                                        onClick={() =>
+                                            setOpenId(openId === r.questionId ? null : r.questionId)
+                                        }
+                                    >
+                                        <td className="td">
+                                            {r.answered ? (
+                                                <Badge color="#ff8aa0" text="답변 완료" />
+                                            ) : (
+                                                <Badge color="#bbb" text="답변 대기" />
+                                            )}
+                                        </td>
+                                        <td className="td" style={{ textAlign: "left" }}>
+                                            {r.title}
+                                        </td>
+                                        <td className="td">{r.writerMasked}</td>
+                                        <td className="td">{formatDate(r.questionDate)}</td>
+                                    </tr>
+
+                                    {openId === r.questionId && (
+                                        <tr>
+                                            <td colSpan={4} className="detailCell">
+                                                <div className="qBox">
+                                                    <div className="qTitle">질문</div>
+                                                    <div className="qText">{r.questionContent}</div>
+                                                </div>
+
+                                                {r.answered && (
+                                                    <div className="aBox">
+                                                        <div className="aLabel">답변</div>
+                                                        <div className="aMeta">
+                                                            판매자 · {formatDate(r.answerDate)}
+                                                        </div>
+                                                        <div className="aText">{r.answerContent}</div>
+                                                    </div>
+                                                )}
+
+                                                <div style={{ textAlign: "right", marginTop: 12 }}>
+                                                    <button
+                                                        className="lightBtn"
+                                                        onClick={(e) => handleDelete(e, r.questionId)} // ✨ 중요: 이벤트 객체(e)를 전달
+                                                    >
+                                                        문의 삭제
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    )}
+                                </React.Fragment>
+                            ))
                         )}
+                    </tbody>
+                </table>
 
-                        <div style={{ textAlign: "right", marginTop: 12 }}>
-                          <button style={styles.lightBtn}>
-                            답변 삭제가 필요할까요..?
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  )}
-                </React.Fragment>
-              ))
-            )}
-          </tbody>
-        </table>
-
-        <div style={styles.paging}>1 2 3 4 5</div>
-      </section>
-    </main>
-  );
+                {/* 페이징 버튼 */}
+                <div className="paging">
+                    {Array.from({ length: totalPages }, (_, index) => (
+                        <button
+                            key={index}
+                            onClick={() => handlePageChange(index)}
+                            style={{
+                                padding: "5px 10px",
+                                margin: "0 5px",
+                                cursor: "pointer",
+                                backgroundColor: currentPage === index ? "#ff7f93" : "#fff",
+                                border: "1px solid #ccc",
+                                borderRadius: "5px",
+                                color: currentPage === index ? "#fff" : "#333",
+                            }}
+                        >
+                            {index + 1}
+                        </button>
+                    ))}
+                </div>
+            </section>
+        </main>
+    );
 }
 
 /* ===== utils & styles ===== */
 function formatDate(d) {
-  if (!d) return "";
-  const date = new Date(d);
-  const y = String(date.getFullYear()).slice(2);
-  const m = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${y}-${m}-${day}`;
+    if (!d) return "";
+    const date = new Date(d);
+    const y = String(date.getFullYear()).slice(2);
+    const m = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${y}-${m}-${day}`;
 }
 
 function Badge({ text, color }) {
-  return (
-    <span
-      style={{
-        display: "inline-block",
-        padding: "2px 8px",
-        borderRadius: 999,
-        border: `1px solid ${color}55`,
-        background: `${color}22`,
-        color,
-      }}
-    >
-      {text}
-    </span>
-  );
+    return (
+        <span
+            style={{
+                display: "inline-block",
+                padding: "2px 8px",
+                borderRadius: 999,
+                border: `1px solid ${color}55`,
+                background: `${color}22`,
+                color,
+            }}
+        >
+            {text}
+        </span>
+    );
 }
-
-const styles = {
-  page: {
-    display: "grid",
-    placeItems: "center",
-    padding: "24px 16px",
-    background: "#fafafa",
-  },
-  wrap: { width: "min(920px, 94vw)" },
-  heading: {
-    background: "#ff7f93",
-    color: "#fff",
-    textAlign: "center",
-    padding: "12px 0",
-    borderRadius: "8px 8px 0 0",
-    margin: 0,
-    fontSize: 18,
-    fontWeight: 700,
-  },
-  table: {
-    width: "100%",
-    borderCollapse: "collapse",
-    border: "1px solid #f3c6c9",
-    borderTop: "none",
-  },
-  headRow: { background: "#fff3f4" },
-  th: { padding: "12px 8px", borderBottom: "1px solid #f3c6c9", fontSize: 14 },
-  row: { cursor: "pointer", borderBottom: "1px solid #f3c6c9" },
-  td: { padding: "10px 8px", textAlign: "center", fontSize: 14 },
-  detailCell: {
-    background: "#fff",
-    padding: "16px",
-    borderBottom: "1px solid #f3c6c9",
-  },
-
-  qBox: {
-    padding: "12px 14px",
-    background: "#fff",
-    border: "1px solid #eee",
-    borderRadius: 8,
-  },
-  qTitle: { fontWeight: 700, marginBottom: 6 },
-  qText: { whiteSpace: "pre-wrap", lineHeight: 1.6, color: "#444" },
-
-  aBox: {
-    marginTop: 12,
-    padding: "14px",
-    background: "#f7f7f9",
-    border: "1px solid #eee",
-    borderRadius: 8,
-  },
-  aLabel: {
-    display: "inline-block",
-    marginBottom: 6,
-    padding: "2px 8px",
-    borderRadius: 6,
-    background: "#333",
-    color: "#fff",
-    fontSize: 12,
-  },
-  aMeta: { fontSize: 12, color: "#777", marginBottom: 6 },
-  aText: { whiteSpace: "pre-wrap", lineHeight: 1.6, color: "#333" },
-
-  lightBtn: {
-    border: "1px solid #ddd",
-    background: "#fff",
-    padding: "8px 12px",
-    borderRadius: 999,
-    cursor: "pointer",
-  },
-  paging: { textAlign: "center", padding: "12px", color: "#999" },
-
-  emptyCell: {
-    padding: "36px 8px",
-    textAlign: "center",
-    color: "#888",
-    fontSize: 14,
-  },
-};

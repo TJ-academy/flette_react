@@ -1,6 +1,6 @@
-// src/components/mypage/MyPageMain.js
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import "../../css/mypage/mypage.css";
 
 // 이미지 불러오기
@@ -11,6 +11,7 @@ import qnaIcon from "../../resources/images/qna.png";
 
 function MyPageMain() {
   const [loginName, setLoginName] = useState("");
+  const [stats, setStats] = useState({ ordersCount: 0, reviewsCount: 0, questionsCount: 0 });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,6 +19,16 @@ function MyPageMain() {
     if (storedLoginName) {
       setLoginName(storedLoginName);
     }
+
+    const userid = sessionStorage.getItem("loginId") || "guy123"; // 로그인 사용자
+    axios
+      .get(`http://localhost:80/api/mypage/stats`, { params: { userid } })
+      .then(({ data }) => {
+        setStats(data); // 서버에서 받아온 통계 데이터
+      })
+      .catch((error) => {
+        console.error("통계 조회 실패", error);
+      });
   }, []);
 
   const handleEditClick = () => {
@@ -59,9 +70,9 @@ function MyPageMain() {
         }}
       >
         <div style={{ display: "flex", justifyContent: "space-around" }}>
-          <StatItem to="/mypage/order" label="주문내역" value={21} icon={listIcon} />
-          <StatItem to="/mypage/review" label="리뷰" value={6} icon={reviewIcon} />
-          <StatItem to="/mypage/question" label="문의" value={6} icon={qnaIcon} />
+          <StatItem to="/mypage/order" label="주문내역" value={stats.ordersCount} icon={listIcon} />
+          <StatItem to="/mypage/review" label="리뷰" value={stats.reviewsCount} icon={reviewIcon} />
+          <StatItem to="/mypage/question" label="문의" value={stats.questionsCount} icon={qnaIcon} />
         </div>
       </div>
       <br></br>

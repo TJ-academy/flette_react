@@ -1,0 +1,167 @@
+/* 페이지 배경 */
+body {
+  background-color: #fff;
+}
+
+/* 주소 변경 컨테이너 */
+.addr-edit-container {
+  width: 100%;
+  max-width: 560px;
+  padding: 2.5rem;
+  background-color: #fff;
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  border: 1px solid #ffc0cb;
+  margin-top: 7vh; /* 뷰포트 높이에서 위로 살짝 올림 */
+  margin-bottom: 27vh;
+}
+
+/* 헤더 */
+.addr-edit-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  width: 100%;
+  justify-content: flex-start;
+  margin-left: -14rem;
+}
+
+.addr-edit-header .back-btn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #333;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+
+.addr-edit-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #333;
+}
+
+/* 필드 공통 */
+.addr-edit-field {
+  margin-bottom: 1rem;
+}
+
+.addr-edit-label {
+  font-size: 0.875rem;
+  color: #555;
+  margin-bottom: 0.3rem;
+}
+
+/* 기존 주소 표시 */
+.addr-edit-static {
+  font-size: 0.9rem;
+  color: #333;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 999px;
+  background-color: #f9f9f9;
+}
+
+/* 입력창 */
+.addr-edit-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 999px; /* pill 형태 */
+  font-size: 0.9rem;
+  box-sizing: border-box;
+}
+
+.addr-edit-input:focus {
+  border-color: #F2778C;
+  outline: none;
+}
+
+/* 우편번호 검색 줄 */
+.addr-zipcode-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.zipcode-btn {
+  flex-shrink: 0;
+  padding: 0.75rem 1rem;
+  background-color: #fff;
+  color: #F2778C;
+  border: 1px solid #F2778C;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.zipcode-btn:hover {
+  background-color: #e06a7f;
+  color: #fff;
+}
+
+.zipcode-btn:disabled {
+  background-color: #f3b8c4;
+  cursor: not-allowed;
+}
+
+/* 상태 메시지 */
+.addr-status-message {
+  min-height: 1rem;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  text-align: left;
+}
+
+.addr-status-message.success {
+  color: #28a745;
+}
+
+.addr-status-message.error {
+  color: #dc3545;
+}
+
+/* 버튼 영역 */
+.addr-edit-actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.addr-cancel-btn,
+.addr-save-btn {
+  flex: 1;
+  padding: 0.75rem;
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.addr-cancel-btn {
+  background-color: #F3D0D4;
+  color: #F2778C;
+  border: 1px solid #F2778C;
+}
+
+.addr-cancel-btn:hover {
+  background-color: #F2778C;
+  color: white;
+}
+
+.addr-save-btn {
+  background-color: #F2778C;
+  color: white;
+  border: none;
+}
+
+.addr-save-btn:hover {
+  background-color: #e06a7f;
+}

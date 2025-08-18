@@ -28,7 +28,6 @@ import MyReviewList from './components/mypage/MyReviewList';
 import MyReviewWrite from './components/mypage/MyReviewWrite';
 import MyReviewDetail from './components/mypage/MyReviewDetail';
 import MyQuestionList from './components/mypage/MyQuestionList';
-import MyQuestionDetail from './components/mypage/MyQuestionDetail';
 
 //장바구니
 import CartList from './components/cart/CartList';
@@ -49,6 +48,9 @@ import OrderAdmin from './components/admin/OrderAdmin';
 import QuestionAdmin from './components/admin/QuestionAdmin';
 import ReviewsIndex from './components/shop/ReviewsIndex';
 import MainAdmin from './components/admin/MainAdmin'; 
+
+// 결제
+import PaymentTestPage from './PaymentTestPage';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -121,7 +123,6 @@ function App() {
         <Route path="/mypage/reviews/write/:purchaseId" element={<MyReviewWrite />} />
         <Route path="/mypage/review/detail/:id" element={<MyReviewDetail />} />
         <Route path="/mypage/question" element={<MyQuestionList />} />
-        <Route path="/mypage/question/detail/:id" element={<MyQuestionDetail />} />
 
         {/* 리뷰 */}
         <Route path="/reviews" element={<ReviewsIndex />} />
@@ -149,6 +150,9 @@ function App() {
         <Route path="/" element={<Main />} />
         <Route path="/survey/start" element={<StartSurvey />} />
         <Route path="/admin" element={<MainAdmin />} />
+
+        {/* 결제 테스트 */}
+        <Route path="/payment" element={<PaymentTestPage />} />
       </Routes>
       <Footer />
     </Router>
