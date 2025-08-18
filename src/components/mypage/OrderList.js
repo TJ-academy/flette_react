@@ -1,78 +1,128 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../css/OrderList.css"; 
+import "../../css/OrderList.css";
+import axios from "axios";
+
+// API 기본 URL 설정
+const API_BASE_URL = "http://localhost/api/orders";
 
 function OrderList() {
   const navigate = useNavigate();
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const orders = [
-    {
-      date: "2025.08.03",
-      items: [
-        { name: "카드 꽃다발 (소)", price: "19,800원", status: "배송중", id: 1, img: "/images/flower1.jpg" },
-      ],
+  // 현재 로그인한 사용자의 ID
+  // userId를 "1"이 아닌 문자열 "0511skfo"로 변경합니다.
+  const userId = "0511skfo";
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/history/${userId}`);
+        setOrders(response.data);
+      } catch (err) {
+        setError("주문 내역을 불러오는 데 실패했습니다.");
+        console.error("API 호출 에러:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, [userId]);
+
+  if (loading) {
+    return (
+      <main className="orderlist">
+        <div>주문 내역을 불러오는 중...</div>
+      </main>
+    );
+  }
+
+  if (error) {
+    return (
+      <main className="orderlist">
+        <div>{error}</div>
+      </main>
+    );
+  }
+
+  // orders 배열의 각 주문 객체에 있는 status 필드를 기반으로 count를 계산
+  const statusCounts = orders.reduce(
+    (acc, order) => {
+      if (order.status === "배송중") {
+        acc.배송중++;
+      } else if (order.status === "배송완료") {
+        acc.배송완료++;
+      } else if (order.status === "취소/반품") {
+        acc.취소반품++;
+      } else if (order.status === "결제완료") { // 결제완료 상태를 배송중으로 처리 (비즈니스 로직에 맞게 조정 필요)
+        acc.배송중++;
+      }
+      return acc;
     },
-    {
-      date: "2025.07.31",
-      items: [
-        { name: "카드 꽃다발 (소)", price: "19,800원", status: "배송완료", id: 2, img: "/images/flower2.jpg" },
-        { name: "카드 꽃다발 (중)", price: "19,800원", status: "배송완료", id: 3, img: "/images/flower3.jpg" },
-        { name: "그림꽃", price: "19,800원", status: "배송완료", id: 4, img: "/images/flower4.jpg" },
-      ],
-    },
-    {
-      date: "2025.05.03",
-      items: [
-        { name: "카드 꽃다발 (소)", price: "19,800원", status: "취소/반품", id: 5, img: "/images/flower5.jpg" },
-        { name: "그림꽃", price: "19,800원", status: "취소/반품", id: 6, img: "/images/flower6.jpg" },
-      ],
-    },
-  ];
+    { 배송중: 0, 배송완료: 0, 취소반품: 0 }
+  );
 
   return (
     <main className="orderlist">
       <section className="orderlist-container">
-
-      <h2 className="orderlist-title">주문내역</h2>
-
+        <h2 className="orderlist-title">주문내역</h2>
+        
         {/* 상태별 주문 개수 */}
         <div className="orderlist-status-wrap">
-          <StatusCount label="배송중" count={1} />
-          <StatusCount label="배송완료" count={2} />
-          <StatusCount label="취소/반품" count={0} />
+          <StatusCount label="배송중" count={statusCounts.배송중} />
+          <StatusCount label="배송완료" count={statusCounts.배송완료} />
+          <StatusCount label="취소/반품" count={statusCounts.취소반품} />
         </div>
 
         {/* 주문 목록 */}
         <div className="orderlist-list">
-          {orders.map((order, index) => (
-            <div key={index} className="orderlist-group">
-              <div className="orderlist-date">{order.date}</div>
-              {order.items.map((item) => (
-                <div key={item.id} className="orderlist-item">
-                  <img src={item.img} alt={item.name} className="orderlist-thumb" />
-                  <div className="orderlist-info">
-                  <div className={`orderlist-status ${item.status}`}>{item.status}</div>
-                    <div className="orderlist-name">{item.name}</div>
-                    <div className="orderlist-price">{item.price}</div>
-                  </div>
-                  <button
-  onClick={() => navigate(`/mypage/order/detail/${item.id}`)}
-  className="orderlist-arrow"
->
-  ›
-</button>
-
+          {orders.length > 0 ? (
+            orders.map((order) => (
+              <div key={order.orderId} className="orderlist-group">
+                {/* 주문 날짜 표시 */}
+                <div className="orderlist-date">
+                  {new Date(order.orderDate).toLocaleDateString("ko-KR")}
                 </div>
-              ))}
-            </div>
-          ))}
+                {/* 각 주문의 상세 아이템 렌더링 */}
+                {order.details.map((item) => (
+                  <div key={item.detailId} className="orderlist-item">
+                    <img
+                      src={`/img/product/${item.imageName}`} // 실제 이미지 경로로 수정
+                      alt={item.productName}
+                      className="orderlist-thumb"
+                    />
+                    <div className="orderlist-info">
+                      <div className={`orderlist-status ${order.status}`}>
+                        {order.status}
+                      </div>
+                      <div className="orderlist-name">{item.productName}</div>
+                      <div className="orderlist-price">
+                        {item.money.toLocaleString()}원
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => navigate(`/mypage/order/detail/${order.orderId}`)}
+                      className="orderlist-arrow"
+                    >
+                      ›
+                    </button>
+                  </div>
+                ))}
+              </div>
+            ))
+          ) : (
+            <div className="no-orders">주문 내역이 없습니다.</div>
+          )}
         </div>
       </section>
     </main>
   );
 }
 
-// 상태별 주문 개수
+// 상태별 주문 개수 컴포넌트
 function StatusCount({ label, count }) {
   return (
     <div className="orderlist-status-card">
