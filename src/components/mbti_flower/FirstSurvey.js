@@ -17,6 +17,7 @@ import prizia from "./img/프리지아.png";
 import sunbaragi from "./img/해바라기.png";
 import hiasins from "./img/히아신스.png";
 import suguk from "./img/수국.png";
+import jakyak from "./img/작약.png";
 
 const questions = [
     { id: 1, text: "혼자 있는 시간이 당신에겐?", options: ["꼭 필요하고 편안하다", "사람들과 어울리는 게 더 좋다"] },
@@ -133,14 +134,14 @@ const mbtiResults = {
   },
   ENTP: {
     flowerId: 8, // 작약
-    flower: "작약",
+    flower: "튤립",
     image: tulrip, // tulrip 변수에 다른 이미지 연결돼 있으면 교체 필요
     description:
       "새로운 아이디어가 끊이지 않고, 도전을 즐기는 당신. 틀을 깨고 다른 관점에서 세상을 바라보는 창조적인 두뇌. 자유롭고 예측 불가능한 매력, 튤립처럼 유쾌하고 다채로운 사람입니다.",
     flowerMeaning: "사랑의 고백, 영원한 애정",
   },
   ENFP: {
-    flowerId: 22, // 작약 (코스모스는 DB에 없음 → 유사 꽃 매칭)
+    flowerId: 22, 
     flower: "코스모스",
     image: cosmos,
     description:
