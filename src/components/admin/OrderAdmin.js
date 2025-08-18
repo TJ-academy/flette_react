@@ -5,6 +5,7 @@ import "../../css/admin/admin.css"; // CSS 경로 맞춰주세요
 function OrderAdmin() {
   const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState("");
 
   // 주문 목록 로드
   const loadOrders = async () => {
@@ -23,9 +24,39 @@ function OrderAdmin() {
     try {
       const res = await axios.get(`/api/admin/orders/${orderId}`);
       setSelectedOrder(res.data);
+      // 주문 상태를 select의 초기값으로 설정
+      setSelectedStatus(res.data.order.status);
     } catch (err) {
       console.error("주문 상세 불러오기 실패", err);
     }
+  };
+
+  const handleStatusChange = (e) => {
+    setSelectedStatus(e.target.value);
+  };
+
+  const handleUpdateStatus = async () => {
+    if (!selectedOrder) return;
+
+    try {
+      await axios.patch(`/api/admin/orders/${selectedOrder.order.orderId}/status`, {
+        status: selectedStatus,
+      });
+      alert(`주문 #${selectedOrder.order.orderId}의 상태가 '${selectedStatus}'(으)로 변경되었습니다.`);
+      // 변경 후 목록과 상세 정보 다시 로드
+      loadOrders();
+      loadOrderDetail(selectedOrder.order.orderId);
+    } catch (err) {
+      console.error("상태 변경 실패", err);
+      alert("상태 변경에 실패했습니다. 콘솔을 확인해주세요.");
+    }
+  };
+
+  const handleRefundOrder = () => {
+    // 환불 처리 로직을 여기에 구현하세요.
+    // 예: axios.post(`/api/admin/orders/${selectedOrder.order.orderId}/refund`);
+    alert(`주문 #${selectedOrder.order.orderId}를 환불 처리합니다.`);
+    console.log(`주문 #${selectedOrder.order.orderId}를 환불 처리`);
   };
 
   useEffect(() => {
@@ -96,7 +127,17 @@ function OrderAdmin() {
               <div>{selectedOrder.order.method}</div>
 
               <div className="label">상태</div>
-              <div>{selectedOrder.order.status}</div>
+              <div>
+                <select name="status" value={selectedStatus} onChange={handleStatusChange}>
+                  <option value="입금확인중">입금확인중</option>
+                  <option value="취소완료">취소완료</option>
+                  <option value="결제완료">결제완료</option>
+                  <option value="환불완료">환불완료</option>
+                  <option value="배송중">배송중</option>
+                  <option value="배송완료">배송완료</option>
+                  <option value="구매확정">구매확정</option>
+                </select>
+              </div>
             </div>
 
             <h4 style={{ marginTop: "14px" }}>상품 목록</h4>
@@ -124,13 +165,13 @@ function OrderAdmin() {
             <div className="detail-btns">
               <button
                 className="primary-btn"
-                onClick={() => alert("상태 변경")}
+                onClick={handleUpdateStatus}
               >
                 상태 변경
               </button>
               <button
                 className="danger-btn"
-                onClick={() => alert("환불 처리")}
+                onClick={handleRefundOrder}
               >
                 환불 처리
               </button>
