@@ -56,7 +56,7 @@ tbody tr {
 }
 
 .error-message {
-    color: "red"
+    color: red;
 }
 
 /* 답변 */

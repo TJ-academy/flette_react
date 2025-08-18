@@ -2,19 +2,19 @@ import axios from 'axios';
 import {useState} from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-const ShopQaWrite = () => {
+const ShopQaWrite = ({ onCancel, onSubmitSuccess }) => {
     const { productId } = useParams();
     const navigate = useNavigate();
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [passwd, setPasswd] = useState('');
-    const [userid, setUserid] = useState(sessionStorage.getItem('loginId') || '');
+    const userid = sessionStorage.getItem('loginId') || '';
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         try {
-            console.log({ productId, userid, title, content, passwd });
+            //console.log({ productId, userid, title, content, passwd });
             await axios.post(`http://localhost/api/shop/${productId}/qa/write`, {
                 productId,
                 userid,
@@ -22,7 +22,8 @@ const ShopQaWrite = () => {
                 content,
                 passwd: passwd.trim() === '' ? null : passwd
             });
-            navigate(`/shop/${productId}/qa/`);
+            
+            if (onSubmitSuccess) onSubmitSuccess();
         } catch(error) {
             console.error('Q&A 작성 중 오류 발생: ', error);
         }
@@ -41,7 +42,8 @@ const ShopQaWrite = () => {
                 <label>내용: 
                     <textarea value={content} onChange={(e) => setContent(e.target.value)} required />
                 </label><br />
-                <button type="submit">작성</button>
+                <button type="submit">게시하기</button>
+                <button type="button" onClick={onCancel}>취소하기</button>
             </form>
         </div>
     );

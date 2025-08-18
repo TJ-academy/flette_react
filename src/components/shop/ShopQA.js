@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import {Link, useParams, useNavigate} from 'react-router-dom';
 import '../../css/shopQA.css';
 
-function ShopQa() {
+function ShopQa({ onWriteClick }) {
     const [lists, setLists] = useState([]);
     const {productId} = useParams();
     const [errorMessages, setErrorMessages] = useState({});
@@ -86,7 +86,8 @@ function ShopQa() {
                         navigate("/member/login");
                     }
                 } else {
-                    navigate(`/shop/${productId}/qa/write`);
+                    // navigate(`/shop/${productId}/qa/write`);
+                    onWriteClick();
                 }
             }}>Q&A 작성하기</button>
 

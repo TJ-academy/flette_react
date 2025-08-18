@@ -3,6 +3,8 @@ import { useEffect, useState, useRef } from "react";
 import {useNavigate, useParams} from 'react-router-dom';
 import ShopReview from "./ShopReview";
 import ShopQa from "./ShopQA";
+import ShopQaWrite from "./ShopQaWrite";
+import ShopInfo from "./ShopInfo";
 
 function useFetch(url) {
     const [data, setData] = useState(null);
@@ -21,7 +23,7 @@ function useFetch(url) {
 
 function ShopDetail() {
     const {productId} = useParams();
-    const [data, loading] = useFetch('http://localhost/api/shop/' + productId + '/detail');
+    const [data, loading] = useFetch(`http://localhost/api/shop/${productId}/detail`);
     const [activeTab, setActiveTab] = useState('details');
     //const [expandedReviewId, setExpandedReviewId] = useState(null);
     const navigate = useNavigate();
@@ -30,15 +32,16 @@ function ShopDetail() {
     const renderContent = () => {
         switch(activeTab) {
             case 'details' :
-                return (
-                    <div>
-                        상품의 상세정보
-                    </div>
-                );
+                return <ShopInfo />;
             case 'reviews' :
                 return <ShopReview />;
             case 'qa' :
-                return <ShopQa />;
+                return <ShopQa 
+                    onWriteClick={() => setActiveTab('qaWrite')} />;
+            case 'qaWrite':
+                return <ShopQaWrite 
+                    onCancel={() => setActiveTab('qa')}
+                    onSubmitSuccess={() => setActiveTab('qa')} />;
             default:
                 return null;
         }
