@@ -7,8 +7,7 @@ export default function CartList() {
     // 장바구니 목록 로드
     const loadCartItems = async () => {
         try {
-            // userId는 로그인된 사용자의 ID로 변경해야 합니다.
-            const userId = 'testuser'; // 예시: 실제 로그인된 사용자 ID로 대체
+            const userId = sessionStorage.getItem('loginId')
             const res = await axios.get(`/api/cart/list/${userId}`);
             setCartItems(res.data);
         } catch (err) {
