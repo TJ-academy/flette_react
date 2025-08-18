@@ -1,0 +1,116 @@
+:root {
+  --pink: #F2778C;      
+  --gray-1: #59514F;
+  --gray-2: #C8C8C8;
+  --bar-gray: #C8C8C8;
+  --bg-white: #fff;
+}
+
+.order-delivery {
+  width: 100%;
+  max-width: 900px;            
+  margin: 100px auto;           
+  padding: 28px 32px;
+  background: var(--bg-white);
+  border: 1.5px solid var(--pink);
+  border-radius: 16px;
+  box-sizing: border-box;
+  min-height: 40vh;
+}
+
+
+.order-delivery > h2 {
+  margin: 0 0 18px 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--gray-1);
+}
+
+
+.order-delivery > h2 .date {
+  color: var(--pink);
+  font-weight: 700;
+}
+
+.progress-bar {
+  display: flex;
+  margin: 55px 0 24px;
+  position: relative;
+  gap: 0;
+}
+
+.progress-bar .step {
+  flex: 1;
+  text-align: center;
+  position: relative;
+}
+
+.progress-bar .step .line {
+  height: 4px;
+  background: var(--bar-gray);
+  margin: 0 auto;
+}
+
+.progress-bar .step.done .line {
+  background: var(--pink);
+}
+
+.progress-bar .step .label {
+  display: block;
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gray-2);
+}
+
+
+.progress-bar .step.active .label {
+  color: var(--pink);
+}
+
+.order-items {
+  padding: 16px 6px 8px;
+}
+
+.order-item {
+  display: flex;
+  gap: 14px;
+  background: #fff;
+}
+.order-item img {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.order-item p {
+  margin: 0;
+  line-height: 1.4;
+  color: #59514F;
+}
+
+.order-item p + p {
+  margin-top: 4px;
+  font-weight: 700;  
+}
+
+.order-delivery .back-btn {
+  display: block;
+  margin: 100px auto 0;        
+  padding: 11px 22px;
+  min-width: 140px;
+  border: 1px solid var(--pink);
+  border-radius: 25px;
+  background-color: #fff;
+  color: var(--pink);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.order-delivery .back-btn:hover {
+  background-color: var(--pink);
+  border-color: var(--pink);
+  color: #fff;
+}
