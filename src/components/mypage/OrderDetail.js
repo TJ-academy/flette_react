@@ -84,8 +84,16 @@ export default function OrderDetail() {
         return <button className="orderdetail-btn">주문 취소</button>;
       case "결제완료":
         return <button className="orderdetail-btn">환불 요청</button>;
-      case "배송중":
-        return <button className="orderdetail-btn">배송 조회하기</button>;
+        case "배송중":
+          return (
+            <button
+              className="orderdetail-btn"
+              onClick={() => navigate(`/mypage/order/delivery/${id}`)}
+            >
+              배송 조회하기
+            </button>
+          );
+        
       case "배송완료":
         return <button className="orderdetail-btn">구매 확정</button>;
       case "구매확정":
