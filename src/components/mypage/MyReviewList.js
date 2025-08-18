@@ -1,108 +1,67 @@
 // src/pages/MyReviewList.jsx
-import React, { useEffect, useMemo, useState, useCallback } from "react";
-import { Link, useLocation } from "react-router-dom";
-
-const LS_KEY = "flette-reviews";
-
-/** 처음 방문 시 채워 넣을 기본 데이터 */
-const defaultState = {
-  purchases: [
-    // reviewed === false → 작성할 후기
-    { id: 9001, productName: "라이트 튤립 (소)", option: "크림/핑크", price: "19,800원", date: "2025.08.05", thumb: "https://picsum.photos/seed/ft1/80/80", reviewed: false },
-    { id: 9002, productName: "가든 부케 (소)", option: "레드/화이트", price: "19,800원", date: "2025.08.01", thumb: "https://picsum.photos/seed/ft2/80/80", reviewed: false },
-    { id: 9003, productName: "가든 부케 (소)", option: "레드/화이트", price: "19,800원", date: "2025.08.01", thumb: "https://picsum.photos/seed/ft2/80/80", reviewed: false },
-    // reviewed === true → 이미 작성한 항목
-    { id: 9101, productName: "커스텀 꽃다발 (중)", option: "옐로/피치", price: "29,800원", date: "2025.07.30", thumb: "https://picsum.photos/seed/ft3/80/80", reviewed: true },
-  ],
-  reviews: [
-    { id: 101, purchaseId: 9101, productName: "커스텀 꽃다발 (중)", option: "옐로/피치", price: "29,800원", date: "2025.07.31", rating: 5, text: "색감이 정말 예뻐요. 선물 받는 분이 엄청 좋아했습니다!", thumb: "https://picsum.photos/seed/ft3/80/80" },
-  ],
-};
+import React, { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
 
 export default function MyReviewList() {
   const [tab, setTab] = useState("todo"); // "todo" | "done"
   const [purchases, setPurchases] = useState([]);
   const [reviews, setReviews] = useState([]);
-  const location = useLocation();
+  const userid = "test1"; // ⭐ 로그인 사용자 ID
 
-  // localStorage → 상태 로드
-  const loadFromLS = useCallback(() => {
-    const saved = localStorage.getItem(LS_KEY);
-    if (!saved) return;
-    const s = JSON.parse(saved);
-    setPurchases(s.purchases || []);
-    setReviews(s.reviews || []);
-  }, []);
-
-  // 샘플 데이터로 초기화(버튼용)
-  const seedDemo = useCallback(() => {
-    localStorage.setItem(LS_KEY, JSON.stringify(defaultState));
-    setPurchases(defaultState.purchases);
-    setReviews(defaultState.reviews);
-    setTab("todo");
-  }, []);
-
-  // 최초 로드(없으면 기본 데이터로 초기화)
   useEffect(() => {
-    const saved = localStorage.getItem(LS_KEY);
-    if (saved) {
-      loadFromLS();
-    } else {
-      seedDemo();
-    }
-  }, [loadFromLS, seedDemo]);
+    // 작성한 후기
+    axios.get(`http://localhost/api/mypage/reviews/${userid}`)
+      .then(res => setReviews(res.data.rlist || []))
+      .catch(err => console.error("리뷰 불러오기 실패:", err));
 
-  // 작성 페이지에서 돌아오면: 탭 세팅 + 데이터 재로딩
-  useEffect(() => {
-    if (location.state?.tab) setTab(location.state.tab);
-    if (location.state?.refresh) loadFromLS();
-  }, [location.state, loadFromLS]);
+    // 작성할 후기 (주문 내역 API 필요)
+    axios.get(`http://localhost/api/mypage/orders/${userid}`)
+      .then(res => setPurchases(res.data || []))
+      .catch(err => console.error("주문내역 불러오기 실패:", err));
+  }, [userid]);
 
-  // 탭별 리스트
-  const todoList = useMemo(() => purchases.filter((p) => !p.reviewed), [purchases]);
+  const todoList = useMemo(() => {
+    const reviewedIds = new Set(reviews.map(r => r.productId));
+    return purchases.filter(p => !reviewedIds.has(p.productId));
+  }, [purchases, reviews]);
+
   const doneList = reviews;
   const list = tab === "todo" ? todoList : doneList;
 
   return (
     <main style={styles.page}>
       <section style={styles.panel}>
-        {/* 탭 + 우측에 샘플 채우기 */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr auto", alignItems: "center" }}>
-          <div style={styles.tabs}>
-            <button
-              type="button"
-              onClick={() => setTab("todo")}
-              style={{ ...styles.tabBtn, ...(tab === "todo" ? styles.tabBtnActive : {}) }}
-            >
-              작성할 후기 ({todoList.length})
-            </button>
-            <button
-              type="button"
-              onClick={() => setTab("done")}
-              style={{ ...styles.tabBtn, ...(tab === "done" ? styles.tabBtnActive : {}) }}
-            >
-              작성한 후기 ({doneList.length})
-            </button>
-          </div>
-          <button onClick={seedDemo} style={styles.seedBtn} title="샘플 데이터 다시 넣기">
-            샘플 채우기
+        {/* 탭 버튼 */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 20 }}>
+          <button
+            type="button"
+            onClick={() => setTab("todo")}
+            style={{ ...styles.tabBtn, ...(tab === "todo" ? styles.tabBtnActive : {}) }}
+          >
+            작성할 후기 ({todoList.length})
+          </button>
+          <button
+            type="button"
+            onClick={() => setTab("done")}
+            style={{ ...styles.tabBtn, ...(tab === "done" ? styles.tabBtnActive : {}) }}
+          >
+            작성한 후기 ({doneList.length})
           </button>
         </div>
 
         {/* 리스트 */}
-        <div style={{ marginTop: 12 }}>
-          {list.length === 0 ? (
-            <EmptyState tab={tab} onSeed={seedDemo} />
-          ) : (
-            list.map((item) =>
-              tab === "todo" ? (
-                <ToWriteCard key={item.id} item={item} />
-              ) : (
-                <WrittenCard key={item.id} item={item} />
-              )
+        {list.length === 0 ? (
+          <EmptyState tab={tab} />
+        ) : (
+          list.map((item) =>
+            tab === "todo" ? (
+              <ToWriteCard key={item.orderId} item={item} />
+            ) : (
+              <WrittenCard key={item.reviewId} item={item} />
             )
-          )}
-        </div>
+          )
+        )}
       </section>
     </main>
   );
@@ -111,18 +70,15 @@ export default function MyReviewList() {
 /* ====== 카드: 작성할 후기 ====== */
 function ToWriteCard({ item }) {
   return (
-    <div style={styles.card}>
-      <img src={item.thumb} alt="" style={styles.thumb} />
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={styles.titleRow}>
-          <div style={styles.title}>{item.productName}</div>
-          <div style={styles.meta}>{item.date}</div>
-        </div>
-        <div style={styles.meta}>옵션 {item.option} · {item.price}</div>
+    <div style={styles.reviewCard}>
+      <div style={styles.reviewHeader}>
+        <div style={styles.reviewTitle}>{item.productName}</div>
+        <div style={styles.reviewDate}>{new Date(item.orderDate).toLocaleDateString("ko-KR")}</div>
       </div>
+      <div style={styles.reviewWriter}>옵션 {item.option} · {item.price}원</div>
       <Link
-        to={`/mypage/reviews/write/${item.id}`}
-        state={item} // 작성 페이지로 구매항목 전달
+        to={`/mypage/reviews/write/${item.productId}`}
+        state={item}
         style={styles.primaryBtn}
       >
         리뷰 쓰기
@@ -133,52 +89,67 @@ function ToWriteCard({ item }) {
 
 /* ====== 카드: 작성한 후기 ====== */
 function WrittenCard({ item }) {
+  const productNameMap = {
+    1: "커스텀 꽃다발 (소)",
+    2: "커스텀 꽃다발 (중)",
+    3: "커스텀 꽃다발 (대)"
+  };
+
   return (
-    <div style={styles.card}>
-      <img src={item.thumb} alt="" style={styles.thumb} />
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={styles.titleRow}>
-          <div style={styles.title}>{item.productName}</div>
-          <div style={styles.meta}>{item.date}</div>
+    <div style={styles.reviewCard}>
+      <div style={styles.reviewGrid}>
+        {/* 왼쪽 텍스트 영역 */}
+        <div style={{ flex: 1 }}>
+          <div style={styles.reviewHeader}>
+            <div style={styles.reviewTitle}>
+              {productNameMap[item.productId] || `상품 ID ${item.productId}`}
+            </div>
+            <div style={styles.reviewDate}>
+              {new Date(item.reviewDate).toLocaleDateString("ko-KR")}
+            </div>
+          </div>
+          <div style={styles.reviewWriter}> {item.writer}</div>
+          <div style={{ marginBottom: 8 }}>
+            <Stars value={item.score} />
+          </div>
+          <div style={styles.reviewContent}>{item.reviewContent}</div>
         </div>
-        <div style={styles.meta}>옵션 {item.option} · {item.price}</div>
-        <div style={{ marginTop: 6 }}>
-          <Stars value={item.rating} />{" "}
-          <span style={styles.snippet}>{item.text}</span>
+
+        {/* 오른쪽 이미지 영역 */}
+        <div style={styles.reviewImageBox}>
+          {item.reviewImage ? (
+            <img
+              src={item.reviewImage}
+              alt="리뷰 이미지"
+              style={styles.reviewImage}
+            />
+          ) : (
+            <div style={styles.noImage}>이미지 없음</div>
+          )}
         </div>
       </div>
-      <Link
-        to={`/reviews/${item.id}`} 
-        style={styles.arrowBtn}
-        aria-label="리뷰 상세"
-      >
-        ›
-      </Link>
     </div>
   );
 }
 
+
 /* ====== 보조 컴포넌트 ====== */
 function Stars({ value = 0, max = 5 }) {
   return (
-    <span aria-label={`별점 ${value}/${max}`}>
+    <span aria-label={`별점 ${value}/${max}`} style={{ color: "gold", fontSize: 16 }}>
       {"★".repeat(value)}
-      <span style={{ color: "#ccc" }}>{"★".repeat(Math.max(0, max - value))}</span>
+      <span style={{ color: "#ddd" }}>
+        {"★".repeat(Math.max(0, max - value))}
+      </span>
     </span>
   );
 }
 
-function EmptyState({ tab, onSeed }) {
+function EmptyState({ tab }) {
   const text = tab === "todo" ? "작성할 후기가 없습니다." : "작성한 후기가 없습니다.";
-  const showSeed = tab === "todo";
   return (
-    <div style={{ textAlign: "center", color: "#777", padding: "32px 0" }}>
+    <div style={{ textAlign: "center", color: "#777", padding: "40px 0" }}>
       <div>{text}</div>
-      {showSeed && (
-        <button onClick={onSeed} style={{ ...styles.seedBtn, marginTop: 10 }}>
-          샘플 데이터 채우기
-        </button>
-      )}
     </div>
   );
 }
@@ -188,84 +159,74 @@ const styles = {
   page: {
     display: "grid",
     placeItems: "center",
-    padding: "24px 16px",
+    padding: "32px 16px",
     background: "#fafafa",
+    minHeight: "100vh",
   },
   panel: {
     width: "min(720px, 92vw)",
     background: "#fff",
-    border: "1.5px solid #ffccd5",
-    borderRadius: 14,
-    padding: 18,
-  },
-  tabs: {
-    display: "grid",
-    gridTemplateColumns: "1fr 1fr",
-    gap: 8,
-    margin: "6px 8px 10px",
+    border: "1.5px solid #ffd6e0",
+    borderRadius: 16,
+    padding: 20,
+    boxShadow: "0 2px 6px rgba(255, 127, 147, 0.15)",
   },
   tabBtn: {
-    height: 36,
+    height: 40,
     borderRadius: 999,
-    border: "1px solid #ffd5db",
+    border: "1px solid #ffd6e0",
     background: "#fff",
     cursor: "pointer",
     fontSize: 14,
+    transition: "all 0.2s ease",
   },
   tabBtnActive: {
     background: "#ff7f93",
     color: "#fff",
     borderColor: "#ff7f93",
-    fontWeight: 700,
-  },
-  seedBtn: {
-    height: 30,
-    padding: "0 10px",
-    borderRadius: 999,
-    border: "1px solid #ffd5db",
-    background: "#fff",
-    fontSize: 12,
-    color: "#ff7f93",
-    cursor: "pointer",
-  },
-  card: {
-    display: "grid",
-    gridTemplateColumns: "80px 1fr auto",
-    alignItems: "center",
-    gap: 12,
-    border: "1px solid #eee",
-    borderRadius: 12,
-    padding: 12,
-    margin: "10px 6px",
-    boxShadow: "0 1px 2px rgba(0,0,0,0.03)",
-  },
-  thumb: {
-    width: 80,
-    height: 80,
-    objectFit: "cover",
-    borderRadius: 10,
-  },
-  titleRow: {
-    display: "flex",
-    justifyContent: "space-between",
-    gap: 8,
-  },
-  title: { fontWeight: 700, fontSize: 14 },
-  meta: { fontSize: 12, color: "#777" },
-  snippet: { fontSize: 13, color: "#444" },
-  arrowBtn: {
-    textDecoration: "none",
-    color: "#777",
-    fontSize: 22,
-    textAlign: "right",
-    padding: "0 6px",
+    fontWeight: 600,
   },
   primaryBtn: {
     textDecoration: "none",
     background: "#ff7f93",
     color: "#fff",
-    padding: "8px 14px",
+    padding: "8px 16px",
     borderRadius: 999,
     fontSize: 13,
+    fontWeight: 500,
+  },
+  reviewCard: {
+    border: "1px solid #ffe0e6",
+    borderRadius: 12,
+    padding: "20px 22px", // 👉 카드 내부 여백 넉넉히
+    margin: "14px 0",
+    background: "#fff",
+    boxShadow: "0 1px 3px rgba(255, 127, 147, 0.1)",
+  },
+  reviewHeader: {
+    display: "flex",
+    justifyContent: "space-between",
+    marginBottom: 10,
+  },
+  reviewTitle: {
+    fontSize: 14,
+    fontWeight: 700,
+    color: "#333",
+  },
+  reviewDate: {
+    fontSize: 12,
+    color: "#999",
+  },
+  reviewWriter: {
+    fontSize: 13,
+    color: "#666",
+    marginBottom: 10,
+  },
+  reviewContent: {
+    fontSize: 14,
+    color: "#444",
+    marginTop: 10,
+    lineHeight: 1.6, // 👉 줄 간격 넉넉히
+    whiteSpace: "pre-line",
   },
 };

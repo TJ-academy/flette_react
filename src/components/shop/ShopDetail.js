@@ -65,7 +65,7 @@ function ShopDetail() {
                         />
                     )}
                     <p><strong>{data.dto.productName}</strong></p>
-                    <p>{data.dto.basicPrice.toLocaleString()} ~ </p>
+                    <p>{data.dto.basicPrice ? data.dto.basicPrice.toLocaleString() : 0} ~ </p>
                 </div>
                 <div>
                     <button onClick={() => setActiveTab('details')}>상세정보</button>
