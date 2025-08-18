@@ -3,10 +3,10 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 import axios from "axios";
 
 export default function MyReviewWrite() {
-    const { bouquetCode } = useParams(); // URL 파라미터에서 bouquetCode를 가져옴
+    const { bouquetCode } = useParams();
     const navigate = useNavigate();
 
-    const [productInfo, setProductInfo] = useState(null); // API에서 가져온 상품 정보를 저장할 상태
+    const [productInfo, setProductInfo] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -20,14 +20,12 @@ export default function MyReviewWrite() {
     const remain = MAX - text.length;
 
     useEffect(() => {
-        // API 호출 함수
         const fetchProductInfo = async () => {
             try {
                 setLoading(true);
                 setError(null);
-                // 백엔드 API 호출: bouquetCode로 상품 정보 조회
                 const response = await axios.get(`/api/reviews/write-info/${bouquetCode}`);
-                setProductInfo(response.data); // 응답 데이터를 상태에 저장
+                setProductInfo(response.data);
             } catch (err) {
                 console.error("상품 정보를 불러오는 데 실패했습니다.", err);
                 setError("상품 정보를 불러오는 데 실패했습니다.");
@@ -37,11 +35,11 @@ export default function MyReviewWrite() {
         };
 
         fetchProductInfo();
-    }, [bouquetCode]); // bouquetCode가 변경될 때마다 재호출
+    }, [bouquetCode]);
 
     const onFiles = (e) => {
         const files = Array.from(e.target.files || []);
-        setImages((prev) => [...prev, ...files].slice(0, 5)); // 최대 5장
+        setImages((prev) => [...prev, ...files].slice(0, 5));
     };
 
     const onSubmit = async (e) => {
@@ -55,20 +53,33 @@ export default function MyReviewWrite() {
             return;
         }
 
-        // 백엔드에 보낼 데이터 객체 생성
+        // FormData 객체 생성
+        const formData = new FormData();
+
+        // JSON 데이터 추가
         const reviewData = {
             bouquetCode: productInfo.bouquetCode,
             productId: productInfo.productId,
             reviewContent: text,
-            reviewImage: images.length > 0 ? images[0].name : null, // 첫 번째 이미지의 파일명만 저장한다고 가정
+            reviewImage: images.length > 0 ? images[0].name : null,
             score: rating,
             writer: productInfo.userId,
-            luv: 0, // 초기 '좋아요' 수는 0
+            luv: 0,
         };
+        formData.append("reviewData", new Blob([JSON.stringify(reviewData)], { type: "application/json" }));
+
+        // 이미지 파일 추가
+        images.forEach((image) => {
+            formData.append("reviewImages", image);
+        });
 
         try {
-            // 백엔드 API 호출: POST 요청으로 리뷰 데이터 전송
-            const response = await axios.post("/api/reviews/save", reviewData);
+            // FormData를 포함한 POST 요청
+            const response = await axios.post("/api/reviews/save", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
             console.log("리뷰 저장 성공:", response.data);
             alert("리뷰가 성공적으로 등록되었습니다!");
             navigate("/mypage/reviews", { state: { tab: "done" } });
@@ -78,7 +89,6 @@ export default function MyReviewWrite() {
         }
     };
 
-    // 로딩 및 에러 처리 UI
     if (loading) {
         return <div className="loading-message">상품 정보를 불러오는 중입니다...</div>;
     }
@@ -91,7 +101,6 @@ export default function MyReviewWrite() {
         return <div className="not-found-message">상품 정보를 찾을 수 없습니다.</div>;
     }
 
-    // 데이터 포맷팅
     const formatPrice = (price) => {
         return price ? price.toLocaleString() + "원" : "0원";
     };
@@ -99,24 +108,21 @@ export default function MyReviewWrite() {
         const date = new Date(dateString);
         return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`;
     };
-    // 옵션 정보 (메인 꽃 이름들로 조합)
     const optionString = [productInfo.mainAFlowerName, productInfo.mainBFlowerName, productInfo.mainCFlowerName]
-        .filter(Boolean) // null이나 빈 문자열 제거
+        .filter(Boolean)
         .join(' / ');
 
     return (
         <main style={styles.page}>
             <section style={styles.panel}>
-                {/* 헤더 */}
                 <div style={styles.headerRow}>
                     <Link to="/mypage/reviews" style={styles.backBtn} aria-label="뒤로가기">
                         ←
                     </Link>
                     <h2 style={{ margin: 50, fontSize: 18 }}>리뷰쓰기</h2>
-                    <div style={{ width: 24 }} /> {/* 균형용 */}
+                    <div style={{ width: 24 }} />
                 </div>
 
-                {/* 상품 정보 (실제 데이터로 교체) */}
                 <div style={{ textAlign: "center", marginTop: 14 }}>
                     <img src={`/img/product/${productInfo.imageName}`} alt={productInfo.productName} style={styles.hero} />
                     <div style={{ marginTop: 8, color: "#666" }}>{productInfo.productName}</div>
@@ -127,9 +133,7 @@ export default function MyReviewWrite() {
 
                 <hr style={styles.divider} />
 
-                {/* 폼 (기존과 동일) */}
                 <form onSubmit={onSubmit}>
-                    {/* 별점 */}
                     <div style={{ textAlign: "center", marginTop: 6 }}>
                         <div style={styles.sectionTitle}>상품에 만족하셨나요?</div>
                         <div style={styles.starRow} aria-label="별점 선택">
@@ -154,7 +158,6 @@ export default function MyReviewWrite() {
                         </div>
                     </div>
 
-                    {/* 내용 */}
                     <div style={{ marginTop: 22 }}>
                         <div style={styles.sectionTitle}>어떤 점이 좋았나요?</div>
                         <textarea
@@ -169,7 +172,6 @@ export default function MyReviewWrite() {
                         </div>
                     </div>
 
-                    {/* 사진 업로드 */}
                     <div style={{ marginTop: 12 }}>
                         <button
                             type="button"
@@ -205,7 +207,6 @@ export default function MyReviewWrite() {
                     </div>
                     <hr style={styles.divider} />
 
-                    {/* 제출 */}
                     <div style={{ marginTop: 20, textAlign: "center" }}>
                         <button
                             type="submit"
@@ -221,7 +222,6 @@ export default function MyReviewWrite() {
     );
 }
 
-// 스타일은 변경하지 않았습니다. 기존 스타일을 그대로 사용합니다.
 const styles = {
     page: {
         display: "grid",
