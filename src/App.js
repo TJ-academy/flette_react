@@ -49,6 +49,9 @@ import QuestionAdmin from './components/admin/QuestionAdmin';
 import ReviewsIndex from './components/shop/ReviewsIndex';
 import MainAdmin from './components/admin/MainAdmin'; 
 
+//주문 관련
+import OrderCencel from './components/orders/OrderCancel';
+
 // 결제
 import PaymentTestPage from './PaymentTestPage';
 
@@ -150,6 +153,9 @@ function App() {
         <Route path="/" element={<Main />} />
         <Route path="/survey/start" element={<StartSurvey />} />
         <Route path="/admin" element={<MainAdmin />} />
+
+        {/* 주문 관련 */}
+        <Route path="/orders/cancel/:orderId" element={<OrderCencel />} />
 
         {/* 결제 테스트 */}
         <Route path="/payment" element={<PaymentTestPage />} />

@@ -3,6 +3,69 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../css/OrderDetail.css";
 
+// CSS for the modal
+const modalStyles = `
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  .modal-content {
+    background: #fff;
+    padding: 24px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 320px;
+    font-family: 'Inter', sans-serif;
+  }
+  .modal-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #333;
+  }
+  .modal-message {
+    font-size: 0.95rem;
+    color: #666;
+    margin-bottom: 24px;
+  }
+  .modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+  }
+  .modal-button {
+    padding: 10px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+  }
+  .modal-button.confirm {
+    background-color: #f77893;
+    color: white;
+  }
+  .modal-button.confirm:hover {
+    background-color: #e56580;
+  }
+  .modal-button.cancel {
+    background-color: #f2f2f2;
+    color: #666;
+  }
+  .modal-button.cancel:hover {
+    background-color: #e0e0e0;
+  }
+`;
+
 export default function OrderDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -13,6 +76,7 @@ export default function OrderDetail() {
 
   const [customerName, setCustomerName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [showCancelModal, setShowCancelModal] = useState(false); // New state for modal
 
   useEffect(() => {
     // 1. 사용자 정보 (세션 또는 API) 가져오기
@@ -47,19 +111,28 @@ export default function OrderDetail() {
     fetchOrderDetail();
   }, [id]);
 
-  if (loading) {
-    return <div className="orderdetail">로딩 중...</div>;
-  }
+  // Handle click on cancel button to open modal
+  const handleCancelClick = () => {
+    setShowCancelModal(true);
+  };
 
-  if (error) {
-    return <div className="orderdetail error-message">{error}</div>;
-  }
+  // Handle confirmation in modal and call API
+  const handleConfirmCancel = async () => {
+    try {
+      // API 호출
+      await axios.patch(`/api/orders/cancel/${id}`);
+      alert("주문이 성공적으로 취소되었습니다.");
+      setShowCancelModal(false);
+      // API 호출 성공 후 페이지 이동
+      navigate(`/orders/cancel/${id}`);
+    } catch (err) {
+      console.error("주문 취소 실패:", err);
+      // 실패 시 사용자에게 알림
+      alert("주문 취소에 실패했습니다. 현재 상태에서는 취소할 수 없습니다.");
+      setShowCancelModal(false);
+    }
+  };
 
-  if (!orderDetail) {
-    return <div className="orderdetail">주문 정보를 찾을 수 없습니다.</div>;
-  }
-
-  // 데이터 포맷팅 (예: 날짜, 금액)
   const formatOrderDate = (dateString) => {
     if (!dateString) return "날짜 정보 없음";
     const date = new Date(dateString);
@@ -77,11 +150,10 @@ export default function OrderDetail() {
     return price ? price.toLocaleString() + "원" : "0원";
   };
 
-  // 상태에 따라 버튼 렌더링을 결정하는 함수
   const renderActionButton = (status, hasReview, bouquetCode) => {
     switch (status) {
       case "입금확인중":
-        return <button className="orderdetail-btn">주문 취소</button>;
+        return <button className="orderdetail-btn" onClick={handleCancelClick}>주문 취소</button>;
       case "결제완료":
         return <button className="orderdetail-btn">환불 요청</button>;
       case "배송중":
@@ -101,58 +173,94 @@ export default function OrderDetail() {
             </button>
           );
         }
-      case "결제완료":
-        return <button className="orderdetail-btn">환불 요청</button>;
       default:
         return null;
     }
   };
 
-  return (
-    <div className="orderdetail">
-      <h2 className="orderdetail-title">주문상세</h2>
+  if (loading) {
+    return <div className="orderdetail">로딩 중...</div>;
+  }
 
-      {/* 주문번호/날짜 박스 */}
-      <div className="orderdetail-container">
-        <p>주문번호 {orderDetail.impUid}</p>
-        <p>결제 날짜: {formatOrderDate(orderDetail.orderDate)}</p>
+  if (error) {
+    return <div className="orderdetail error-message">{error}</div>;
+  }
+
+  if (!orderDetail) {
+    return <div className="orderdetail">주문 정보를 찾을 수 없습니다.</div>;
+  }
+
+  return (
+    <>
+      <style>{modalStyles}</style>
+      <div className="orderdetail">
+        <h2 className="orderdetail-title">주문상세</h2>
+
+        {/* 주문번호/날짜 박스 */}
+        <div className="orderdetail-container">
+          <p>주문번호 {orderDetail.impUid}</p>
+          <p>결제 날짜: {formatOrderDate(orderDetail.orderDate)}</p>
+        </div>
+
+        {/* 상품 목록 박스 */}
+        <div className="orderdetail-container">
+          {orderDetail.details.map((item, idx) => (
+            <div className="orderdetail-item" key={idx}>
+              <div className="orderdetail-status">
+                <span className="status-label">{orderDetail.status}</span>
+              </div>
+              <div className="orderdetail-body">
+                <img className="orderdetail-thumb" src={`/img/product/${item.imageName}`} alt={item.productName} />
+                <div className="orderdetail-text">
+                  <div className="orderdetail-name">{item.productName}</div>
+                  <div className="orderdetail-price">{formatPrice(item.money)}</div>
+                </div>
+                {renderActionButton(orderDetail.status, item.hasReview, item.bouquetCode)}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* 주문자 정보 박스 */}
+        <div className="orderdetail-container">
+          <p>
+            주문자 정보 | <strong>{customerName || orderDetail.userid || "알 수 없음"}</strong>{" "}
+            {phoneNumber || ""}
+          </p>
+          <p>
+            결제 정보<br />
+            {formatPrice(orderDetail.totalMoney)}
+          </p>
+          <p>
+            배송 주소<br />
+            {orderDetail.orderAddress || "주소 정보 없음"}
+          </p>
+        </div>
       </div>
 
-      {/* 상품 목록 박스 */}
-      <div className="orderdetail-container">
-        {orderDetail.details.map((item, idx) => (
-          <div className="orderdetail-item" key={idx}>
-            <div className="orderdetail-status">
-              <span className="status-label">{orderDetail.status}</span>
-            </div>
-            <div className="orderdetail-body">
-              <img className="orderdetail-thumb" src={`/img/product/${item.imageName}`} alt={item.productName} />
-              <div className="orderdetail-text">
-                <div className="orderdetail-name">{item.productName}</div>
-                <div className="orderdetail-price">{formatPrice(item.money)}</div>
-              </div>
-              {/* 동적 버튼 렌더링 */}
-              {renderActionButton(orderDetail.status, item.hasReview, item.bouquetCode)}
+      {/* 주문 취소 확인 모달 */}
+      {showCancelModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3 className="modal-title">주문을 취소할까요?</h3>
+            <p className="modal-message">'확인'을 누르시면 주문이 취소됩니다.</p>
+            <div className="modal-buttons">
+              <button
+                className="modal-button confirm"
+                onClick={handleConfirmCancel}
+              >
+                확인
+              </button>
+              <button
+                className="modal-button cancel"
+                onClick={() => setShowCancelModal(false)}
+              >
+                취소
+              </button>
             </div>
           </div>
-        ))}
-      </div>
-
-      {/* 주문자 정보 박스 */}
-      <div className="orderdetail-container">
-        <p>
-          주문자 정보 | <strong>{customerName || orderDetail.userid || "알 수 없음"}</strong>{" "}
-          {phoneNumber || ""}
-        </p>
-        <p>
-          결제 정보<br />
-          {formatPrice(orderDetail.totalMoney)}
-        </p>
-        <p>
-          배송 주소<br />
-          {orderDetail.orderAddress || "주소 정보 없음"}
-        </p>
-      </div>
-    </div>
+        </div>
+      )}
+    </>
   );
 }
