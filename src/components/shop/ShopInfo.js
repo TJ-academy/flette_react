@@ -27,15 +27,15 @@ function ItemGrid({ list = [], selectedItems, onSelect, maxSelect, type }) {
             className={`item-card ${isSelected ? "selected" : ""}`}
             onClick={handleChange}
           >
-            <input
+            <div><input
               type="checkbox"
               checked={isSelected}
               onChange={handleChange}
               onClick={e => e.stopPropagation()} // 체크박스 클릭 시 이벤트 버블링 막기
-            />
-            {/* <img src={`/images/${item.imageName}`} alt={item.flowerName || item.decorationName} /> */}
+            /></div>
+            <div><img src={`http://localhost:80/img/${type}/${item.imageName}`} alt={item.flowerName || item.decorationName} /></div>
             <div><strong>{item.flowerName || item.decorationName}</strong></div>
-            <div>{item.description}</div>
+            <div>{item.description || "\u00A0"}</div>
             <div>
                 {(item.addPrice || item.utilPrice) 
                 ? "+" + (item.addPrice || item.utilPrice).toLocaleString() : ""}
@@ -84,7 +84,7 @@ function ShopInfo() {
     sub: parseInt(productId),
     foliage: parseInt(productId),
     wrapping: 1,
-    additional: 4,
+    additional: 3,
   };
 
   const handleSelect = (category, id, isSelected) => {
@@ -113,6 +113,134 @@ function ShopInfo() {
       loadLists();
   }, []);
 
+  const basePrice = lists.dto?.basicPrice || 0;
+
+    // 모든 아이템을 하나의 배열로 병합
+  const allItems = [
+    ...(lists.mfl || []),
+    ...(lists.sfl || []),
+    ...(lists.ffl || []),
+    ...(lists.wdl || []),
+    ...(lists.adl || []),
+  ];
+
+  // 선택된 ID들
+  const selectedIds = [
+    ...selected.main,
+    ...selected.sub,
+    ...selected.foliage,
+    ...selected.wrapping,
+    ...selected.additional,
+  ];
+
+  // 선택된 항목들의 가격 합산
+  const extraPrice = allItems.reduce((sum, item) => {
+    const id = item.flowerId || item.decorationId;
+    if (selectedIds.includes(id)) {
+      return sum + (item.addPrice || item.utilPrice || 0);
+    }
+    return sum;
+  }, 0);
+
+  const totalPrice = basePrice + extraPrice;
+
+  const bouquetInsert = async () => {
+      const main = selected.main.filter(Boolean).sort((a, b) => a - b);
+      const sub = selected.sub.filter(Boolean).sort((a, b) => a - b);
+      const foliage = selected.foliage.filter(Boolean).sort((a, b) => a - b);
+      const wrapping = selected.wrapping;
+      const additional = selected.additional;
+
+      // 유효성 검사
+      if (!main[0]) {
+        alert("Main 꽃을 최소 1개 선택해주세요.");
+        return null;
+      }
+      if (!sub[0]) {
+        alert("Sub 꽃을 최소 1개 선택해주세요.");
+        return null;
+      }
+      if (!foliage[0]) {
+        alert("Foliage(잎) 항목을 최소 1개 선택해주세요.");
+        return null;
+      }
+      if (!wrapping[0]) {
+        alert("포장지를 1개 선택해주세요.");
+        return null;
+      }
+
+      const payload = {
+          productId: parseInt(productId),
+          totalMoney: totalPrice,
+
+          mainA: main[0],
+          mainB: main[1] || 0,
+          mainC: main[2] || 0,
+
+          subA: sub[0],
+          subB: sub[1] || 0,
+          subC: sub[2] || 0,
+
+          leafA: foliage[0],
+          leafB: foliage[1] || 0,
+          leafC: foliage[2] || 0,
+
+          addA: additional[0] || 0,
+          addB: additional[1] || 0,
+          addC: additional[2] || 0,
+
+          wrapping: wrapping[0]
+      };
+      try {
+        const res = await axios.post(`http://localhost/api/shop/${productId}/bouquet/insert`, payload)
+        if(res.data.success) {
+          console.log("꽃다발 저장 성공: ");
+          return res.data;
+        } else {
+          console.log("꽃다발 저장 실패: " + res.data.message);
+          return null;
+        }
+      } catch (e) {
+        alert("꽃다발 저장 중 에러 발생");
+        return null;
+      }
+  };
+
+  const handleCart = async () => {
+    const loginId = sessionStorage.getItem('loginId') || null;
+    console.log("로그인했나요? => " + loginId);
+    if(loginId === null) {
+      const goLogin = window.confirm("로그인이 필요한 서비스입니다. 로그인하겠습니까?");
+      if(goLogin) {
+        navigate("/member/login");
+      }
+    } else {
+      const bouquetData = await bouquetInsert();
+      if(!bouquetData) return;
+
+      try {
+        const payload = {
+          bouquetCode: bouquetData.bouquetCode,
+          price: bouquetData.totalMoney,
+          quantity: 1,
+          totalPrice: bouquetData.totalMoney,
+          userid: loginId,
+        };
+        const res = await axios.post(`http://localhost/api/cart/insert`, payload)
+        if(res.data.success) {
+          console.log("장바구니에 추가되었습니다.");
+          navigate("/cart/list");
+        } else {
+          console.log("장바구니 추가 실패: " + res.data.message);
+          return null;
+        }
+      } catch (e) {
+        console.log("장바구니 저장 중 오류 발생");
+        return null;
+      }
+    }
+  };
+
   return (
     <>
       <div className="shop-info-container">
@@ -122,61 +250,87 @@ function ShopInfo() {
       <hr />
 
       <div className="info-menu">
-          <p><strong>MAIN</strong> {guide.main?.label} ({guide.main?.count})</p>
-          <ItemGrid
-            list={lists.mfl}
-            type="flower"
-            selectedItems={selected.main}
-            maxSelect={categoryMax.main}
-            onSelect={(id, selected) => handleSelect("main", id, selected)}
-          />
+          <div className="info-item">
+            <p><strong>MAIN</strong> {guide.main?.label} ({guide.main?.count})</p>
+            <ItemGrid
+              list={lists.mfl}
+              type="flower/main"
+              selectedItems={selected.main}
+              maxSelect={categoryMax.main}
+              onSelect={(id, selected) => handleSelect("main", id, selected)}
+            />
+          </div>
 
-          <p><strong>SUB</strong> {guide.sub?.label} ({guide.sub?.count})</p>
-          <ItemGrid
-            list={lists.sfl}
-            type="flower"
-            selectedItems={selected.sub}
-            maxSelect={categoryMax.sub}
-            onSelect={(id, selected) => handleSelect("sub", id, selected)}
-          />
+          <div className="info-item">
+            <p><strong>SUB</strong> {guide.sub?.label} ({guide.sub?.count})</p>
+            <ItemGrid
+              list={lists.sfl}
+              type="flower/sub"
+              selectedItems={selected.sub}
+              maxSelect={categoryMax.sub}
+              onSelect={(id, selected) => handleSelect("sub", id, selected)}
+            />
+          </div>
 
-          <p><strong>FOLIAGE</strong> {guide.foliage?.label} ({guide.foliage?.count})</p>
-          <ItemGrid
-            list={lists.ffl}
-            type="flower"
-            selectedItems={selected.foliage}
-            maxSelect={categoryMax.foliage}
-            onSelect={(id, selected) => handleSelect("foliage", id, selected)}
-          />
+          <div className="info-item">
+            <p><strong>FOLIAGE</strong> {guide.foliage?.label} ({guide.foliage?.count})</p>
+            <ItemGrid
+              list={lists.ffl}
+              type="flower/foliage"
+              selectedItems={selected.foliage}
+              maxSelect={categoryMax.foliage}
+              onSelect={(id, selected) => handleSelect("foliage", id, selected)}
+            />
+          </div>
 
-          <p><strong>WRAPPING</strong> 택 1</p>
-          <ItemGrid
-            list={lists.wdl}
-            type="deco"
-            selectedItems={selected.wrapping}
-            maxSelect={categoryMax.wrapping}
-            onSelect={(id, selected) => handleSelect("wrapping", id, selected)}
-          />
+          <div className="info-item">
+            <p><strong>WRAPPING</strong> 택 1</p>
+            <ItemGrid
+              list={lists.wdl}
+              type="decoration/wrapping"
+              selectedItems={selected.wrapping}
+              maxSelect={categoryMax.wrapping}
+              onSelect={(id, selected) => handleSelect("wrapping", id, selected)}
+            />
+          </div>
 
-          <p><strong>ADDITIONAL</strong> 다중 선택 가능</p>
-          <ItemGrid
-            list={lists.adl} type="deco"
-            selectedItems={selected.additional}
-            maxSelect={categoryMax.additional}
-            onSelect={(id, selected) => handleSelect("additional", id, selected)}
-          />
+          <div className="info-item">
+            <p><strong>ADDITIONAL</strong> 다중 선택 가능</p>
+            <ItemGrid
+              list={lists.adl} type="decoration/additional"
+              selectedItems={selected.additional}
+              maxSelect={categoryMax.additional}
+              onSelect={(id, selected) => handleSelect("additional", id, selected)}
+            />
+          </div>
       </div>
 
       <hr />
 
       {/* 총 가격 & 버튼 */}
       <div className="total-section">
-          <div><strong>총 상품금액: </strong>0원</div>
-          <button className="btn-cart">장바구니</button>
-          <button className="btn-buy">구매하기</button>
+          <div className="total-price">
+            <span className="price-label">총 상품금액:</span>
+            <span className="price-value">
+              {totalPrice.toLocaleString()}원
+            </span>
+          </div>
+          <button className="btn-cart" onClick={handleCart}>장바구니</button>
+          <button className="btn-buy" onClick={bouquetInsert}>구매하기</button>
       </div>
 
       <style>{`
+        .shop-info-container {
+          text-align: center;
+          margin: 60px 0;
+        }
+        .info-menu {
+          margin-top: 80px;
+          padding: 20px;
+        }
+        .info-item {
+          margin-bottom : 100px;
+        }
         .item-grid {
           display: grid;
           grid-template-columns: repeat(5, 1fr);
@@ -185,26 +339,63 @@ function ShopInfo() {
         }
         .item-card {
           cursor: pointer;
-          border: 1px solid #ddd;
-          border-radius: 8px;
-          padding: 8px;
+          height: 300px;
+          border: 1px solid #ffffff;
+          border-radius: 20px;
+          padding: 10px;
           text-align: center;
-          transition: border-color 0.2s ease;
           user-select: none;
         }
+        .item-card:hover {
+          border: 1px solid #F2778C;
+        }
         .item-card.selected {
-          border: 2px solid #F2778C;
+          border: 1px solid #F2778C;
         }
         .item-card img {
-          width: 100%;
-          height: 100px;
+          width: 150px;
+          height: 150px;
           object-fit: cover;
-          border-radius: 4px;
-          margin-bottom: 6px;
+          border-radius: 20px;
+          margin-bottom: 10px;
         }
         .item-card input[type="checkbox"] {
-          margin-bottom: 6px;
+          margin-bottom: 10px;
           cursor: pointer;
+        }
+        .total-section {
+          text-align: center;
+          margin: 30px 0;
+        }
+        .total-price {
+          margin-bottom: 30px;
+        }
+        .price-label {
+          font-size: 24px;
+          color: #584245;
+          font-weight: 500;
+          margin-right: 10px;
+        }
+        .price-value {
+          font-size: 32px;
+          color: #F2778C;
+          font-weight: bold;
+        }
+        .btn-cart, .btn-buy {
+          width: 259px;
+          height: 48px;
+          border: 1px solid #AEAEAE;
+          border-radius: 25px;
+          background: white;
+          font-size: 18px;
+          font-weight: bold;
+          color: #584245;
+          margin: 0px 10px 30px 10px;
+        }
+        .btn-cart:hover, .btn-buy:hover {
+          border: 1px solid #F2778C;
+          background: #F2778C;
+          color: #FFFFFF;
         }
       `}</style>
     </>

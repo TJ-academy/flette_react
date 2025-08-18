@@ -78,7 +78,7 @@ function ShopQa({ onWriteClick }) {
             
             <button onClick={(e) => {
                 const isLoggedIn = sessionStorage.getItem('loginId') !== null;
-                console.log("로그인했나요? => " + isLoggedIn);
+                // console.log("로그인했나요? => " + isLoggedIn);
                 if(!isLoggedIn) {
                     e.preventDefault();
                     const goLogin = window.confirm("로그인이 필요한 서비스입니다. 로그인하겠습니까?");
