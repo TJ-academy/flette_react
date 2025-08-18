@@ -1,232 +1,252 @@
-// src/pages/MyReviewList.jsx
-import React, { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-export default function MyReviewList() {
-  const [tab, setTab] = useState("todo"); // "todo" | "done"
-  const [purchases, setPurchases] = useState([]);
-  const [reviews, setReviews] = useState([]);
-  const userid = "test1"; // ⭐ 로그인 사용자 ID
+// CSS Styles
+const myReviewsStyles = `
+  .myreviews-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: 'Inter', sans-serif;
+  }
+  .myreviews-title {
+    font-size: 2rem;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+  .tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #e0e0e0;
+  }
+  .tab-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #888;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease, border-bottom 0.3s ease;
+  }
+  .tab-button.active {
+    color: #f77893;
+    border-bottom: 2px solid #f77893;
+  }
+  .review-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  .review-item {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+  .review-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .review-item-details {
+    display: flex;
+    flex-direction: column;
+  }
+  .product-name {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+  }
+  .order-date, .review-date {
+    font-size: 0.85rem;
+    color: #777;
+    margin: 5px 0 0;
+  }
+  .price {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #555;
+    margin: 5px 0 0;
+  }
+  .write-review-button {
+    background-color: #f77893;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+  }
+  .write-review-button:hover {
+    background-color: #e56580;
+  }
+  .rating {
+    color: #ffc107;
+    font-size: 1.2rem;
+    margin-top: 5px;
+  }
+  .review-item-body {
+    margin-top: 10px;
+  }
+  .review-content {
+    font-size: 0.95rem;
+    color: #444;
+    line-height: 1.5;
+    white-space: pre-wrap;
+  }
+  .review-image-container {
+    margin-top: 10px;
+    text-align: center;
+  }
+  .review-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  .no-reviews {
+    text-align: center;
+    padding: 40px;
+    color: #999;
+    font-size: 1rem;
+  }
+`;
+
+function MyReviewList() {
+  const navigate = useNavigate();
+  const [todoReviews, setTodoReviews] = useState([]); // 작성할 리뷰
+  const [doneReviews, setDoneReviews] = useState([]); // 작성 완료 리뷰
+  const [activeTab, setActiveTab] = useState("todo"); // 'todo' 또는 'done'
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const userId = sessionStorage.getItem("loginId"); // 세션에서 사용자 ID 가져오기
 
   useEffect(() => {
-    // 작성한 후기
-    axios.get(`http://localhost/api/mypage/reviews/${userid}`)
-      .then(res => setReviews(res.data.rlist || []))
-      .catch(err => console.error("리뷰 불러오기 실패:", err));
+    // Inject styles dynamically
+    const styleSheet = document.createElement("style");
+    styleSheet.type = "text/css";
+    styleSheet.innerText = myReviewsStyles;
+    document.head.appendChild(styleSheet);
+  }, []);
 
-    // 작성할 후기 (주문 내역 API 필요)
-    axios.get(`http://localhost/api/mypage/orders/${userid}`)
-      .then(res => setPurchases(res.data || []))
-      .catch(err => console.error("주문내역 불러오기 실패:", err));
-  }, [userid]);
+  useEffect(() => {
+    if (!userId) {
+      setError("로그인 정보가 없습니다.");
+      setLoading(false);
+      return;
+    }
 
-  const todoList = useMemo(() => {
-    const reviewedIds = new Set(reviews.map(r => r.productId));
-    return purchases.filter(p => !reviewedIds.has(p.productId));
-  }, [purchases, reviews]);
+    const fetchReviews = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(`/api/mypage/reviews/${userId}`);
+        const { todoList, doneList } = response.data;
+        setTodoReviews(todoList);
+        setDoneReviews(doneList);
+      } catch (err) {
+        console.error("리뷰 정보를 불러오는 데 실패했습니다.", err);
+        setError("리뷰 정보를 불러오는 데 실패했습니다.");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const doneList = reviews;
-  const list = tab === "todo" ? todoList : doneList;
+    fetchReviews();
+  }, [userId]);
+
+  if (loading) {
+    return <div className="myreviews-container">로딩 중...</div>;
+  }
+
+  if (error) {
+    return <div className="myreviews-container error-message">{error}</div>;
+  }
 
   return (
-    <main style={styles.page}>
-      <section style={styles.panel}>
-        {/* 탭 버튼 */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 20 }}>
-          <button
-            type="button"
-            onClick={() => setTab("todo")}
-            style={{ ...styles.tabBtn, ...(tab === "todo" ? styles.tabBtnActive : {}) }}
-          >
-            작성할 후기 ({todoList.length})
-          </button>
-          <button
-            type="button"
-            onClick={() => setTab("done")}
-            style={{ ...styles.tabBtn, ...(tab === "done" ? styles.tabBtnActive : {}) }}
-          >
-            작성한 후기 ({doneList.length})
-          </button>
-        </div>
+    <div className="myreviews-container">
+      <h2 className="myreviews-title">리뷰 관리</h2>
 
-        {/* 리스트 */}
-        {list.length === 0 ? (
-          <EmptyState tab={tab} />
+      {/* 탭 네비게이션 */}
+      <div className="tabs">
+        <button
+          className={`tab-button ${activeTab === "todo" ? "active" : ""}`}
+          onClick={() => setActiveTab("todo")}
+        >
+          작성할 후기 ({todoReviews.length})
+        </button>
+        <button
+          className={`tab-button ${activeTab === "done" ? "active" : ""}`}
+          onClick={() => setActiveTab("done")}
+        >
+          작성 완료 후기 ({doneReviews.length})
+        </button>
+      </div>
+
+      {/* 리뷰 목록 */}
+      <div className="review-list">
+        {activeTab === "todo" ? (
+          // 작성할 후기 목록
+          todoReviews.length > 0 ? (
+            todoReviews.map((item) => (
+              <div className="review-item" key={item.bouquetCode}>
+                <div className="review-item-header">
+                  <div className="review-item-details">
+                    <p className="product-name">{item.productName}</p>
+                    <p className="order-date">주문일: {new Date(item.orderDate).toLocaleDateString()}</p>
+                    <p className="price">{item.price.toLocaleString()}원</p>
+                  </div>
+                  <button
+                    className="write-review-button"
+                    onClick={() => navigate(`/mypage/reviews/write/${item.bouquetCode}`)}
+                  >
+                    리뷰 쓰기
+                  </button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="no-reviews">작성할 후기가 없습니다.</div>
+          )
         ) : (
-          list.map((item) =>
-            tab === "todo" ? (
-              <ToWriteCard key={item.orderId} item={item} />
-            ) : (
-              <WrittenCard key={item.reviewId} item={item} />
-            )
+          // 작성 완료 후기 목록
+          doneReviews.length > 0 ? (
+            doneReviews.map((item) => (
+              <div className="review-item" key={item.reviewId}>
+                <div className="review-item-header">
+                  <div className="review-item-details">
+                    <p className="product-name">{item.productName}</p>
+                    <p className="review-date">작성일: {new Date(item.reviewDate).toLocaleDateString()}</p>
+                    <div className="rating">
+                      {"★".repeat(item.score)}
+                      {"☆".repeat(5 - item.score)}
+                    </div>
+                  </div>
+                </div>
+                <div className="review-item-body">
+                  <p className="review-content">{item.reviewContent}</p>
+                </div>
+                {item.reviewImage && (
+                  <div className="review-image-container">
+                    <img src={`/img/reviews/${item.reviewImage}`} alt="리뷰 이미지" className="review-image" />
+                  </div>
+                )}
+              </div>
+            ))
+          ) : (
+            <div className="no-reviews">작성한 후기가 없습니다.</div>
           )
         )}
-      </section>
-    </main>
-  );
-}
-
-/* ====== 카드: 작성할 후기 ====== */
-function ToWriteCard({ item }) {
-  return (
-    <div style={styles.reviewCard}>
-      <div style={styles.reviewHeader}>
-        <div style={styles.reviewTitle}>{item.productName}</div>
-        <div style={styles.reviewDate}>{new Date(item.orderDate).toLocaleDateString("ko-KR")}</div>
-      </div>
-      <div style={styles.reviewWriter}>옵션 {item.option} · {item.price}원</div>
-      <Link
-        to={`/mypage/reviews/write/${item.productId}`}
-        state={item}
-        style={styles.primaryBtn}
-      >
-        리뷰 쓰기
-      </Link>
-    </div>
-  );
-}
-
-/* ====== 카드: 작성한 후기 ====== */
-function WrittenCard({ item }) {
-  const productNameMap = {
-    1: "커스텀 꽃다발 (소)",
-    2: "커스텀 꽃다발 (중)",
-    3: "커스텀 꽃다발 (대)"
-  };
-
-  return (
-    <div style={styles.reviewCard}>
-      <div style={styles.reviewGrid}>
-        {/* 왼쪽 텍스트 영역 */}
-        <div style={{ flex: 1 }}>
-          <div style={styles.reviewHeader}>
-            <div style={styles.reviewTitle}>
-              {productNameMap[item.productId] || `상품 ID ${item.productId}`}
-            </div>
-            <div style={styles.reviewDate}>
-              {new Date(item.reviewDate).toLocaleDateString("ko-KR")}
-            </div>
-          </div>
-          <div style={styles.reviewWriter}> {item.writer}</div>
-          <div style={{ marginBottom: 8 }}>
-            <Stars value={item.score} />
-          </div>
-          <div style={styles.reviewContent}>{item.reviewContent}</div>
-        </div>
-
-        {/* 오른쪽 이미지 영역 */}
-        <div style={styles.reviewImageBox}>
-          {item.reviewImage ? (
-            <img
-              src={item.reviewImage}
-              alt="리뷰 이미지"
-              style={styles.reviewImage}
-            />
-          ) : (
-            <div style={styles.noImage}>이미지 없음</div>
-          )}
-        </div>
       </div>
     </div>
   );
 }
 
-
-/* ====== 보조 컴포넌트 ====== */
-function Stars({ value = 0, max = 5 }) {
-  return (
-    <span aria-label={`별점 ${value}/${max}`} style={{ color: "gold", fontSize: 16 }}>
-      {"★".repeat(value)}
-      <span style={{ color: "#ddd" }}>
-        {"★".repeat(Math.max(0, max - value))}
-      </span>
-    </span>
-  );
-}
-
-function EmptyState({ tab }) {
-  const text = tab === "todo" ? "작성할 후기가 없습니다." : "작성한 후기가 없습니다.";
-  return (
-    <div style={{ textAlign: "center", color: "#777", padding: "40px 0" }}>
-      <div>{text}</div>
-    </div>
-  );
-}
-
-/* ====== 스타일 ====== */
-const styles = {
-  page: {
-    display: "grid",
-    placeItems: "center",
-    padding: "32px 16px",
-    background: "#fafafa",
-    minHeight: "100vh",
-  },
-  panel: {
-    width: "min(720px, 92vw)",
-    background: "#fff",
-    border: "1.5px solid #ffd6e0",
-    borderRadius: 16,
-    padding: 20,
-    boxShadow: "0 2px 6px rgba(255, 127, 147, 0.15)",
-  },
-  tabBtn: {
-    height: 40,
-    borderRadius: 999,
-    border: "1px solid #ffd6e0",
-    background: "#fff",
-    cursor: "pointer",
-    fontSize: 14,
-    transition: "all 0.2s ease",
-  },
-  tabBtnActive: {
-    background: "#ff7f93",
-    color: "#fff",
-    borderColor: "#ff7f93",
-    fontWeight: 600,
-  },
-  primaryBtn: {
-    textDecoration: "none",
-    background: "#ff7f93",
-    color: "#fff",
-    padding: "8px 16px",
-    borderRadius: 999,
-    fontSize: 13,
-    fontWeight: 500,
-  },
-  reviewCard: {
-    border: "1px solid #ffe0e6",
-    borderRadius: 12,
-    padding: "20px 22px", // 👉 카드 내부 여백 넉넉히
-    margin: "14px 0",
-    background: "#fff",
-    boxShadow: "0 1px 3px rgba(255, 127, 147, 0.1)",
-  },
-  reviewHeader: {
-    display: "flex",
-    justifyContent: "space-between",
-    marginBottom: 10,
-  },
-  reviewTitle: {
-    fontSize: 14,
-    fontWeight: 700,
-    color: "#333",
-  },
-  reviewDate: {
-    fontSize: 12,
-    color: "#999",
-  },
-  reviewWriter: {
-    fontSize: 13,
-    color: "#666",
-    marginBottom: 10,
-  },
-  reviewContent: {
-    fontSize: 14,
-    color: "#444",
-    marginTop: 10,
-    lineHeight: 1.6, // 👉 줄 간격 넉넉히
-    whiteSpace: "pre-line",
-  },
-};
+export default MyReviewList;
