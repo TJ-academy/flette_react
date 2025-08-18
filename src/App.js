@@ -120,7 +120,7 @@ function App() {
         <Route path="/mypage/order/delivery/:id" element={<OrderDelivery />} />
         <Route path="/mypage/order/review_write/:id" element={<OrderReview />} />
         <Route path="/mypage/review" element={<MyReviewList />} />
-        <Route path="/mypage/reviews/write/:purchaseId" element={<MyReviewWrite />} />
+        <Route path="/mypage/reviews/write/:bouquetCode" element={<MyReviewWrite />} />
         <Route path="/mypage/review/detail/:id" element={<MyReviewDetail />} />
         <Route path="/mypage/question" element={<MyQuestionList />} />
 

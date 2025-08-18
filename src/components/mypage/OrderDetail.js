@@ -80,6 +80,10 @@ export default function OrderDetail() {
   // 상태에 따라 버튼 렌더링을 결정하는 함수
   const renderActionButton = (status, hasReview, bouquetCode) => {
     switch (status) {
+      case "입금확인중":
+        return <button className="orderdetail-btn">주문 취소</button>;
+      case "결제완료":
+        return <button className="orderdetail-btn">환불 요청</button>;
       case "배송중":
         return <button className="orderdetail-btn">배송 조회하기</button>;
       case "배송완료":
@@ -91,7 +95,7 @@ export default function OrderDetail() {
           return (
             <button
               className="orderdetail-btn"
-              onClick={() => navigate(`/mypage/review/write/${bouquetCode}`)}
+              onClick={() => navigate(`/mypage/reviews/write/${bouquetCode}`)}
             >
               리뷰 쓰기
             </button>
