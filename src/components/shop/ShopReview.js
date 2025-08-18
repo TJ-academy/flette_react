@@ -27,9 +27,8 @@ function ShopReview() {
     const [data, loading, error] = useFetch(`http://localhost/api/shop/${productId}/review`);
     const [reviews, setReviews] = useState([]);
 
-    // ✅ 데이터 세팅 단순화
     useEffect(() => {
-        if (data && Array.isArray(data.rlist)) {
+        if (data) {
             setReviews(data.rlist);
         }
     }, [data]);

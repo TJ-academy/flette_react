@@ -19,12 +19,11 @@ function ShopQa({ onWriteClick }) {
 
     const loadLists = async (page = 1) => {
     const res = await axios.get(`http://localhost/api/shop/${productId}/qa?page=${page - 1}&size=${itemsPerPage}`);
-    // ✅ res.data 자체가 배열임
-    setLists(res.data);
-    // 페이지네이션 관련 값은 백엔드에서 안 내려주고 있으니 따로 계산해야 함
-    setTotalItems(res.data.length);
-    setTotalPages(Math.ceil(res.data.length / itemsPerPage));
-    setCurrentPage(page);
+    
+        setLists(res.data.list);
+        setTotalPages(res.data.totalPages);
+        setCurrentPage(res.data.currentPage + 1);
+        setTotalItems(res.data.totalItems);
     };
 
     useEffect(() => {

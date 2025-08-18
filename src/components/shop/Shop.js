@@ -11,7 +11,7 @@ function ShopList() {
   // 백엔드에서 상품 데이터를 불러오는 함수
   const loadProducts = async () => {
     try {
-      const res = await axios.get('http://localhost/api/shop'); // 백엔드 API 주소
+      const res = await axios.get(`http://localhost/api/shop`);
       setProducts(res.data);
     } catch (error) {
       console.error("상품 데이터를 불러오는 데 실패했습니다:", error);

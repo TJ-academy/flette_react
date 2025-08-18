@@ -13,7 +13,7 @@ function useFetch(url) {
     useEffect(() => {
         axios.get(url)
         .then((response) => {
-            //console.log( 'data:'+JSON.stringify(response.data));
+            console.log( 'data:'+JSON.stringify(response.data));
             setData(response.data);
             setLoading(false);
         });
@@ -65,7 +65,7 @@ function ShopDetail() {
                         />
                     )}
                     <p><strong>{data.dto.productName}</strong></p>
-                    <p>{data.dto.basicPrice ? data.dto.basicPrice.toLocaleString() : 0} ~ </p>
+                    <p>{data.dto.basicPrice.toLocaleString()} ~ </p>
                 </div>
                 <div>
                     <button onClick={() => setActiveTab('details')}>상세정보</button>
