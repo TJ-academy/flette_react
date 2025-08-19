@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {useState} from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import '../../css/shop/shopqawrite.css';
 
 const ShopQaWrite = ({ onCancel, onSubmitSuccess }) => {
     const { productId } = useParams();
