@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import "../../css/ReviewsIndex.css"; // 스타일 시트 파일
 
 const PAGE_SIZE = 8;
@@ -10,6 +10,9 @@ export default function ReviewsIndex() {
   const [page, setPage] = useState(1);
   const [reviews, setReviews] = useState([]);
   const [totalPages, setTotalPages] = useState(1); // 전체 페이지 수
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
+  const [selectedReview, setSelectedReview] = useState(null); // 선택된 리뷰
+   const [dim, setDim] = useState(false);
 
   // 리뷰 데이터를 가져오는 useEffect
   useEffect(() => {
@@ -57,8 +60,20 @@ export default function ReviewsIndex() {
     </div>
   );
 
+  // Card 클릭 시 모달 열기
+  const openModal = (review) => {
+    setSelectedReview(review);
+    setIsModalOpen(true);
+  };
+
+  // 모달 닫기
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedReview(null);
+  };
+
   const Card = ({ review }) => (
-    <article className="rv-card">
+    <article className="rv-card" onClick={() => openModal(review)}>
       {/* 이미지 */}
       <div className="rv-thumb-wrap">
         <img
@@ -88,19 +103,30 @@ export default function ReviewsIndex() {
 
   return (
     <main className="rv-page">
-      <section className="photo-review-section">
-        <div className="photo-review-container">
-          <img
-            src={require("../../resources/images/main_banner.png")} // 이미지 URL을 여기에 넣으세요
-            alt="Photo Reviews"
-            className="photo-review-image"
-          />
-          <div className="photo-review-text">
-            <h2>고객님들의 리얼한 후기</h2>
-            <p>PHOTO REVIEWS</p>
-          </div>
-        </div>
-      </section>
+    <section className={`hero ${dim ? 'is-dim' : ''}`}>
+  <img 
+    src={require("../../resources/images/main_banner.png")} 
+    alt="포토 리뷰 배너" 
+    className="hero-bg" 
+  />
+  <div className="hero-overlay">
+    <h1 className="hero-title">고객님의 포토 리뷰</h1>
+    <p className="hero-desc">
+      다양한 포토 리뷰를 통해<br/>
+      꽃다발을 선택해보세요!
+    </p>
+    <Link
+      to="/shop"
+      className="primary-btn"
+      onMouseEnter={() => setDim(true)}   // 마우스 올리면 배경 어두워짐
+      onMouseLeave={() => setDim(false)}  // 마우스를 떼면 배경 원래대로
+    >
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      내 꽃다발 만들기
+      &nbsp;&nbsp;&nbsp;&nbsp;
+    </Link>
+  </div>
+</section>
       {/* 툴바 */}
       <div className="rv-toolbar">
         <div />
@@ -133,6 +159,30 @@ export default function ReviewsIndex() {
         totalPages={totalPages}
         onChange={(p) => setPage(p)}
       />
+
+      {/* 모달 */}
+      {isModalOpen && selectedReview && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>리뷰 상세</h2>
+              <button onClick={closeModal} className="close-btn">X</button>
+            </div>
+            <img
+              src={`/img/reviews/${selectedReview.reviewImage}`}
+              alt={selectedReview.reviewId}
+              className="modal-image"
+            />
+            <div className="modal-body">
+              <StarRating rating={selectedReview.score} />
+              <p>{selectedReview.reviewContent}</p>
+              <div>
+                <span>{selectedReview.writer}</span> | <span>{formatDate(selectedReview.reviewDate)}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
