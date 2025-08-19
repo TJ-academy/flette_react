@@ -59,7 +59,7 @@ function MyReviewList() {
       <img
         src={
           type === "todo"
-            ? `/img/products/${item.productImage || "default.png"}`
+            ? `/img/product/${item.imageName || "default.png"}`
             : `/img/reviews/${item.reviewImage || "default.png"}`
         }
         alt="리뷰 이미지"
