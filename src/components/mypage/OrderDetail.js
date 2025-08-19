@@ -76,8 +76,9 @@ export default function OrderDetail() {
 
   const [customerName, setCustomerName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [showCancelModal, setShowCancelModal] = useState(false); // New state for modal
+  const [showCancelModal, setShowCancelModal] = useState(false);
   const [showRefundModal, setShowRefundModal] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false); // 구매 확정 모달 상태
 
   useEffect(() => {
     // 1. 사용자 정보 (세션 또는 API) 가져오기
@@ -112,46 +113,61 @@ export default function OrderDetail() {
     fetchOrderDetail();
   }, [id]);
 
-  // Handle click on cancel button to open modal
   const handleCancelClick = () => {
     setShowCancelModal(true);
   };
 
-  // Handle confirmation in modal and call API
   const handleConfirmCancel = async () => {
     try {
-      // API 호출
       await axios.patch(`/api/orders/cancel/${id}`);
       alert("주문이 성공적으로 취소되었습니다.");
       setShowCancelModal(false);
-      // API 호출 성공 후 페이지 이동
       navigate(`/orders/cancel/${id}`);
     } catch (err) {
       console.error("주문 취소 실패:", err);
-      // 실패 시 사용자에게 알림
       alert("주문 취소에 실패했습니다. 현재 상태에서는 취소할 수 없습니다.");
       setShowCancelModal(false);
     }
   };
 
-  // Handle click on cancel button to open modal
   const handleRefundClick = () => {
     setShowRefundModal(true);
   };
 
-  // Handle confirmation in modal and call API
   const handleConfirmRefund = async () => {
     try {
       setShowRefundModal(false);
       navigate(`/orders/refund/${id}`);
     } catch (err) {
       console.error("환불 요청 실패:", err);
-      // 실패 시 사용자에게 알림
       alert("환불 요청에 실패했습니다. 현재 상태에서는 신청 불가합니다.");
       setShowRefundModal(false);
     }
   };
 
+  // 구매 확정 버튼 클릭 시 호출되는 함수
+  const handleConfirmClick = () => {
+    setShowConfirmModal(true);
+  };
+
+  // 모달에서 '네, 받았어요' 클릭 시 호출되는 함수
+  const handleConfirmPurchase = async () => {
+    try {
+      // API 호출: 배송 상태를 '구매확정'으로 변경하는 엔드포인트
+      await axios.patch(`/api/orders/confirm/${id}`);
+      alert("구매가 확정되었습니다.");
+      setShowConfirmModal(false);
+      
+      // 상태 업데이트 또는 페이지 새로고침
+      // 여기서는 페이지를 새로고침하여 바뀐 주문 상태를 반영합니다.
+      window.location.reload();
+      
+    } catch (err) {
+      console.error("구매 확정 실패:", err);
+      alert("구매 확정에 실패했습니다.");
+      setShowConfirmModal(false);
+    }
+  };
 
   const formatOrderDate = (dateString) => {
     if (!dateString) return "날짜 정보 없음";
@@ -176,18 +192,18 @@ export default function OrderDetail() {
         return <button className="orderdetail-btn" onClick={handleCancelClick}>주문 취소</button>;
       case "결제완료":
         return <button className="orderdetail-btn" onClick={handleRefundClick}>환불 요청</button>;
-        case "배송중":
-          return (
-            <button
-              className="orderdetail-btn"
-              onClick={() => navigate(`/mypage/order/delivery/${id}`)}
-            >
-              배송 조회하기
-            </button>
-          );
-        
+      case "배송중":
+        return (
+          <button
+            className="orderdetail-btn"
+            onClick={() => navigate(`/mypage/order/delivery/${id}`)}
+          >
+            배송 조회하기
+          </button>
+        );
       case "배송완료":
-        return <button className="orderdetail-btn">구매 확정</button>;
+        // 구매 확정 버튼에 새로운 함수 연결
+        return <button className="orderdetail-btn" onClick={handleConfirmClick}>구매 확정</button>;
       case "구매확정":
         if (hasReview) {
           return <button className="orderdetail-btn" disabled>리뷰 작성 완료</button>;
@@ -305,9 +321,36 @@ export default function OrderDetail() {
               </button>
               <button
                 className="modal-button cancel"
-                onClick={() => setShowCancelModal(false)}
+                onClick={() => setShowRefundModal(false)}
               >
                 취소
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 구매 확정 확인 모달 */}
+      {showConfirmModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3 className="modal-title">상품을 잘 받으셨나요?</h3>
+            <p className="modal-message">
+              구매 확정 이후에는 반품/교환 신청이 어려우니<br/>
+              꼭 상품을 받은 후 구매확정 해주세요.
+            </p>
+            <div className="modal-buttons">
+              <button
+                className="modal-button cancel"
+                onClick={() => setShowConfirmModal(false)}
+              >
+                취소
+              </button>
+              <button
+                className="modal-button confirm"
+                onClick={handleConfirmPurchase}
+              >
+                네, 받았어요
               </button>
             </div>
           </div>
