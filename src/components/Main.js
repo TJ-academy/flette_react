@@ -78,11 +78,6 @@ function Main() {
 
       {/* PROMO BANNER */}
       <section className="banner">
-        <img
-          src={require("../resources/images/test_banner.png")}
-          alt=""
-          className="banner-img"
-        />
         <div className="banner-content">
           <div className="banner-left">
             <div className="banner-ment">당신과 어울리는 꽃을 알아볼까요?</div>
@@ -93,7 +88,7 @@ function Main() {
           <div className="banner-copy">find the flower<br/>for you</div>
         </div>
       </section>
-
+    <br></br><br></br><br></br>
     </main>
   );
 }
