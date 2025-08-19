@@ -161,27 +161,38 @@ export default function ReviewsIndex() {
       />
 
       {/* 모달 */}
-      {isModalOpen && selectedReview && (
-        <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <h2>리뷰 상세</h2>
-              <button onClick={closeModal} className="close-btn">X</button>
-            </div>
-            <img
-              src={`/img/reviews/${selectedReview.reviewImage}`}
-              alt={selectedReview.reviewId}
-              className="modal-image"
-            />
-            <div className="modal-body">
-              <StarRating rating={selectedReview.score} />
-              <p>{selectedReview.reviewContent}</p>
-              <div>
-                <span>{selectedReview.writer}</span> | <span>{formatDate(selectedReview.reviewDate)}</span>
-              </div>
-            </div>
+{isModalOpen && selectedReview && (
+  <div className="modal-overlay" onClick={closeModal}>
+    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+      {/* 헤더 수정 */}
+      <div className="modal-header">
+        <h2>리뷰 상세</h2>
+        <button onClick={closeModal} className="close-btn">X</button>
+      </div>
+
+      {/* 이미지와 내용 부분 나누기 */}
+      <div className="modal-body">
+        {/* 이미지 영역 */}
+        <div className="modal-image-wrap">
+          <img
+            src={`/img/reviews/${selectedReview.reviewImage}`}
+            alt={selectedReview.reviewId}
+            className="modal-image"
+          />
+        </div>
+
+        {/* 내용 영역 */}
+        <div className="modal-text">
+          <StarRating rating={selectedReview.score} />
+          <p>{selectedReview.reviewContent}</p>
+          <div>
+            <span>{selectedReview.writer}</span> | <span>{formatDate(selectedReview.reviewDate)}</span>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+
       )}
     </main>
   );
