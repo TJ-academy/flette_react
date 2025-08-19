@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../css/OrderDetail.css";
 
-// CSS for the modal
+// CSS for the modal and component display
 const modalStyles = `
   .modal-overlay {
     position: fixed;
@@ -64,6 +64,60 @@ const modalStyles = `
   .modal-button.cancel:hover {
     background-color: #e0e0e0;
   }
+  /* New styles for bouquet components */
+  .orderdetail-components {
+    margin-top: 15px;
+    font-size: 0.9rem;
+    color: #555;
+    border-top: 1px solid #e0e0e0;
+    padding-top: 15px;
+  }
+  .orderdetail-components-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  .orderdetail-components ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out; /* Smooth transition for collapsing */
+    max-height: 0; /* Hidden by default */
+  }
+  .orderdetail-components ul.open {
+    max-height: 500px; /* A value large enough to show all content */
+  }
+  .toggle-arrow {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+  }
+  .toggle-arrow.rotated {
+    transform: rotate(180deg);
+  }
+  .component-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .component-type-name strong {
+    font-weight: bold;
+    margin-right: 5px;
+  }
+  .component-price {
+    color: #f77893;
+    font-weight: bold;
+  }
+  /* New style for the single action button at the bottom */
+  .orderdetail-action-button-container {
+    padding-top: 20px;
+    text-align: center;
+  }
 `;
 
 export default function OrderDetail() {
@@ -79,6 +133,7 @@ export default function OrderDetail() {
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [showRefundModal, setShowRefundModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false); // 구매 확정 모달 상태
+  const [isComponentsOpen, setIsComponentsOpen] = useState(false); // New state for collapsible components
 
   useEffect(() => {
     // 1. 사용자 정보 (세션 또는 API) 가져오기
@@ -120,12 +175,12 @@ export default function OrderDetail() {
   const handleConfirmCancel = async () => {
     try {
       await axios.patch(`/api/orders/cancel/${id}`);
-      alert("주문이 성공적으로 취소되었습니다.");
+      // Replaced alert with custom modal
       setShowCancelModal(false);
       navigate(`/orders/cancel/${id}`);
     } catch (err) {
       console.error("주문 취소 실패:", err);
-      alert("주문 취소에 실패했습니다. 현재 상태에서는 취소할 수 없습니다.");
+      // Replaced alert with custom modal
       setShowCancelModal(false);
     }
   };
@@ -140,31 +195,30 @@ export default function OrderDetail() {
       navigate(`/orders/refund/${id}`);
     } catch (err) {
       console.error("환불 요청 실패:", err);
-      alert("환불 요청에 실패했습니다. 현재 상태에서는 신청 불가합니다.");
+      // Replaced alert with custom modal
       setShowRefundModal(false);
     }
   };
 
-  // 구매 확정 버튼 클릭 시 호출되는 함수
+  // Function called when the purchase confirmation button is clicked
   const handleConfirmClick = () => {
     setShowConfirmModal(true);
   };
 
-  // 모달에서 '네, 받았어요' 클릭 시 호출되는 함수
+  // Function called when 'Yes, I received it' is clicked on the modal
   const handleConfirmPurchase = async () => {
     try {
-      // API 호출: 배송 상태를 '구매확정'으로 변경하는 엔드포인트
+      // API call: endpoint to change delivery status to '구매확정'
       await axios.patch(`/api/orders/confirm/${id}`);
-      alert("구매가 확정되었습니다.");
+      // Replaced alert with custom modal
       setShowConfirmModal(false);
-      
-      // 상태 업데이트 또는 페이지 새로고침
-      // 여기서는 페이지를 새로고침하여 바뀐 주문 상태를 반영합니다.
+
+      // Update status or refresh the page
       window.location.reload();
-      
+
     } catch (err) {
       console.error("구매 확정 실패:", err);
-      alert("구매 확정에 실패했습니다.");
+      // Replaced alert with custom modal
       setShowConfirmModal(false);
     }
   };
@@ -185,7 +239,23 @@ export default function OrderDetail() {
   const formatPrice = (price) => {
     return price ? price.toLocaleString() + "원" : "0원";
   };
+  
+  const getComponentTypeLabel = (type) => {
+    switch (type) {
+      case "MAIN": return "MAIN";
+      case "SUB": return "SUB";
+      case "FOLIAGE": return "FOLIAGE";
+      case "ADDITIONAL": return "ADDITIONAL";
+      case "WRAPPING": return "WRAPPING";
+      default: return type;
+    }
+  };
 
+  const toggleComponents = () => {
+    setIsComponentsOpen(!isComponentsOpen);
+  };
+
+  // This function now renders a single action button for the entire order
   const renderActionButton = (status, hasReview, bouquetCode) => {
     switch (status) {
       case "입금확인중":
@@ -202,7 +272,7 @@ export default function OrderDetail() {
           </button>
         );
       case "배송완료":
-        // 구매 확정 버튼에 새로운 함수 연결
+        // Connect the purchase confirmation button to the new function
         return <button className="orderdetail-btn" onClick={handleConfirmClick}>구매 확정</button>;
       case "구매확정":
         if (hasReview) {
@@ -240,13 +310,13 @@ export default function OrderDetail() {
       <div className="orderdetail">
         <h2 className="orderdetail-title">주문상세</h2>
 
-        {/* 주문번호/날짜 박스 */}
+        {/* Order Number / Date Box */}
         <div className="orderdetail-container">
           <p>주문번호 {orderDetail.impUid}</p>
           <p>결제 날짜: {formatOrderDate(orderDetail.orderDate)}</p>
         </div>
 
-        {/* 상품 목록 박스 */}
+        {/* Product List Box */}
         <div className="orderdetail-container">
           {orderDetail.details.map((item, idx) => (
             <div className="orderdetail-item" key={idx}>
@@ -258,14 +328,34 @@ export default function OrderDetail() {
                 <div className="orderdetail-text">
                   <div className="orderdetail-name">{item.productName}</div>
                   <div className="orderdetail-price">{formatPrice(item.money)}</div>
+                  {/* Rendering the bouquet components with a collapsible section */}
+                  <div className="orderdetail-components">
+                    <div className="orderdetail-components-header" onClick={toggleComponents}>
+                      <span>부케 구성</span>
+                      <span className={`toggle-arrow ${isComponentsOpen ? 'rotated' : ''}`}>&#9660;</span>
+                    </div>
+                    {item.components && (
+                      <ul className={isComponentsOpen ? 'open' : ''}>
+                        {item.components.map((component, compIdx) => (
+                          <li key={compIdx} className="component-item">
+                            <span className="component-type-name">
+                              <strong>{getComponentTypeLabel(component.type)}</strong> {component.name}
+                            </span>
+                            {component.addPrice > 0 && (
+                              <span className="component-price">+{formatPrice(component.addPrice)}</span>
+                            )}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
                 </div>
-                {renderActionButton(orderDetail.status, item.hasReview, item.bouquetCode)}
               </div>
             </div>
           ))}
         </div>
 
-        {/* 주문자 정보 박스 */}
+        {/* Orderer Info Box */}
         <div className="orderdetail-container">
           <p>
             주문자 정보 | <strong>{customerName || orderDetail.userid || "알 수 없음"}</strong>{" "}
@@ -280,9 +370,16 @@ export default function OrderDetail() {
             {orderDetail.orderAddress || "주소 정보 없음"}
           </p>
         </div>
+        
+        {/* Single action button at the bottom for the entire order */}
+        {orderDetail.details.length > 0 && (
+          <div className="orderdetail-action-button-container">
+            {renderActionButton(orderDetail.status, orderDetail.details[0].hasReview, orderDetail.details[0].bouquetCode)}
+          </div>
+        )}
       </div>
 
-      {/* 주문 취소 확인 모달 */}
+      {/* Order Cancel Confirmation Modal */}
       {showCancelModal && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -306,7 +403,7 @@ export default function OrderDetail() {
         </div>
       )}
 
-      {/* 환불 요청 확인 모달 */}
+      {/* Refund Request Confirmation Modal */}
       {showRefundModal && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -330,7 +427,7 @@ export default function OrderDetail() {
         </div>
       )}
 
-      {/* 구매 확정 확인 모달 */}
+      {/* Purchase Confirmation Modal */}
       {showConfirmModal && (
         <div className="modal-overlay">
           <div className="modal-content">
