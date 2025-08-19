@@ -1,0 +1,173 @@
+.shop-detail-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #333;
+  border-top: 2px solid #ffd1da; 
+}
+
+.shop-detail-content h2 {
+  font-size: 15px;  
+  font-weight: 400;  
+  color: #F2778C;       
+  margin: 10px 0;   
+  text-align: center; 
+}
+
+
+.shop-detail-content thead th {
+  padding: 12px;
+  text-align: center;
+  font-weight: 600;
+  color: #584245;
+  border-bottom: 1px solid #ddd; 
+  font-size: 14px;
+}
+
+
+.shop-detail-content tr.quesSum {
+  background: #fff;
+  border: none;        
+  box-shadow: none;     
+}
+
+.shop-detail-content tr.quesSum:hover {
+  background: #fff8fa;  
+  border: none;
+  box-shadow: none;
+}
+
+.shop-detail-content tr.quesSum td {
+  padding: 14px 10px;
+  text-align: center;
+  vertical-align: middle;
+  border-bottom: 1px solid #eee; /* 테이블 라인 */
+}
+
+/* 번호, 상태, 작성자, 날짜 */
+.shop-detail-content .t-index,
+.shop-detail-content .t-status,
+.shop-detail-content .t-writer,
+.shop-detail-content .t-date {
+  width: 100px;
+  color: #777;
+  font-size: 13px;
+}
+
+
+.shop-detail-content .t-status {
+  color: #584245;
+
+}
+
+
+.shop-detail-content .t-title {
+  text-align: left;
+  cursor: pointer;
+  padding-left: 16px;
+}
+
+.shop-detail-content .t-title .public {
+  color: #333;
+  font-weight: 500;
+}
+.shop-detail-content .t-title .secret {
+  color: #999;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-style: italic;
+}
+
+
+.shop-detail-content tr.quesPaswd td {
+  padding: 16px;
+  border: none;            
+  background: #fff8fa;
+  text-align: center;
+}
+
+
+.shop-detail-content tr.quesContent td {
+  padding: 16px;
+  line-height: 1.6;
+  color: #444;
+  border-bottom: 1px solid #eee; 
+}
+
+.shop-detail-content tr.answer td {
+  padding: 16px;
+  background: #fff;
+  border: none;
+  border-bottom: 1px solid #eee;
+  line-height: 1.6;
+  color: #584245;
+}
+
+
+.qna-btn-wrapper {
+  display: flex;
+  justify-content: flex-end;  
+  margin: 15px 0 20px 0;
+}
+
+.qna-btn-outline {
+  background: #fff;             
+  color: #AEAEAE;               
+  border: 1px solid #AEAEAE;  
+  border-radius: 25px;
+  width: 150px;                 
+  height: 40px;                 
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+  display: flex;   
+  align-items: center;        
+  justify-content: center;    
+}
+
+.qna-btn-outline:hover {
+  background: #f2778c;  
+  color: #fff;
+  border: 1px solid #f2778c; 
+}
+
+/* 페이지네이션 컨테이너 */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 25px 0;
+  gap: 2px; 
+  position: relative;
+}
+
+.pagination::after {
+  content: "";
+  position: absolute;
+  bottom: -23px;
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  background: #ffd1da;
+}
+
+.pagination button {
+  background: none;
+  border: none;
+  font-size: 15px;
+  color: #AEAEAE;        
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.pagination button:hover {
+  color: #f2778c;    
+}
+
+.pagination button.active {
+  font-weight: 600;
+  color: #f2778c;
+}

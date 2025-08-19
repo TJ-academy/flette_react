@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {Link, useParams, useNavigate} from 'react-router-dom';
-import '../../css/shopQA.css';
+import "../../css/shop/shopqa.css";
 
 function ShopQa({ onWriteClick }) {
     const [lists, setLists] = useState([]);
@@ -18,8 +18,8 @@ function ShopQa({ onWriteClick }) {
     const navigate = useNavigate();
 
     const loadLists = async (page = 1) => {
-    const res = await axios.get(`http://localhost/api/shop/${productId}/qa?page=${page - 1}&size=${itemsPerPage}`);
-    
+        const res = await axios.get(`http://localhost/api/shop/${productId}/qa?page=${page - 1}&size=${itemsPerPage}`);
+        
         setLists(res.data.list);
         setTotalPages(res.data.totalPages);
         setCurrentPage(res.data.currentPage + 1);
@@ -76,20 +76,26 @@ function ShopQa({ onWriteClick }) {
         <>
             <h2>회원만 작성 가능한 게시판입니다.</h2>
             
-            <button onClick={(e) => {
-                const isLoggedIn = sessionStorage.getItem('loginId') !== null;
-                // console.log("로그인했나요? => " + isLoggedIn);
-                if(!isLoggedIn) {
-                    e.preventDefault();
-                    const goLogin = window.confirm("로그인이 필요한 서비스입니다. 로그인하겠습니까?");
-                    if(goLogin) {
-                        navigate("/member/login");
-                    }
-                } else {
-                    // navigate(`/shop/${productId}/qa/write`);
-                    onWriteClick();
-                }
-            }}>Q&A 작성하기</button>
+            <div className="qna-btn-wrapper">
+  <button 
+    className="qna-btn-outline"
+    onClick={(e) => {
+      const isLoggedIn = sessionStorage.getItem('loginId') !== null;
+      if(!isLoggedIn) {
+          e.preventDefault();
+          const goLogin = window.confirm("로그인이 필요한 서비스입니다. 로그인하겠습니까?");
+          if(goLogin) {
+              navigate("/member/login");
+          }
+      } else {
+          onWriteClick();
+      }
+    }}
+  >
+    Q&A 작성하기
+  </button>
+</div>
+
 
             <table>
                 <thead>

@@ -1,0 +1,81 @@
+.shop-detail-container {
+  max-width: 900px;
+  margin: 60px auto;
+  padding: 20px;
+  text-align: center;
+  font-family: 'Inter', 'Noto Sans KR', sans-serif;
+}
+
+.shop-detail-header {
+  margin-bottom: 30px;
+}
+
+.shop-detail-image {
+  width: 100%;
+  max-width: 480px;
+  border-radius: 16px;
+  margin-bottom: 20px;
+  
+}
+
+.shop-detail-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 10px 0 5px;
+  color: #59514F;
+}
+
+.shop-detail-price {
+  font-size: 22px;
+  font-weight: 600;
+  margin-left:80%;
+  color: #59514F;
+}
+
+/* 탭 버튼 */
+.shop-detail-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  margin: 30px 0 20px;
+  border-bottom: 1.5px solid #eee;
+}
+
+.shop-detail-tabs button {
+  background: none;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 10px 0;
+  cursor: pointer;
+  color: #666;
+  transition: all 0.2s ease;
+}
+
+.shop-detail-tabs button:hover {
+  color: #F2778C;
+}
+
+.shop-detail-tabs .active {
+  color: #F2778C;
+  border-bottom: 2px solid #F2778C;
+}
+
+/* 탭 컨텐츠 */
+.shop-detail-content {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #F2778C;
+  padding-top: 20px;
+}
+
+.recommend-pick {
+  margin: 20px auto 15px auto;
+  text-align: center;
+}
+
+.recommend-pick-img {
+  max-width: 600px;  
+  width: 100%;
+  border-radius: 16px;
+}

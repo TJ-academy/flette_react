@@ -1,0 +1,175 @@
+/* 전체 컨테이너 */
+.review-wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  font-family: 'Pretendard', sans-serif;
+}
+
+/* 상단 요약 */
+.review-summary {
+  margin: 5px auto 50px;
+  padding-top: 5px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  gap: 100px;
+  align-items: center;
+}
+
+.review-divider {
+  width: 100%;
+  max-width: 960px;
+  height: 2px;
+  background: #F2778C;
+  opacity: 0.5;
+  margin: 20px auto 30px;
+  border-radius: 1px;
+}
+
+.summary-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.summary-title {
+  margin: 0;
+  font-size: 19px;
+  color: #584245;
+  font-weight: 500;
+}
+
+.summary-score {
+  font-size: 24px;
+  font-weight: 700;
+  color: #F2778C;
+  margin: 0;
+}
+
+.summary-divider {
+  width: 1px;
+  height: 60px;
+  background: #E9E9E9;
+}
+
+
+.stars {
+  line-height: 1;
+  letter-spacing: 3px;
+  color: #F2778C;
+  font-size: 24px;
+}
+
+.review-card {
+  border-bottom: 1px solid #EAEAEA; 
+  padding: 20px 24px;
+  margin: 0 auto;
+  min-height: 120px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 20px;
+  max-width: 960px;
+  background: #fff;
+}
+.review-card:last-child {
+  border-bottom: none;
+}
+
+.review-left {
+  min-width: 0;
+  text-align: left;        
+}
+
+.review-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  justify-content: flex-start; 
+}
+
+
+.review-score {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: bold;
+  color: #584245; 
+}
+.review-score .stars {
+  font-size: 15px;
+  color: #F2778C;
+}
+
+
+.review-meta {
+  margin-top: 2px;
+  font-size: 14px;
+  color: #AEAEAE;
+}
+
+
+.review-text {
+  margin-top: 8px;
+  line-height: 1.5;
+  font-size: 17px;
+  color: #584245;
+  white-space: pre-wrap;
+  cursor: pointer;
+}
+.review-more {
+  color: #999;
+  margin-top: 6px;
+  font-size: 13px;
+}
+
+
+.review-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.review-thumb {
+  width: 90px;
+  height: 90px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: #f6f6f6;
+  border: 1px solid #eee;
+}
+
+
+.btn-like {
+  border: 1px solid #FFD6DE;
+  background: #FFF6F8;
+  color: #F2778C;
+  border-radius: 18px;
+  padding: 6px 12px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: .2s ease;
+}
+.btn-like:hover {
+  filter: brightness(.97);
+}
+
+
+.review-empty {
+  text-align: center;
+  color: #584245;
+  margin: 32px 0;
+  font-size: 15px;
+}
+
+
+@media (max-width: 768px) {
+  .review-card {
+    grid-template-columns: 1fr;
+  }
+  .review-right {
+    justify-content: flex-end;
+    margin-top: 10px;
+  }
+}
