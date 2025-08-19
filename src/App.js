@@ -52,6 +52,7 @@ import MainAdmin from './components/admin/MainAdmin';
 //주문 관련
 import OrderCencel from './components/orders/OrderCancel';
 import OrderRefund from './components/orders/OrderRefund';
+import OrderSuccess from './components/orders/OrderSuccess';
 
 // 결제
 import PaymentTestPage from './PaymentTestPage';
@@ -158,6 +159,7 @@ function App() {
         {/* 주문 관련 */}
         <Route path="/orders/cancel/:orderId" element={<OrderCencel />} />
         <Route path="/orders/refund/:orderId" element={<OrderRefund />} />
+        <Route path="/orders/success" element={<OrderSuccess />} />
 
         {/* 결제 테스트 */}
         <Route path="/payment" element={<PaymentTestPage />} />

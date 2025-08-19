@@ -1,0 +1,52 @@
+.order-success-container {
+  background-color: white;
+  margin: 0;
+  font-family: 'Noto Sans KR', sans-serif;
+  color: #F2778C;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 60px;
+}
+
+.order-success-container img {
+  margin-bottom: 30px;
+}
+
+.order-success-title {
+  color: #F2778C;
+  font-weight: bold;
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+.order-success-message {
+  font-size: 19px;
+  color: #59514F;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.order-success-button {
+  width: 20%;
+  height: 57px;
+  background: #F2778C;
+  color: white;
+  border-radius: 30px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-bottom: 80px;
+}
+
+.order-success-button:hover {
+  background: #FF6C85;
+}
+
+.order-success-completed {
+  font-size: 20px;
+  color: #9C6B4F;
+  text-align: center;
+  margin-bottom: 20px;
+}
