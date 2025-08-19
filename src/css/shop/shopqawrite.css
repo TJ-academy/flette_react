@@ -1,0 +1,89 @@
+.qa-write-container {
+  max-width: 720px;
+  margin: 40px auto;
+  padding: 32px;
+  background: #fff;
+  border: 1px solid #E0E0E0;
+  border-radius: 14px;
+  box-sizing: border-box;
+  font-family: 'Inter', 'Noto Sans KR', sans-serif;
+}
+
+.qa-write-container h2 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: #333;
+  text-align: center;
+}
+
+
+.qa-write-container label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  margin: 16px 0 8px;
+  color: #444;
+}
+
+.qa-write-container input[type="text"],
+.qa-write-container input[type="password"],
+.qa-write-container textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid #DADADA;
+  border-radius: 10px;
+  font-size: 14px;
+  box-sizing: border-box;
+  transition: border 0.2s ease;
+}
+
+.qa-write-container input:focus,
+.qa-write-container textarea:focus {
+  outline: none;
+  border-color: #FF788F;
+  box-shadow: 0 0 0 2px rgba(255, 120, 143, 0.15);
+}
+
+.qa-write-container textarea {
+  resize: none;
+  min-height: 160px;
+  line-height: 1.5;
+}
+
+.qa-write-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.qa-write-buttons button {
+  padding: 10px 60px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 20px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.25s ease;
+}
+
+.qa-write-buttons .cancel-btn {
+  background: #F3D0D4;
+  border: 1px solid #F2778C;
+  color: #F2778C;
+}
+
+.qa-write-buttons .cancel-btn:hover {
+  background: #F2778C;
+  color: #fff;
+}
+
+.qa-write-buttons .submit-btn {
+  background: #FF788F;
+  color: #fff;
+}
+
+.qa-write-buttons .submit-btn:hover {
+  background: #ff5c79;
+}
