@@ -1,37 +1,53 @@
-// src/components/shop/ReviewsIndex.jsx
-import React, { useMemo, useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
-import "../../css/ReviewsIndex.css";
-import { ZoomIn } from "react-feather";
+import axios from "axios";
+import "../../css/ReviewsIndex.css"; // 스타일 시트 파일
 
 const PAGE_SIZE = 8;
 
 export default function ReviewsIndex() {
-  const [sort, setSort] = useState("latest");
+  const [sort, setSort] = useState("latest"); // 최신순, 별점순, 좋아요순 등으로 정렬
   const [page, setPage] = useState(1);
-  const [expandedReviewId, setExpandedReviewId] = useState(null);
-  const [reviews, setReviews] = useState([
-    {
-      reviewId: 1,
-      score: 4,
-      writer: "user123",
-      reviewContent:
-        "정말 좋았습니다! 다시 방문할게요. 가격도 적당하고 품질이 좋아서 만족합니다.",
-      reviewDate: "2025-08-12",
-      reviewImage: null,
-      likes: 5,
-    },
-    {
-      reviewId: 2,
-      score: 5,
-      writer: "flowerlover",
-      reviewContent:
-        "꽃이 너무 예쁘고 포장도 깔끔했어요. 사장님이 친절해서 기분 좋게 구매했습니다.",
-      reviewDate: "2025-08-10",
-      reviewImage: null,
-      likes: 10,
-    },
-  ]);
+  const [reviews, setReviews] = useState([]);
+  const [totalPages, setTotalPages] = useState(1); // 전체 페이지 수
+
+  // 리뷰 데이터를 가져오는 useEffect
+  useEffect(() => {
+    axios
+      .get(`http://localhost/api/all/reviews?page=${page}&size=${PAGE_SIZE}`)
+      .then((response) => {
+        setReviews(response.data.content); // 리뷰 목록
+        setTotalPages(response.data.totalPages); // 전체 페이지 수
+      })
+      .catch((error) => console.error("Error fetching reviews:", error));
+  }, [page]);
+
+  // 날짜 포맷팅 함수
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("ko-KR", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    });
+  };
+
+  // 리뷰 정렬 로직
+  const sorted = useMemo(() => {
+    const arr = [...reviews];
+    if (sort === "rating") arr.sort((a, b) => b.score - a.score);
+    else if (sort === "likes") arr.sort((a, b) => b.luv - a.luv);
+    else arr.sort((a, b) => new Date(b.reviewDate) - new Date(a.reviewDate));
+    return arr;
+  }, [reviews, sort]);
+
+  const onLike = (id) => {
+    setReviews((prev) =>
+      prev.map((r) =>
+        r.reviewId === id ? { ...r, luv: r.luv + 1 } : r
+      )
+    );
+  };
 
   const StarRating = ({ rating, max = 5 }) => (
     <div style={{ color: "#FFD700" }}>
@@ -41,128 +57,50 @@ export default function ReviewsIndex() {
     </div>
   );
 
-  const maskId = (id) =>
-    id.length <= 3 ? id + "***" : id.slice(0, 3) + "*".repeat(id.length - 3);
-
-  const onLike = (id) => {
-    setReviews((prev) =>
-      prev.map((r) =>
-        r.reviewId === id ? { ...r, likes: r.likes + 1 } : r
-      )
-    );
-  };
-
-  const onExpandToggle = (id) => {
-    setExpandedReviewId((prevId) => (prevId === id ? null : id));
-  };
-
-  const sorted = useMemo(() => {
-    const arr = [...reviews];
-    if (sort === "rating") arr.sort((a, b) => b.score - a.score);
-    else if (sort === "likes") arr.sort((a, b) => b.likes - a.likes);
-    else arr.sort((a, b) => new Date(b.reviewDate) - new Date(a.reviewDate));
-    return arr;
-  }, [reviews, sort]);
-
-  const totalPages = Math.max(1, Math.ceil(sorted.length / PAGE_SIZE));
-  const currentPage = Math.min(Math.max(1, page), totalPages);
-  const paged = useMemo(() => {
-    const start = (currentPage - 1) * PAGE_SIZE;
-    return sorted.slice(start, start + PAGE_SIZE);
-  }, [sorted, currentPage]);
-
-  const Card = ({ review }) => {
-    const isExpanded = expandedReviewId === review.reviewId;
-    const shortText =
-      review.reviewContent.length > 100 && !isExpanded
-        ? review.reviewContent.slice(0, 100) + "..."
-        : review.reviewContent;
-
-        return (
-          <article className="rv-card">
-            {/* 이미지 */}
-            <div className="rv-thumb-wrap">
-              <img
-                src={
-                  review.productImageUrl || // ✅ 상품 이미지 우선
-                  review.reviewImage ||     // 리뷰 이미지 없으면
-                  "https://picsum.photos/seed/product/600/400" // 마지막 fallback
-                }
-                alt={review.reviewId}
-                className="rv-thumb"
-              />
-          <div className="rv-thumb-overlay">
-  <Link
-    to={`/mypage/review/detail/${review.reviewId}`} // 상세 페이지 경로
-    className="flower-icon" // 아이콘 스타일
-    style={{ textDecoration: "none" }}
-  >
-    <ZoomIn color="white" size={20} />
-  </Link>
-</div>
-            </div>
-      
-        {/* 내용 */}
-        <div className="rv-body">
-          <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-            <StarRating rating={review.score} />
-            <span>{review.score}점</span>
-          </div>
-
-          <div className="rv-meta">
-            <span className="rv-meta-dim">
-              {maskId(review.writer)} | {review.reviewDate}
-            </span>
-          </div>
-
-          <p className="rv-text" onClick={() => onExpandToggle(review.reviewId)}>
-            {shortText}
-            {review.reviewContent.length > 100 && (
-              <span style={{ color: "gray" }}>
-                {isExpanded ? " 간략히 보기" : " ...자세히 보기"}
-              </span>
-            )}
-          </p>
-
-          {/* 상품 썸네일 + 좋아요 */}
-          <div className="rv-foot">
-          <img
-  className="rv-avatar"
-  src={
-    review.productImageUrl || 
-    review.reviewImage ||     
-    "https://picsum.photos/seed/productthumb/50/50" 
-  }
-  alt="상품 썸네일"
-/>
-
-            <button
-              onClick={() => onLike(review.reviewId)}
-              style={{
-                border: "none",
-                background: "transparent",
-                cursor: "pointer",
-                marginLeft: "auto",
-              }}
-            >
-              👍 {review.likes}
-            </button>
-          </div>
+  const Card = ({ review }) => (
+    <article className="rv-card">
+      {/* 이미지 */}
+      <div className="rv-thumb-wrap">
+        <img
+          src={`/img/reviews/${review.reviewImage}`}
+          alt={review.reviewId}
+          className="rv-thumb"
+        />
+      </div>
+      {/* 내용 */}
+      <div className="rv-body">
+        <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+          <StarRating rating={review.score} />
+          <span>{review.score}점</span>
         </div>
-      </article>
-    );
-  };
+        <div className="rv-meta">
+          <span className="rv-meta-dim">{review.writer} | {formatDate(review.reviewDate)}</span>
+        </div>
+        <p className="rv-text">{review.reviewContent}</p>
+        <div className="rv-foot">
+          <button onClick={() => onLike(review.reviewId)} style={{ cursor: "pointer" }}>
+            👍 {review.luv}
+          </button>
+        </div>
+      </div>
+    </article>
+  );
 
   return (
     <main className="rv-page">
-      <section className="rv-hero">
-        <img
-          src="/img/reviews/reviews.png"
-          alt="Photo Reviews"
-          className="rv-hero-img"
-        />
+      <section className="photo-review-section">
+        <div className="photo-review-container">
+          <img
+            src={require("../../resources/images/main_banner.png")} // 이미지 URL을 여기에 넣으세요
+            alt="Photo Reviews"
+            className="photo-review-image"
+          />
+          <div className="photo-review-text">
+            <h2>고객님들의 리얼한 후기</h2>
+            <p>PHOTO REVIEWS</p>
+          </div>
+        </div>
       </section>
-
       {/* 툴바 */}
       <div className="rv-toolbar">
         <div />
@@ -171,7 +109,7 @@ export default function ReviewsIndex() {
             value={sort}
             onChange={(e) => {
               setSort(e.target.value);
-              setPage(1);
+              setPage(1); // 페이지를 1로 초기화
             }}
             className="rv-select"
           >
@@ -179,20 +117,19 @@ export default function ReviewsIndex() {
             <option value="rating">별점 높은순</option>
             <option value="likes">좋아요 많은순</option>
           </select>
-          <span className="rv-caret">▾</span>
         </label>
       </div>
 
       {/* 리뷰 카드 */}
       <section className="rv-grid">
-        {paged.map((r) => (
+        {sorted.map((r) => (
           <Card key={r.reviewId} review={r} />
         ))}
       </section>
 
       {/* 페이지네이션 */}
       <Pagination
-        page={currentPage}
+        page={page}
         totalPages={totalPages}
         onChange={(p) => setPage(p)}
       />
@@ -201,7 +138,6 @@ export default function ReviewsIndex() {
 }
 
 function Pagination({ page, totalPages, onChange }) {
-  if (totalPages <= 1) return null;
   const pages = [...Array(totalPages)].map((_, i) => i + 1);
   return (
     <nav className="rv-pagination">
