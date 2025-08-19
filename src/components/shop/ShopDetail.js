@@ -13,7 +13,7 @@ function useFetch(url) {
     useEffect(() => {
         axios.get(url)
         .then((response) => {
-            console.log( 'data:'+JSON.stringify(response.data));
+            //console.log( 'data:'+JSON.stringify(response.data));
             setData(response.data);
             setLoading(false);
         });
@@ -55,10 +55,9 @@ function ShopDetail() {
         return (
             <>
                 <div>
-                    꽃다발 이미지
                     {data.dto.imageName && (
                         <img
-                            src={`http://localhost/images/${data.dto.imageName}`}
+                            src={`http://localhost:80/img/product/${data.dto.imageName}`}
                             alt="상품 이미지"
                             width={300}
                             height={300}

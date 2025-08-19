@@ -223,13 +223,13 @@ function ShopInfo() {
           bouquetCode: bouquetData.bouquetCode,
           price: bouquetData.totalMoney,
           quantity: 1,
-          totalPrice: bouquetData.totalMoney,
+          // totalPrice: bouquetData.totalMoney,
           userid: loginId,
         };
         const res = await axios.post(`http://localhost/api/cart/insert`, payload)
         if(res.data.success) {
           console.log("장바구니에 추가되었습니다.");
-          navigate("/cart/list");
+          navigate("/cart");
         } else {
           console.log("장바구니 추가 실패: " + res.data.message);
           return null;

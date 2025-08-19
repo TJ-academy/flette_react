@@ -1,0 +1,29 @@
+.cart-option-info {
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+.flower-info, .deco-info {
+  display: flex;
+  margin-bottom: 4px;
+}
+
+.bouquet-info-category {
+    width: 100px;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.bouquet-info-name {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.bouquet-info-price {
+  min-width: 60px;
+  text-align: right;
+  color: #F2778C;
+  font-size: 13px;
+  padding-left: 12px;
+}

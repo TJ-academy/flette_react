@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import BouquetInfoList from "./BouquetInfoList";
 
 export default function CartList() {
-    const [cartItems, setCartItems] = useState([]);
+    const [items, setItems] = useState([]);
 
     // 장바구니 목록 로드
     const loadCartItems = async () => {
         try {
-            const userId = sessionStorage.getItem('loginId')
-            const res = await axios.get(`/api/cart/list/${userId}`);
-            setCartItems(res.data);
+            const userid = sessionStorage.getItem('loginId')
+            const res = await axios.get(`/api/cart/list/${userid}`);
+            console.log("장바구니 로딩 성공");
+            console.log( 'data:'+JSON.stringify(res.data));
+            setItems(res.data.carts);
         } catch (err) {
             console.error("장바구니 로딩 실패", err);
         }
@@ -57,7 +60,7 @@ export default function CartList() {
         loadCartItems();
     }, []);
 
-    const totalPrice = cartItems.reduce((sum, item) => sum + item.totalPrice, 0);
+    const totalPrice = items.reduce((sum, item) => sum + item.totalPrice, 0);
 
     return (
         <div className="page">
@@ -75,17 +78,20 @@ export default function CartList() {
                             </tr>
                         </thead>
                         <tbody>
-                            {cartItems.length ? (
-                                cartItems.map((item) => (
+                            {items.length ? (
+                                items.map((item) => (
                                     <tr key={item.cartId} className="row">
-                                        <td className="td text-left">{item.flower.flowerName}</td>
+                                        <td className="td text-left">
+                                            <p>{item.productName}</p>
+                                            <BouquetInfoList bouquetInfoList={item.bouquetInfoList} />
+                                        </td>
                                         <td className="td">
                                             <input
                                                 type="number"
                                                 min="1"
                                                 value={item.quantity} // 개별 아이템의 quantity 사용
                                                 onChange={(e) => handleQuantityChange(e, item.cartId)}
-                                                className="textarea"
+                                                className="cart-quantity"
                                                 style={{ width: "60px" }}
                                             />
                                         </td>
