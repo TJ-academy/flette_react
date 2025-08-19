@@ -132,6 +132,7 @@ function OrderAdmin() {
                   <option value="입금확인중">입금확인중</option>
                   <option value="취소완료">취소완료</option>
                   <option value="결제완료">결제완료</option>
+                  <option value="환불요청">환불요청</option>
                   <option value="환불완료">환불완료</option>
                   <option value="배송중">배송중</option>
                   <option value="배송완료">배송완료</option>
