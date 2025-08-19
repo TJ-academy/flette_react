@@ -12,11 +12,14 @@ function OrderList() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // 현재 로그인한 사용자의 ID
-  // userId를 "1"이 아닌 문자열 "0511skfo"로 변경합니다.
-  const userId = "0511skfo";
+  const userId = sessionStorage.getItem("loginId");
 
   useEffect(() => {
+    if (!userId) {
+      setError("로그인 정보가 없습니다.");
+      setLoading(false);
+      return;
+    }
     const fetchOrders = async () => {
       try {
         const response = await axios.get(`${API_BASE_URL}/history/${userId}`);
@@ -114,7 +117,8 @@ function OrderList() {
               </div>
             ))
           ) : (
-            <div className="no-orders">주문 내역이 없습니다.</div>
+            <div className="no-orders"
+            >주문 내역이 없습니다.</div>
           )}
         </div>
       </section>
