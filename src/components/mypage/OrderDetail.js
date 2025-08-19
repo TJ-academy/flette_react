@@ -77,6 +77,7 @@ export default function OrderDetail() {
   const [customerName, setCustomerName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [showCancelModal, setShowCancelModal] = useState(false); // New state for modal
+  const [showRefundModal, setShowRefundModal] = useState(false);
 
   useEffect(() => {
     // 1. 사용자 정보 (세션 또는 API) 가져오기
@@ -133,6 +134,25 @@ export default function OrderDetail() {
     }
   };
 
+  // Handle click on cancel button to open modal
+  const handleRefundClick = () => {
+    setShowRefundModal(true);
+  };
+
+  // Handle confirmation in modal and call API
+  const handleConfirmRefund = async () => {
+    try {
+      setShowRefundModal(false);
+      navigate(`/orders/refund/${id}`);
+    } catch (err) {
+      console.error("환불 요청 실패:", err);
+      // 실패 시 사용자에게 알림
+      alert("환불 요청에 실패했습니다. 현재 상태에서는 신청 불가합니다.");
+      setShowRefundModal(false);
+    }
+  };
+
+
   const formatOrderDate = (dateString) => {
     if (!dateString) return "날짜 정보 없음";
     const date = new Date(dateString);
@@ -155,7 +175,7 @@ export default function OrderDetail() {
       case "입금확인중":
         return <button className="orderdetail-btn" onClick={handleCancelClick}>주문 취소</button>;
       case "결제완료":
-        return <button className="orderdetail-btn">환불 요청</button>;
+        return <button className="orderdetail-btn" onClick={handleRefundClick}>환불 요청</button>;
         case "배송중":
           return (
             <button
@@ -256,6 +276,30 @@ export default function OrderDetail() {
               <button
                 className="modal-button confirm"
                 onClick={handleConfirmCancel}
+              >
+                확인
+              </button>
+              <button
+                className="modal-button cancel"
+                onClick={() => setShowCancelModal(false)}
+              >
+                취소
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 환불 요청 확인 모달 */}
+      {showRefundModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3 className="modal-title">환불 신청을 할까요?</h3>
+            <p className="modal-message">'확인'을 누르시면 환불 요청 페이지로 넘어갑니다.</p>
+            <div className="modal-buttons">
+              <button
+                className="modal-button confirm"
+                onClick={handleConfirmRefund}
               >
                 확인
               </button>
