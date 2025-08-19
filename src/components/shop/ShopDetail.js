@@ -43,25 +43,6 @@ function ShopDetail() {
                 className="recommend-pick-img"
               />
             </div>
-            {/* <>
-                <div>
-                    {data.dto.imageName && (
-                        <img
-                            src={`http://localhost:80/img/product/${data.dto.imageName}`}
-                            alt="상품 이미지"
-                            width={300}
-                            height={300}
-                        />
-                    )}
-                    <p><strong>{data.dto.productName}</strong></p>
-                    <p>{data.dto.basicPrice.toLocaleString()} ~ </p>
-                </div>
-                <div>
-                    <button onClick={() => setActiveTab('details')}>상세정보</button>
-                    <button onClick={() => setActiveTab('reviews')}>리뷰</button>
-                    <button onClick={() => setActiveTab('qa')}>Q&A</button>
-                </div>
-                <br /> */}
 
             {/* ✅ 추천 PICK 바로 밑에만 구분선 노출 */}
             <div className="shop-detail-divider" />

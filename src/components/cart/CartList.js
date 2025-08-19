@@ -4,6 +4,7 @@ import BouquetInfoList from "./BouquetInfoList";
 
 export default function CartList() {
     const [items, setItems] = useState([]);
+    const [selectedCartIds, setSelectedCartIds] = useState([]);
     const userid = sessionStorage.getItem('loginId')
 
     // 장바구니 목록 로드
@@ -13,8 +14,27 @@ export default function CartList() {
             console.log("장바구니 로딩 성공");
             // console.log( 'data:'+JSON.stringify(res.data));
             setItems(res.data.carts);
+            setSelectedCartIds(res.data.carts.map(item => item.cartId));
         } catch (err) {
             console.error("장바구니 로딩 실패", err);
+        }
+    };
+
+    // 체크박스 - 개별 선택
+    const handleSelectItem = (cartId) => {
+        setSelectedCartIds(prev =>
+            prev.includes(cartId)
+                ? prev.filter(id => id !== cartId)
+                : [...prev, cartId]
+        );
+    };
+
+    // 체크박스 - 전체 선택
+    const handleSelectAll = () => {
+        if (selectedCartIds.length === items.length) {
+            setSelectedCartIds([]);
+        } else {
+            setSelectedCartIds(items.map(item => item.cartId));
         }
     };
 
@@ -52,12 +72,31 @@ export default function CartList() {
         }
     };
 
+    // 장바구니 비우기
+    const removeAll = async () => {
+        if (window.confirm("장바구니를 비우시겠습니까?")) {
+            try {
+                const res = await axios.delete(`/api/cart/remove/all/${userid}`);
+                alert(res.data.message);
+                loadCartItems();
+            } catch (err) {
+                console.error("전체 삭제 실패", err);
+                alert("장바구니 비우기 중 오류가 발생했습니다.");
+            }
+        }
+    }
+
     // 주문하기
     const handleCheckout = async () => {
+        if (selectedCartIds.length === 0) {
+            alert("주문할 항목을 선택해주세요.");
+            return;
+        }
+
         try {
-            const res = await axios.post(`/api/cart/checkout/${userid}`);
+            const res = await axios.post(`/api/cart/checkout/${userid}`, {selectedCartIds});
             alert(res.data);
-            loadCartItems(); // 주문 후 장바구니 목록 비우기
+            loadCartItems();
         } catch (err) {
             console.error("주문 실패", err);
             alert("주문 중 오류가 발생했습니다.");
@@ -68,7 +107,11 @@ export default function CartList() {
         loadCartItems();
     }, []);
 
-    const totalPrice = items.reduce((sum, item) => sum + item.totalPrice, 0);
+    const totalPrice = items
+    .filter(item => selectedCartIds.includes(item.cartId))
+    .reduce((sum, item) => sum + item.totalPrice, 0);
+
+    const isAllSelected = items.length > 0 && selectedCartIds.length === items.length;
 
     return (
         <div className="page">
@@ -79,6 +122,10 @@ export default function CartList() {
                     <table className="table">
                         <thead>
                             <tr>
+                                <th className="th">
+                                    <input type="checkbox" checked={isAllSelected}
+                                    onChange={handleSelectAll} />
+                                </th>
                                 <th className="th">번호</th>
                                 <th className="th">상품명</th>
                                 <th className="th">수량</th>
@@ -90,6 +137,10 @@ export default function CartList() {
                             {items.length ? (
                                 items.map((item, index) => (
                                     <tr key={item.cartId} className="row">
+                                        <td>
+                                            <input type="checkbox" checked={selectedCartIds.includes(item.cartId)}
+                                            onChange={() => handleSelectItem(item.cartId)} />
+                                        </td>
                                         <td>{index + 1}</td>
                                         <td className="td text-left">
                                             <p>{item.productName}</p>
@@ -131,7 +182,10 @@ export default function CartList() {
                     <div className="total-price">
                         총 금액: {totalPrice.toLocaleString()}원
                     </div>
-                    <button className="primary-btn" onClick={handleCheckout}>
+                    <button className="clean-btn" onClick={removeAll}>
+                        장바구니 비우기
+                    </button>
+                    <button className="buy-btn" onClick={handleCheckout}>
                         주문하기
                     </button>
                 </div>
