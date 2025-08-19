@@ -4,14 +4,14 @@ import BouquetInfoList from "./BouquetInfoList";
 
 export default function CartList() {
     const [items, setItems] = useState([]);
+    const userid = sessionStorage.getItem('loginId')
 
     // 장바구니 목록 로드
     const loadCartItems = async () => {
         try {
-            const userid = sessionStorage.getItem('loginId')
             const res = await axios.get(`/api/cart/list/${userid}`);
             console.log("장바구니 로딩 성공");
-            console.log( 'data:'+JSON.stringify(res.data));
+            // console.log( 'data:'+JSON.stringify(res.data));
             setItems(res.data.carts);
         } catch (err) {
             console.error("장바구니 로딩 실패", err);
@@ -23,9 +23,18 @@ export default function CartList() {
         const newQuantity = parseInt(e.target.value);
         if (newQuantity < 1) return; // 수량은 1 미만이 될 수 없도록 방지
 
+        setItems(prevItems =>
+            prevItems.map(item =>
+                item.cartId === cartId ? {
+                        ...item,
+                        quantity: newQuantity,
+                        totalPrice: newQuantity * item.price,
+                    } : item
+            )
+        );
+
         try {
             await axios.patch(`/api/cart/update/${cartId}`, { quantity: newQuantity });
-            loadCartItems(); // 업데이트 후 목록 다시 불러오기
         } catch (err) {
             console.error("수량 업데이트 실패", err);
         }
@@ -36,7 +45,7 @@ export default function CartList() {
         if (window.confirm("정말로 삭제하시겠습니까?")) {
             try {
                 await axios.delete(`/api/cart/remove/${cartId}`);
-                loadCartItems(); // 삭제 후 목록 다시 불러오기
+                loadCartItems();
             } catch (err) {
                 console.error("삭제 실패", err);
             }
@@ -46,8 +55,7 @@ export default function CartList() {
     // 주문하기
     const handleCheckout = async () => {
         try {
-            const userId = 'testuser'; // 예시: 실제 로그인된 사용자 ID로 대체
-            const res = await axios.post(`/api/cart/checkout/${userId}`);
+            const res = await axios.post(`/api/cart/checkout/${userid}`);
             alert(res.data);
             loadCartItems(); // 주문 후 장바구니 목록 비우기
         } catch (err) {
@@ -71,6 +79,7 @@ export default function CartList() {
                     <table className="table">
                         <thead>
                             <tr>
+                                <th className="th">번호</th>
                                 <th className="th">상품명</th>
                                 <th className="th">수량</th>
                                 <th className="th">가격</th>
@@ -79,8 +88,9 @@ export default function CartList() {
                         </thead>
                         <tbody>
                             {items.length ? (
-                                items.map((item) => (
+                                items.map((item, index) => (
                                     <tr key={item.cartId} className="row">
+                                        <td>{index + 1}</td>
                                         <td className="td text-left">
                                             <p>{item.productName}</p>
                                             <BouquetInfoList bouquetInfoList={item.bouquetInfoList} />
@@ -108,7 +118,7 @@ export default function CartList() {
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="4" className="empty">
+                                    <td colSpan="5" className="empty">
                                         장바구니가 비어 있습니다.
                                     </td>
                                 </tr>
