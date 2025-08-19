@@ -132,6 +132,7 @@
   transform: translateY(-50%);
   background: #F2778C;
   color: #fff;
+  border: 1px solid #F2778C;
   font-size: 30px;
   width: 40px;
   height: 40px;
@@ -206,17 +207,14 @@ hr {
 }
 
 .btn-cart:hover {
-  border-color: #F2778C;
+  background-color: #F2778C;
   color: #fff;
+  border: 1px solid #F2778C;
 }
 
 
 .btn-buy {
-  border-color: #F2778C;
-  color: #fff;
-}
-
-.btn-buy:hover {
-  border-color: #F2778C;
+  background-color: #F2778C;
+  border: 1px solid #F2778C;
   color: #fff;
 }
