@@ -324,36 +324,72 @@ export default function OrderDetail() {
                 <span className="status-label">{orderDetail.status}</span>
               </div>
               <div className="orderdetail-body">
-                <img className="orderdetail-thumb" src={`/img/product/${item.imageName}`} alt={item.productName} />
+                <img
+                  className="orderdetail-thumb"
+                  src={`/img/product/${item.imageName}`}
+                  alt={item.productName}
+                />
                 <div className="orderdetail-text">
                   <div className="orderdetail-name">{item.productName}</div>
                   <div className="orderdetail-price">{formatPrice(item.money)}</div>
+
                   {/* Rendering the bouquet components with a collapsible section */}
                   <div className="orderdetail-components">
-                    <div className="orderdetail-components-header" onClick={toggleComponents}>
+                    <div
+                      className="orderdetail-components-header"
+                      onClick={toggleComponents}
+                    >
                       <span>부케 구성</span>
-                      <span className={`toggle-arrow ${isComponentsOpen ? 'rotated' : ''}`}>&#9660;</span>
+                      <span
+                        className={`toggle-arrow ${isComponentsOpen ? "rotated" : ""}`}
+                      >
+                        &#9660;
+                      </span>
                     </div>
                     {item.components && (
-                      <ul className={isComponentsOpen ? 'open' : ''}>
+                      <ul className={isComponentsOpen ? "open" : ""}>
                         {item.components.map((component, compIdx) => (
                           <li key={compIdx} className="component-item">
                             <span className="component-type-name">
-                              <strong>{getComponentTypeLabel(component.type)}</strong> {component.name}
+                              <strong>{getComponentTypeLabel(component.type)}</strong>{" "}
+                              {component.name}
                             </span>
                             {component.addPrice > 0 && (
-                              <span className="component-price">+{formatPrice(component.addPrice)}</span>
+                              <span className="component-price">
+                                +{formatPrice(component.addPrice)}
+                              </span>
                             )}
                           </li>
                         ))}
                       </ul>
                     )}
                   </div>
+
+                  {/* ✅ 상품별 리뷰 버튼 */}
+                  <div className="orderdetail-action-button-container">
+                    {orderDetail.status === "구매확정" ? (
+                      item.hasReview ? (
+                        <button className="orderdetail-btn" disabled>
+                          리뷰 작성 완료
+                        </button>
+                      ) : (
+                        <button
+                          className="orderdetail-btn"
+                          onClick={() =>
+                            navigate(`/mypage/reviews/write/${item.bouquetCode}`)
+                          }
+                        >
+                          리뷰 쓰기
+                        </button>
+                      )
+                    ) : null}
+                  </div>
                 </div>
               </div>
             </div>
           ))}
         </div>
+
 
         {/* Orderer Info Box */}
         <div className="orderdetail-container">
