@@ -334,25 +334,9 @@ return (
                 <div className="orderdetail-name">{item.productName}</div>
                 <div className="orderdetail-price">{formatPrice(item.money)}</div>
 
-                {/* ✅ 상품별 리뷰 버튼 (가격 밑으로 이동) */}
                 <div className="orderdetail-action-button-container">
-                  {orderDetail.status === "구매확정" ? (
-                    item.hasReview ? (
-                      <button className="orderdetail-btn" disabled>
-                        리뷰 작성 완료
-                      </button>
-                    ) : (
-                      <button
-                        className="orderdetail-btn"
-                        onClick={() =>
-                          navigate(`/mypage/reviews/write/${item.bouquetCode}`)
-                        }
-                      >
-                        리뷰 쓰기
-                      </button>
-                    )
-                  ) : null}
-                </div>
+            {renderActionButton(orderDetail.status, item.hasReview, item.bouquetCode)}
+          </div>
 
                 {/* 부케 구성 */}
                 <div className="orderdetail-components">
