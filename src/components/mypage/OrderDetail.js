@@ -394,7 +394,6 @@ return (
           </div>
         ))}
       </div>
-    </div>
 
 
 
@@ -413,8 +412,7 @@ return (
             {orderDetail.orderAddress || "주소 정보 없음"}
           </p>
         </div>
-        
-
+        </div>
      
       
 
