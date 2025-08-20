@@ -66,20 +66,21 @@ const modalStyles = `
   }
   /* New styles for bouquet components */
   .orderdetail-components {
-    margin-top: 15px;
+    margin-top: 20px;
     font-size: 0.9rem;
     color: #555;
     border-top: 1px solid #e0e0e0;
-    padding-top: 15px;
+    padding-top: 10px;
   }
   .orderdetail-components-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
-    font-size: 1rem;
-    font-weight: bold;
+    font-size: 0.8rem;
+    font-weight: none;
     margin-bottom: 10px;
+    color: #584245;
   }
   .orderdetail-components ul {
     list-style-type: none;
@@ -304,91 +305,97 @@ export default function OrderDetail() {
     return <div className="orderdetail">주문 정보를 찾을 수 없습니다.</div>;
   }
 
-  return (
-    <>
-      <style>{modalStyles}</style>
-      <div className="orderdetail">
-        <h2 className="orderdetail-title">주문상세</h2>
+return (
+  <>
+    <style>{modalStyles}</style>
+    <div className="orderdetail">
+      <h2 className="orderdetail-title">주문상세</h2>
 
-        {/* Order Number / Date Box */}
-        <div className="orderdetail-container">
-          <p>주문번호 {orderDetail.impUid}</p>
-          <p>결제 날짜: {formatOrderDate(orderDetail.orderDate)}</p>
-        </div>
+      {/* Order Number / Date Box */}
+      <div className="orderdetail-container">
+        <p>주문번호 {orderDetail.impUid}</p>
+        <p>결제 날짜: {formatOrderDate(orderDetail.orderDate)}</p>
+      </div>
 
-        {/* Product List Box */}
-        <div className="orderdetail-container">
-          {orderDetail.details.map((item, idx) => (
-            <div className="orderdetail-item" key={idx}>
-              <div className="orderdetail-status">
-                <span className="status-label">{orderDetail.status}</span>
-              </div>
-              <div className="orderdetail-body">
-                <img
-                  className="orderdetail-thumb"
-                  src={`/img/product/${item.imageName}`}
-                  alt={item.productName}
-                />
-                <div className="orderdetail-text">
-                  <div className="orderdetail-name">{item.productName}</div>
-                  <div className="orderdetail-price">{formatPrice(item.money)}</div>
+      {/* Product List Box */}
+      <div className="orderdetail-container">
+        {orderDetail.details.map((item, idx) => (
+          <div className="orderdetail-item" key={idx}>
+            <div className="orderdetail-status">
+              <span className="status-label">{orderDetail.status}</span>
+            </div>
+            <div className="orderdetail-body">
+              <img
+                className="orderdetail-thumb"
+                src={`/img/product/${item.imageName}`}
+                alt={item.productName}
+              />
+              <div className="orderdetail-text">
+                <div className="orderdetail-name">{item.productName}</div>
+                <div className="orderdetail-price">{formatPrice(item.money)}</div>
 
-                  {/* Rendering the bouquet components with a collapsible section */}
-                  <div className="orderdetail-components">
-                    <div
-                      className="orderdetail-components-header"
-                      onClick={toggleComponents}
-                    >
-                      <span>부케 구성</span>
-                      <span
-                        className={`toggle-arrow ${isComponentsOpen ? "rotated" : ""}`}
+                {/* ✅ 상품별 리뷰 버튼 (가격 밑으로 이동) */}
+                <div className="orderdetail-action-button-container">
+                  {orderDetail.status === "구매확정" ? (
+                    item.hasReview ? (
+                      <button className="orderdetail-btn" disabled>
+                        리뷰 작성 완료
+                      </button>
+                    ) : (
+                      <button
+                        className="orderdetail-btn"
+                        onClick={() =>
+                          navigate(`/mypage/reviews/write/${item.bouquetCode}`)
+                        }
                       >
-                        &#9660;
-                      </span>
-                    </div>
-                    {item.components && (
-                      <ul className={isComponentsOpen ? "open" : ""}>
-                        {item.components.map((component, compIdx) => (
-                          <li key={compIdx} className="component-item">
-                            <span className="component-type-name">
-                              <strong>{getComponentTypeLabel(component.type)}</strong>{" "}
-                              {component.name}
-                            </span>
-                            {component.addPrice > 0 && (
-                              <span className="component-price">
-                                +{formatPrice(component.addPrice)}
-                              </span>
-                            )}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
+                        리뷰 쓰기
+                      </button>
+                    )
+                  ) : null}
+                </div>
 
-                  {/* ✅ 상품별 리뷰 버튼 */}
-                  <div className="orderdetail-action-button-container">
-                    {orderDetail.status === "구매확정" ? (
-                      item.hasReview ? (
-                        <button className="orderdetail-btn" disabled>
-                          리뷰 작성 완료
-                        </button>
-                      ) : (
-                        <button
-                          className="orderdetail-btn"
-                          onClick={() =>
-                            navigate(`/mypage/reviews/write/${item.bouquetCode}`)
-                          }
-                        >
-                          리뷰 쓰기
-                        </button>
-                      )
-                    ) : null}
+                {/* 부케 구성 */}
+                <div className="orderdetail-components">
+                  <div
+                    className="orderdetail-components-header"
+                    onClick={toggleComponents}
+                  >
+                    <span>부케 구성</span>
+                    <span
+                      className={`toggle-arrow ${
+                        isComponentsOpen ? "rotated" : ""
+                      }`}
+                    >
+                      &#9660;
+                    </span>
                   </div>
+                  {item.components && (
+                    <ul className={isComponentsOpen ? "open" : ""}>
+                      {item.components.map((component, compIdx) => (
+                        <li key={compIdx} className="component-item">
+                          <span className="component-type-name">
+                            <strong>
+                              {getComponentTypeLabel(component.type)}
+                            </strong>{" "}
+                            {component.name}
+                          </span>
+                          {component.addPrice > 0 && (
+                            <span className="component-price">
+                              +{formatPrice(component.addPrice)}
+                            </span>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
 
 
         {/* Orderer Info Box */}
@@ -407,13 +414,9 @@ export default function OrderDetail() {
           </p>
         </div>
         
-        {/* Single action button at the bottom for the entire order */}
-        {orderDetail.details.length > 0 && (
-          <div className="orderdetail-action-button-container">
-            {renderActionButton(orderDetail.status, orderDetail.details[0].hasReview, orderDetail.details[0].bouquetCode)}
-          </div>
-        )}
-      </div>
+
+     
+      
 
       {/* Order Cancel Confirmation Modal */}
       {showCancelModal && (
