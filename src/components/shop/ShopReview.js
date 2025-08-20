@@ -122,7 +122,7 @@ const ReviewCard = ({ review }) => {
         <div className="review-right">
           {review.reviewImage && (
             <img
-              src={review.reviewImage}
+              src={`/img/reviews/${review.reviewImage}`}
               alt="리뷰 이미지"
               className="review-thumb"
             />

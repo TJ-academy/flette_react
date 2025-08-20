@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import ShopReview from "./ShopReview";
 import ShopQa from "./ShopQA";
 import ShopQaWrite from "./ShopQaWrite";
@@ -24,11 +24,27 @@ function useFetch(url) {
 
 function ShopDetail() {
   const { productId } = useParams();
+  const location = useLocation();
   const [data, loading] = useFetch(
     `http://localhost/api/shop/${productId}/detail`
   );
   const [activeTab, setActiveTab] = useState("details");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const hash = location.hash.substring(1); // #을 제외한 값
+    switch (hash) {
+      case "reviews":
+        setActiveTab("reviews");
+        break;
+      case "qa":
+        setActiveTab("qa");
+        break;
+      default:
+        setActiveTab("details");
+        break;
+    }
+  }, [location]);
 
   const renderContent = () => {
     switch (activeTab) {

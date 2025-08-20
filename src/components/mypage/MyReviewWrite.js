@@ -116,9 +116,13 @@ export default function MyReviewWrite() {
         <main style={styles.page}>
             <section style={styles.panel}>
                 <div style={styles.headerRow}>
-                    <Link to="/mypage/reviews" style={styles.backBtn} aria-label="뒤로가기">
+                    <button
+                        onClick={() => navigate(-1)}
+                        style={{ ...styles.backBtn, border: 'none', background: 'none' }}
+                        aria-label="뒤로가기"
+                    >
                         ←
-                    </Link>
+                    </button>
                     <h2 style={{ margin: 50, fontSize: 18 }}>리뷰쓰기</h2>
                     <div style={{ width: 24 }} />
                 </div>

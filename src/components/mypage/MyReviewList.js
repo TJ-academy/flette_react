@@ -54,7 +54,7 @@ function MyReviewList() {
     <div
       className="review-card"
       key={type === "todo" ? item.bouquetCode : item.reviewId}
-      onClick={() => navigate(`/shop/${item.productId}/review`)}
+      onClick={() => navigate(`/shop/${item.productId}/detail#reviews`)}
     >
       <img
         src={
