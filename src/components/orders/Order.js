@@ -91,7 +91,7 @@ const Order = () => {
             userid: userid,
 
             receiver: receiver,
-            orderAddress: address1 + address2,
+            orderAddress: address1 + " " + address2,
             tel: phone,
 
             bank: bank,
