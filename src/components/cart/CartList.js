@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import BouquetInfoList from "./BouquetInfoList";
 
 export default function CartList() {
     const [items, setItems] = useState([]);
     const [selectedCartIds, setSelectedCartIds] = useState([]);
+    const navigate = useNavigate();
     const userid = sessionStorage.getItem('loginId')
 
     // 장바구니 목록 로드
@@ -72,6 +74,18 @@ export default function CartList() {
         }
     };
 
+    // 선택한 장바구니 지우기
+    const removeSelected = async () => {
+        if (window.confirm("선택한 장바구니를 삭제하시겠습니까?")) {
+            try {
+                const res = await axios.delete(`/api/cart/remove/selected/${userid}`, {data: selectedCartIds});
+                loadCartItems();
+            } catch (err) {
+                console.error("장바구니 삭제 중 오류가 발생했습니다.", err);
+            }
+        }
+    }
+
     // 장바구니 비우기
     const removeAll = async () => {
         if (window.confirm("장바구니를 비우시겠습니까?")) {
@@ -94,9 +108,8 @@ export default function CartList() {
         }
 
         try {
-            const res = await axios.post(`/api/cart/checkout/${userid}`, {selectedCartIds});
-            alert(res.data);
-            loadCartItems();
+            const res = await axios.post(`/api/orders/cart/${userid}`, selectedCartIds);
+            navigate(`/orders/${res.data}`);
         } catch (err) {
             console.error("주문 실패", err);
             alert("주문 중 오류가 발생했습니다.");
@@ -143,6 +156,9 @@ export default function CartList() {
                                         </td>
                                         <td>{index + 1}</td>
                                         <td className="td text-left">
+                                            <img src={`http://localhost:80/img/product/${item.productImageName}`}
+                                                alt={item.flowerName || item.decorationName} 
+                                                style={{width: "150px"}}/>
                                             <p>{item.productName}</p>
                                             <BouquetInfoList bouquetInfoList={item.bouquetInfoList} />
                                         </td>
@@ -184,6 +200,9 @@ export default function CartList() {
                     </div>
                     <button className="clean-btn" onClick={removeAll}>
                         장바구니 비우기
+                    </button>
+                    <button className="clean-btn" onClick={removeSelected}>
+                        선택항목 지우기
                     </button>
                     <button className="buy-btn" onClick={handleCheckout}>
                         주문하기

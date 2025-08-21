@@ -50,6 +50,7 @@ import ReviewsIndex from './components/shop/ReviewsIndex';
 import MainAdmin from './components/admin/MainAdmin'; 
 
 //주문 관련
+import Order from './components/orders/Order';
 import OrderCencel from './components/orders/OrderCancel';
 import OrderRefund from './components/orders/OrderRefund';
 import OrderSuccess from './components/orders/OrderSuccess';
@@ -157,6 +158,7 @@ function App() {
         <Route path="/admin" element={<MainAdmin />} />
 
         {/* 주문 관련 */}
+        <Route path="/orders/:orderId" element={<Order />} />
         <Route path="/orders/cancel/:orderId" element={<OrderCencel />} />
         <Route path="/orders/refund/:orderId" element={<OrderRefund />} />
         <Route path="/orders/success" element={<OrderSuccess />} />
