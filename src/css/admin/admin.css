@@ -1,5 +1,3 @@
-/* admin.css */
-
 /* General Layout */
 .page {
   display: grid;
@@ -210,7 +208,7 @@
 }
 
 .primary-btn {
-  padding: 8px 14px;
+  padding: 10px 20px;
   border-radius: 999px;
   border: none;
   background: #ff88a0;
@@ -219,10 +217,14 @@
   font-weight: 700;
   font-size: 14px; /* 글자 크기 통일 */
   line-height: 1.5; /* 줄 간격 통일 */
+  min-height: 44px; /* 버튼 높이 최소 설정 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .gray-btn {
-  padding: 8px 14px;
+  padding: 10px 20px;
   border-radius: 999px;
   border: none;
   background: #f2f2f2;
@@ -231,48 +233,46 @@
   font-weight: 700;
   font-size: 14px; /* 글자 크기 통일 */
   line-height: 1.5; /* 줄 간격 통일 */
+  min-height: 44px; /* 버튼 높이 최소 설정 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .danger-btn {
-  padding: 8px 14px;
+  padding: 10px 20px;
   border-radius: 999px;
   border: none;
   background: #ff6b6b;
   color: #fff;
   cursor: pointer;
+  font-weight: 700;
+  font-size: 14px; /* 글자 크기 통일 */
+  line-height: 1.5; /* 줄 간격 통일 */
+  min-height: 44px; /* 버튼 높이 최소 설정 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .outline-btn {
-  padding: 8px 14px;
+  padding: 10px 20px;
   border: 1px solid #f4b7c0;
   border-radius: 999px;
   background: #fff;
   cursor: pointer;
   color: #444;
+  font-weight: 700;
+  font-size: 14px; /* 글자 크기 통일 */
+  line-height: 1.5; /* 줄 간격 통일 */
+  min-height: 44px; /* 버튼 높이 최소 설정 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .no-underline {
   text-decoration: none;
-}
-
-/* Paging */
-.paging {
-  text-align: center;
-  margin-top: 16px;
-  color: #aaa;
-}
-
-.page-dot {
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 6px;
-}
-
-.page-active {
-  color: #ff7f93;
-  font-weight: 700;
 }
 
 /* Modal */
