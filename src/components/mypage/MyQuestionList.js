@@ -33,6 +33,10 @@ export default function MyQuestionList() {
     // 문의 삭제 버튼 클릭 시 백엔드에 삭제 요청을 보내는 함수
     const handleDelete = (e, questionId) => {
         e.stopPropagation(); // ✨ 중요: 이벤트 전파 중단
+
+        const confirmDelete = window.confirm("정말 삭제하시겠습니까?");
+        if (!confirmDelete) return;
+
         axios
             .delete(`http://localhost:80/api/mypage/qna/${questionId}`)
             .then(() => {

@@ -158,6 +158,8 @@ function OrderRefund() {
         setLoading(true);
         const response = await axios.get(`/api/orders/refund/${orderId}/info`);
         setOrderCancelInfo(response.data);
+        setBank(response.data.bank || "");
+        setAccount(response.data.account || "");
       } catch (err) {
         console.error("환불 정보를 불러오는 데 실패했습니다.", err);
         setError("환불 정보를 불러오는 데 실패했습니다.");
