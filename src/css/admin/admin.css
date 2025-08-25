@@ -192,7 +192,7 @@
   color: #666;
 }
 
-
+/* 상세 패널 하단 버튼: 가운데 정렬 + 간격 통일 */
 .detail-btns {
   display: flex;
   justify-content: center;
@@ -202,20 +202,21 @@
   flex-wrap: wrap;
 }
 
+/* Buttons: 공통 규격(크기 완전 동일) */
 .primary-btn,
 .gray-btn,
 .danger-btn,
 .outline-btn {
-  padding: 10px 0;           /* 좌우 여백은 무시 */
-  height: 44px;              /* ✅ 동일한 높이 */
-  width: 140px;              /* ✅ 동일한 너비 (원하는 값으로 조절) */
+  padding: 10px 20px;
+  min-height: 44px;     /* 동일 높이 */
+  min-width: 120px;     /* 동일 너비 */
   border-radius: 999px;
   border: none;
   cursor: pointer;
   font-weight: 700;
   font-size: 14px;
-  line-height: 1.5;          /* 텍스트 세로 중앙 정렬 */
-  display: flex;
+  line-height: 1;       /* 줄간격은 1, 높이는 위에서 고정 */
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   transition: filter .15s ease, background-color .15s ease, color .15s ease, border-color .15s ease;
@@ -238,6 +239,7 @@
 }
 .outline-btn:hover { background: #fff6f8; }
 
+/* 접근성 포커스 */
 .primary-btn:focus,
 .gray-btn:focus,
 .danger-btn:focus,
@@ -246,7 +248,7 @@
   outline-offset: 2px;
 }
 
-
+/* 버튼 줄 */
 .btn-row {
   display: flex;
   gap: 8px;
