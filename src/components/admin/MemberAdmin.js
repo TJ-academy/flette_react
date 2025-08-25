@@ -108,7 +108,7 @@ export default function MemberAdmin() {
                           onClick={() =>
                             setSelectedId((prev) => (prev === m.userid ? null : m.userid))
                           }
-                          className="outline-btn"
+                          className="oBtn"
                         >
                           {selectedId === m.userid ? "닫기" : "상세보기"}
                         </button>
@@ -153,7 +153,7 @@ export default function MemberAdmin() {
                             <div className="detail-btns">
                               <button
                                 type="button"
-                                className="primary-btn"
+                                className="pBtn"
                                 onClick={() => onDelete(m.userid)}
                               >
                                 삭제

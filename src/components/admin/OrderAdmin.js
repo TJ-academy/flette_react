@@ -101,7 +101,7 @@ function OrderAdmin() {
                         <button
                           type="button"
                           onClick={() => toggleOrderDetails(o.orderId)}
-                          className="outline-btn"
+                          className="oBtn"
                         >
                           {selectedOrderId === o.orderId ? "닫기" : "상세보기"}
                         </button>
@@ -167,7 +167,7 @@ function OrderAdmin() {
 
                             <div className="detail-btns">
                               <button
-                                className="primary-btn"
+                                className="pBtn"
                                 onClick={handleUpdateStatus}
                               >
                                 상태 변경
@@ -175,7 +175,7 @@ function OrderAdmin() {
                               <button
                                 className="danger-btn"
                                 onClick={handleRefundOrder}
-                                style={{height:'10px', marginTop:'27px'}}
+                                style={{height:'10px'}}
                               >
                                 환불 처리
                               </button>
