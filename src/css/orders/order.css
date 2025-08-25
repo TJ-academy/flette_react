@@ -36,7 +36,7 @@
   margin-bottom: 22px;
 }
 .box > h2 {
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 700;
   margin: 4px 0 16px;
   color: var(--ink);
@@ -59,7 +59,7 @@
   object-fit: cover;
   border-radius: 10px;
   border: 1px solid var(--line);
-  margin-bottom: 50px;
+  margin-bottom: 100px;
   background: #fff;
 }
 
@@ -100,6 +100,7 @@
   align-items: center;
   justify-content: space-between;
   margin: 4px 0 10px;
+  font-size: 15px;
 }
 .section-header h2 { margin: 0; }
 .section-header button {
