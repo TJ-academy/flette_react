@@ -64,13 +64,13 @@ export default function ReviewsIndex() {
     });
   };
 
-  const StarRating = ({ rating, max = 5 }) => (
-    <div style={{ color: "#FFD700" }}>
-      {[...Array(max)].map((_, i) => (
-        <span key={i}>{i < rating ? "★" : "☆"}</span>
-      ))}
-    </div>
-  );
+const StarRating = ({ rating, max = 5 }) => (
+  <div className="star-rating">
+    {[...Array(max)].map((_, i) => (
+      <span key={i}>{i < rating ? "★" : "☆"}</span>
+    ))}
+  </div>
+);
 
   // Card 클릭 시 모달 열기
   const openModal = (review) => {
@@ -181,39 +181,50 @@ const Card = ({ review }) => (
       />
 
       {/* 모달 */}
-{isModalOpen && selectedReview && (
-  <div className="modal-overlay" onClick={closeModal}>
-    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-      {/* 헤더 수정 */}
-      <div className="modal-header">
-        <h2>리뷰 상세</h2>
-        <button onClick={closeModal} className="close-btn">X</button>
-      </div>
+    {isModalOpen && selectedReview && (
+      <div className="modal-overlay" onClick={closeModal}>
+        <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+          {/* 헤더 */}
+          <div className="modal-header">
+            <h2>리뷰 상세</h2>
+            <button onClick={closeModal} className="close-btn">X</button>
+          </div>
 
-      {/* 이미지와 내용 부분 나누기 */}
-      <div className="modal-body">
-        {/* 이미지 영역 */}
-        <div className="modal-image-wrap">
-          <img
-            src={`/img/reviews/${selectedReview.reviewImage}`}
-            alt={selectedReview.reviewId}
-            className="modal-image"
-          />
-        </div>
+          {/* 본문: 세로 배치 */}
+          <div className="modal-body vertical">
+            {/* 상단 큰 이미지 */}
+            {selectedReview.reviewImage && (
+              <img
+                src={`/img/reviews/${selectedReview.reviewImage}`}
+                alt={selectedReview.reviewId}
+                className="modal-image-large"
+              />
+            )}
 
-        {/* 내용 영역 */}
-        <div className="modal-text">
-          <StarRating rating={selectedReview.score} />
-          <p>{selectedReview.reviewContent}</p>
-          <div>
-            <span>{selectedReview.writer}</span> | <span>{formatDate(selectedReview.reviewDate)}</span>
+            {/* 텍스트/메타 */}
+            <div className="modal-text">
+              <StarRating rating={selectedReview.score} />
+              <span style={{ display: "block", textAlign: "center", marginTop: "4px" }}>
+                {selectedReview.score}점
+              </span>
+
+              <br></br>
+
+              <p className="modal-paragraph">
+                {selectedReview.reviewContent || "내용이 없습니다."}
+              </p>
+
+              <div className="modal-meta">
+                <br></br><br></br><br></br>
+                <span>{selectedReview.writer}</span>{" "}
+                | <span>{formatDate(selectedReview.reviewDate)}</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-
-      )}
+    )}
+          
     </main>
   );
 }

@@ -92,61 +92,81 @@ function ShopReview() {
   };
 
  // 리뷰 카드
+// 리뷰 카드
 const ReviewCard = ({ review }) => {
-    const isExpanded = expandedReviewId === review.reviewId;
-    const text =
-      review.reviewContent && review.reviewContent.length > 80 && !isExpanded
-        ? review.reviewContent.slice(0, 100) + "..."
-        : review.reviewContent;
-  
-    return (
-      <div className="review-card">
-        {/* 왼쪽 */}
-        <div className="review-left">
-          {/* 별점 + 점수 */}
-          <div className="review-score">
-            <StarRating rating={review.score} />
-            <span>{review.score}</span>
-          </div>
-  
-          {/* 작성자 + 날짜 */}
-          <div className="review-meta">
-            <span>{maskId(review.writer)}</span>
-            <span> | </span>
-            <span>{formattedDate(review.reviewDate)}</span>
-          </div>
-  
-          {/* 리뷰 내용 */}
-          <div
-            className="review-text"
-            onClick={() => onExpandToggle(review.reviewId)}
-          >
-            {text}
-            {review.reviewContent &&
-              review.reviewContent.length > 80 && (
-                <p className="review-more">
-                  {isExpanded ? "간략히 보기" : "...자세히 보기"}
-                </p>
-              )}
-          </div>
+  const isExpanded = expandedReviewId === review.reviewId;
+  const text =
+    review.reviewContent && review.reviewContent.length > 80 && !isExpanded
+      ? review.reviewContent.slice(0, 100) + "..."
+      : review.reviewContent;
+
+  return (
+    <div className={`review-card ${isExpanded ? "is-expanded" : ""}`}>
+      {/* 왼쪽(텍스트) */}
+      <div className="review-left">
+        {/* 별점 + 점수 */}
+        <div className="review-score">
+          <StarRating rating={review.score} />
+          <span>{review.score}</span>
         </div>
-  
-        {/* 오른쪽 */}
-        <div className="review-right">
-          {review.reviewImage && (
-            <img
-              src={`/img/reviews/${review.reviewImage}`}
-              alt="리뷰 이미지"
-              className="review-thumb"
-            />
+
+        {/* 작성자 + 날짜 */}
+        <div className="review-meta">
+          <span>{maskId(review.writer)}</span>
+          <span> | </span>
+          <span>{formattedDate(review.reviewDate)}</span>
+        </div>
+
+        {/* 리뷰 내용 (클릭하면 펼치기/접기) */}
+        <div
+          className="review-text"
+          onClick={() => onExpandToggle(review.reviewId)}
+        >
+          {text}
+          {review.reviewContent && review.reviewContent.length > 80 && (
+            <p className="review-more">
+              {isExpanded ? "간략히 보기" : "...자세히 보기"}
+            </p>
           )}
-          <button className="btn-like" onClick={() => onLike(review.reviewId)}>
-            👍 {review.luv}
-          </button>
         </div>
+
+        {/* 펼친 상태일 때: 큰 이미지 본문 아래로 */}
+        {isExpanded && review.reviewImage && (
+          <img
+            src={`/img/reviews/${review.reviewImage}`}
+            alt="리뷰 이미지"
+            className="review-image-large"
+            onClick={() => onExpandToggle(review.reviewId)} // 클릭으로 접기 가능
+          />
+        )}
       </div>
-    );
-  };
+
+      {/* 오른쪽(썸네일 + 좋아요)  */}
+      <div className="review-right">
+        {/* 접힌 상태일 때만 작은 썸네일 표시 */}
+        {!isExpanded && review.reviewImage && (
+          <img
+            src={`/img/reviews/${review.reviewImage}`}
+            alt="리뷰 이미지"
+            className="review-thumb"
+            onClick={() => onExpandToggle(review.reviewId)}
+          />
+        )}
+
+        <button
+          className="btn-like"
+          onClick={(e) => {
+            e.stopPropagation();     // 펼치기 이벤트로 번지지 않게
+            onLike(review.reviewId); // 좋아요만
+          }}
+        >
+          👍 {review.luv}
+        </button>
+      </div>
+    </div>
+  );
+};
+
   
 
   if (loading) return <p>로딩 중...</p>;

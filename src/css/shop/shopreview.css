@@ -140,6 +140,21 @@
 }
 
 
+/* 펼침 상태: 본문 아래 큰 이미지 */
+.review-image-large {
+  margin-top: 12px;
+  width: 100%;           /* 컨테이너 폭 100% */
+  height: auto;          /* 세로 비율 유지 */
+  max-width: 960px;      /* 리뷰 카드 최대 폭에 맞춤 */
+  border-radius: 10px;
+  display: block;
+}
+
+/* 펼쳤을 때는 오른쪽 썸네일 숨김 */
+.review-card.is-expanded .review-right .review-thumb {
+  display: none;
+}
+
 .btn-like {
   border: 1px solid #FFD6DE;
   background: #FFF6F8;
