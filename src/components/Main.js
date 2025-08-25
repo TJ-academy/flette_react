@@ -25,13 +25,13 @@ function Main() {
       .get("http://localhost/api/all/reviews?page=1&size=20")
       .then((res) => {
         if (ignore) return;
-        const list = Array.isArray(res?.data?.content) ? res.data.content : [];
+        const list = Array.isArray(res?.data?.fdate.content) ? res.data.fdate.content : [];
         setReviews(list);
       })
       .catch((e) => {
         if (ignore) return;
         console.error("리뷰 불러오기 실패:", e);
-        setErr("리뷰를 불러오지 못했어. 잠시 후 다시 시도해 줘.");
+        setErr("리뷰 불러오기를 실패했습니다.");
       })
       .finally(() => {
         if (ignore) return;
@@ -61,7 +61,7 @@ function Main() {
       );
     }
     if (err) return <div className="carousel-error">{err}</div>;
-    if (!reviews.length) return <div className="carousel-empty">아직 등록된 포토 리뷰가 없어.</div>;
+    if (!reviews.length) return <div className="carousel-empty">아직 등록된 포토 리뷰가 없습니다.</div>;
 
     return (
       <div className="carousel">
