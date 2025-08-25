@@ -50,51 +50,62 @@ function MyReviewList() {
     currentPage * reviewsPerPage
   );
 
-  const renderCard = (item, type) => (
-    <div
-      className="review-card"
-      key={type === "todo" ? item.bouquetCode : item.reviewId}
-      onClick={() => navigate(`/shop/${item.productId}/detail#reviews`)}
-    >
+const renderCard = (item, type) => (
+  <div
+    className="review-card"
+    key={type === "todo" ? item.bouquetCode : item.reviewId}
+    onClick={() => navigate(`/shop/${item.productId}/detail#reviews`)}
+  >
+    {/* 텍스트/버튼 부분 */}
+    <div className="review-info">
+      <p className="product-name">{item.productName}</p>
+      {type === "done" ? (
+        <>
+          <div className="rating">
+            {"★".repeat(item.score)}
+            {"☆".repeat(5 - item.score)}
+          </div>
+          <p className="review-content">{item.reviewContent}</p>
+        </>
+      ) : (
+        <>
+          <p className="review-content">아직 리뷰를 작성하지 않았습니다.</p>
+          <button
+            className="write-review-button"
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/mypage/reviews/write/${item.bouquetCode}`);
+            }}
+          >
+            리뷰 쓰기
+          </button>
+        </>
+      )}
+    </div>
+
+    {/* 이미지: 오른쪽에만 표시 */}
+    {type === "todo" ? (
       <img
-        src={
-          type === "todo"
-            ? `/img/product/${item.imageName || "default.png"}`
-            : `/img/reviews/${item.reviewImage || "default.png"}`
-        }
-        alt="리뷰 이미지"
+        src={`/img/product/${item.imageName || "default.png"}`}
+        alt="상품 이미지"
         className="review-image"
       />
-      <div className="review-info">
-        <p className="product-name">{item.productName}</p>
-        {type === "done" ? (
-          <>
-            <div className="rating">
-              {"★".repeat(item.score)}
-              {"☆".repeat(5 - item.score)}
-            </div>
-            <p className="review-content">{item.reviewContent}</p>
-          </>
-        ) : (
-          <>
-            <p className="review-content">아직 리뷰를 작성하지 않았습니다.</p>
-            <button
-              className="write-review-button"
-              onClick={(e) => {
-                e.stopPropagation();
-                navigate(`/mypage/reviews/write/${item.bouquetCode}`);
-              }}
-            >
-              리뷰 쓰기
-            </button>
-          </>
-        )}
-      </div>
-      <div className="review-arrow">
-        <img src="/img/arrow_left.png" alt="arrow" className="arrow-icon" />
-      </div>
+    ) : (
+      item.reviewImage && (
+        <img
+          src={`/img/reviews/${item.reviewImage}`}
+          alt="리뷰 이미지"
+          className="review-image"
+        />
+      )
+    )}
+
+    <div className="review-arrow">
+      <img src="/img/arrow_left.png" alt="arrow" className="arrow-icon" />
     </div>
-  );
+  </div>
+);
+
 
   return (
     <div className="myreviews-container">
