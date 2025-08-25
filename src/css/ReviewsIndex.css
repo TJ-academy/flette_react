@@ -35,26 +35,68 @@
   padding: 0 6px;
 }
 
-.rv-select-wrap { position: relative; }
+/* ===== 커스텀 드롭다운 ===== */
+.rv-dropdown {
+  position: relative;
+  display: inline-block;
+}
 
-.rv-select {
-  appearance: none;
+.rv-dropdown-btn {
   border: 1px solid #f0c9d1;
   border-radius: 999px;
   padding: 8px 30px 8px 14px;
   font-size: 14px;
   background: #fff;
   color: #333;
+  cursor: pointer;
+  transition: all .2s ease;
+
+  
+}
+
+.rv-dropdown-btn:hover,
+.rv-dropdown-btn:focus {
+  border-color: var(--rv-primary);
+  color: var(--rv-primary);
+  outline: none;
+}
+
+.rv-dropdown-list {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 160px;
+  background: #fff;
+  border: 1px solid #f0c9d1;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 0 0;
+  list-style: none;
+  margin: 0;
+  z-index: 1000;
+}
+
+.rv-dropdown-item {
+  padding: 8px 14px;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.rv-dropdown-item:hover {
+  background: var(--rv-primary);
+  color: #fff;
+}
+
+.rv-dropdown-item.is-active {
+  background: var(--rv-primary);
+  color: #fff;
 }
 
 .rv-caret {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
+  margin-left: 8px;
   font-size: 12px;
   color: #888;
-  pointer-events: none;
 }
 
 /* ===== 카드 그리드 ===== */
@@ -78,7 +120,7 @@
   overflow: hidden;
   transition: border-color .25s, box-shadow .25s;
   width: 100%;
-  height: 380px; /* 고정 높이 */
+  height: 380px;
   display: flex;
   flex-direction: column;
 }
@@ -122,7 +164,7 @@
   margin: 0 0 12px 0;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;   /* 3줄까지만 */
+  -webkit-line-clamp: 3;
   overflow: hidden;
   text-overflow: ellipsis;
   min-height: calc(1.45em * 3);
@@ -241,9 +283,9 @@
 }
 
 .modal-header {
-  position: relative;              /* X 버튼 절대 위치용 */
+  position: relative;
   display: flex;
-  justify-content: center;         /* 제목 가운데 */
+  justify-content: center;
   align-items: center;
   padding-bottom: 10px;
   border-bottom: 2px solid #f0f0f0;
@@ -253,12 +295,12 @@
   font-size: 20px;
   font-weight: 700;
   text-align: center;
-  flex: 1;                         /* 가운데 차지 */
+  flex: 1;
 }
 
 .close-btn {
   position: absolute;
-  right: 0;                        /* 오른쪽 끝 고정 */
+  right: 0;
   top: 50%;
   transform: translateY(-50%);
   background: transparent;
@@ -267,7 +309,7 @@
   cursor: pointer;
 }
 
-/* 본문: 세로 레이아웃 */
+/* 본문 */
 .modal-body {
   display: flex;
   flex-direction: column;
@@ -321,17 +363,16 @@
   line-height: 1;
 }
 
-/* 모달 안 별점 */
+/* ===== 별점 ===== */
 .modal-content .star-rating {
-  font-size: 28px;       /* 별 크게 */
-  color: var(--rv-primary); /* 핑크 (#F2778C) */
-  text-align: center;    /* 중앙 정렬 */
+  font-size: 28px;
+  color: var(--rv-primary);
+  text-align: center;
   width: 100%;
   margin-bottom: 10px;
 }
 
-/* 일반 카드 별점은 기본 유지 */
 .rv-card .star-rating {
   font-size: 16px;
-  color: var(--rv-primary); /* 핑크 (#F2778C) */
+  color: var(--rv-primary);
 }
