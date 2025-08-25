@@ -72,7 +72,7 @@ function ShopReview() {
     );
 
     axios
-      .post(`/api/shop/${productId}/review/${id}/like`)
+      .post(`/api/reviews/${id}/like`)
       .catch((err) => {
         console.error("좋아요 실패", err);
         alert("좋아요 처리 중 오류가 발생했습니다.");

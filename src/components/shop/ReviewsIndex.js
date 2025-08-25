@@ -44,12 +44,24 @@ export default function ReviewsIndex() {
     return arr;
   }, [reviews, sort]);
 
+  // 좋아요
   const onLike = (id) => {
+    const loginId = sessionStorage.getItem("loginId");
+    if (!loginId) {
+      alert("로그인 후 좋아요를 누를 수 있습니다.");
+      return;
+    }
+
     setReviews((prev) =>
-      prev.map((r) =>
-        r.reviewId === id ? { ...r, luv: r.luv + 1 } : r
-      )
+      prev.map((r) => (r.reviewId === id ? { ...r, luv: (r.luv || 0) + 1 } : r))
     );
+
+    axios
+      .post(`/api/reviews/${id}/like`)
+      .catch((err) => {
+        console.error("좋아요 실패", err);
+        alert("좋아요 처리 중 오류가 발생했습니다.");
+    });
   };
 
   const StarRating = ({ rating, max = 5 }) => (
@@ -77,7 +89,7 @@ const Card = ({ review }) => (
     {/* 이미지 */}
     <div className="rv-thumb-wrap">
       <img
-        src={`/img/reviews/${review.reviewImage}`}
+        src={`http://localhost:80/img/reviews/${review.reviewImage}`}
         alt={review.reviewId}
         className="rv-thumb"
       />
