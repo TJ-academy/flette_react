@@ -161,14 +161,17 @@ hr {
 
 /* 총 상품 금액 영역 */
 .total-section {
-  margin-top: 30px;
+  margin: 40px 0 20px 0;  
+  text-align: center;     
 }
 
 .total-price {
   display: flex;
-  justify-content: space-between;  
-  max-width: 400px; 
-  margin: 0 auto 20px auto; 
+  justify-content: center; 
+  align-items: baseline;   
+  gap: 300px;              
+  margin-bottom: 30px;     
+  margin-left: -200px;
 }
 
 .price-label {
