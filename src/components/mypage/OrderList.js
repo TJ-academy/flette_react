@@ -6,6 +6,22 @@ import axios from "axios";
 // API 기본 URL 설정
 const API_BASE_URL = "http://localhost/api/orders";
 
+// 주문 상태를 CSS 클래스명으로 변환하는 함수 추가
+const getStatusClass = (status) => {
+  switch (status) {
+    case "취소/반품":
+      return "cancelled-returned";
+    case "배송중":
+      return "on-delivery";
+    case "배송완료":
+      return "delivered";
+    case "결제완료":
+        return "paid";
+    default:
+      return "default";
+  }
+};
+
 function OrderList() {
   const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
@@ -55,17 +71,17 @@ function OrderList() {
   const statusCounts = orders.reduce(
     (acc, order) => {
       if (order.status === "배송중") {
-        acc.배송중++;
+        acc.onDelivery++;
       } else if (order.status === "배송완료") {
-        acc.배송완료++;
+        acc.delivered++;
       } else if (order.status === "취소/반품") {
-        acc.취소반품++;
-      } else if (order.status === "결제완료") { // 결제완료 상태를 배송중으로 처리 (비즈니스 로직에 맞게 조정 필요)
-        acc.배송중++;
+        acc.cancelledReturned++;
+      } else if (order.status === "결제완료") {
+        acc.paid++;
       }
       return acc;
     },
-    { 배송중: 0, 배송완료: 0, 취소반품: 0 }
+    { onDelivery: 0, delivered: 0, cancelledReturned: 0, paid: 0 }
   );
 
   return (
@@ -75,9 +91,10 @@ function OrderList() {
         
         {/* 상태별 주문 개수 */}
         <div className="orderlist-status-wrap">
-          <StatusCount label="배송중" count={statusCounts.배송중} />
-          <StatusCount label="배송완료" count={statusCounts.배송완료} />
-          <StatusCount label="취소/반품" count={statusCounts.취소반품} />
+          <StatusCount label="배송중" count={statusCounts.onDelivery} />
+          <StatusCount label="배송완료" count={statusCounts.delivered} />
+          <StatusCount label="취소/반품" count={statusCounts.cancelledReturned} />
+          <StatusCount label="결제완료" count={statusCounts.paid} />
         </div>
 
         {/* 주문 목록 */}
@@ -98,7 +115,8 @@ function OrderList() {
                       className="orderlist-thumb"
                     />
                     <div className="orderlist-info">
-                      <div className={`orderlist-status ${order.status}`}>
+                      {/* 이 부분이 변경되었습니다! */}
+                      <div className={`orderlist-status ${getStatusClass(order.status)}`}>
                         {order.status}
                       </div>
                       <div className="orderlist-name">{item.productName}</div>
