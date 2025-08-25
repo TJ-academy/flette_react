@@ -45,9 +45,9 @@
 /* 주문상품 */
 .order-item {
   display: grid;
-  grid-template-columns: 92px 1fr auto auto auto;
+  grid-template-columns: 92px 1fr; 
   gap: 16px;
-  align-items: center;
+  align-items: flex-start;  
   padding: 12px 0;
   border-bottom: 1px dashed var(--line);
 }
@@ -59,8 +59,11 @@
   object-fit: cover;
   border-radius: 10px;
   border: 1px solid var(--line);
-  margin-bottom: 100px;
   background: #fff;
+
+  flex-shrink: 0;       
+  align-self: flex-start; 
+  margin-bottom: 0;     
 }
 
 .item-info {
