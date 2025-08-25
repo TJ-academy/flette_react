@@ -4,7 +4,7 @@ import "../../css/admin/admin.css";
 
 export default function FlowerAdmin() {
   const [flowers, setFlowers] = useState([]);
-  const [page, setPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
   const [size] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
 
@@ -35,7 +35,7 @@ export default function FlowerAdmin() {
 
       const res = await axios.get("/api/admin/flowers", { params });
       setFlowers(res.data.content || []);
-      setPage(res.data.number || 0);
+      setCurrentPage(res.data.number || 0);
       setTotalPages(res.data.totalPages || 1);
     } catch (e) {
       console.error("꽃 목록 로딩 실패", e);
@@ -49,12 +49,12 @@ export default function FlowerAdmin() {
     loadFlowers(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [q, category, show]);
-  
+
   // page 상태가 변경되었을 때만 데이터를 로드하는 별도의 useEffect
   useEffect(() => {
-    loadFlowers(page);
+    loadFlowers(currentPage);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page]);
+  }, [currentPage]);
 
   const onChange = (e) => {
     const { name, value, type, checked, files } = e.target;
@@ -240,11 +240,12 @@ export default function FlowerAdmin() {
               )}
             </tbody>
           </table>
-          {/* 페이지네이션 UI */}
-          <div className="pagination">
+
+          {/* 페이징 UI */}
+          <div className="paging">
             <button
-              onClick={() => setPage(page - 1)}
-              disabled={page === 0}
+              onClick={() => setCurrentPage(currentPage - 1)}
+              disabled={currentPage === 0}
               className="pagination-btn"
             >
               &lt;
@@ -252,15 +253,15 @@ export default function FlowerAdmin() {
             {Array.from({ length: totalPages }, (_, i) => (
               <button
                 key={i}
-                onClick={() => setPage(i)}
-                className={`pagination-btn ${page === i ? "active" : ""}`}
+                onClick={() => setCurrentPage(i)}
+                className={`pagination-btn ${currentPage === i ? "active" : ""}`}
               >
                 {i + 1}
               </button>
             ))}
             <button
-              onClick={() => setPage(page + 1)}
-              disabled={page === totalPages - 1}
+              onClick={() => setCurrentPage(currentPage + 1)}
+              disabled={currentPage === totalPages - 1}
               className="pagination-btn"
             >
               &gt;

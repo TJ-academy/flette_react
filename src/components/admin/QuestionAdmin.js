@@ -49,20 +49,20 @@ export default function QuestionAdmin() {
   };
 
   const submitAnswer = async (q) => {
-  if (!editor.text.trim()) {
-    showModal("입력 오류", "내용을 입력하세요.");
-    return;
-  }
-  try {
-    // Send the answer to the backend
-    await axios.post(`/api/admin/qna/${q.questionId}/answer`, { answerContent: editor.text });
-    await fetchList(page); // Reload the list of questions
-    setEditor({ id: null, text: "" }); // Reset editor state
-    showModal("성공", "답변이 성공적으로 등록되었습니다.", closeModal);
-  } catch (e) {
-    showModal("오류", "답변 등록에 실패했습니다.");
-  }
-};
+    if (!editor.text.trim()) {
+      showModal("입력 오류", "내용을 입력하세요.");
+      return;
+    }
+    try {
+      // Send the answer to the backend
+      await axios.post(`/api/admin/qna/${q.questionId}/answer`, { answerContent: editor.text });
+      await fetchList(page); // Reload the list of questions
+      setEditor({ id: null, text: "" }); // Reset editor state
+      showModal("성공", "답변이 성공적으로 등록되었습니다.", closeModal);
+    } catch (e) {
+      showModal("오류", "답변 등록에 실패했습니다.");
+    }
+  };
 
   const updateAnswer = async (q) => {
     if (!editor.text.trim()) {
@@ -92,6 +92,9 @@ export default function QuestionAdmin() {
       }
     });
   };
+
+  // 페이지네이션 UI 처리
+  const pageNumbers = Array.from({ length: totalPages }, (_, i) => i);
 
   return (
     <main className="page">
@@ -193,16 +196,31 @@ export default function QuestionAdmin() {
           </tbody>
         </table>
 
+        {/* 페이지네이션 UI */}
         <div className="paging">
-          {Array.from({ length: totalPages }, (_, i) => i).map(p => (
+          <button
+            onClick={() => setPage(page - 1)}
+            disabled={page === 0}
+            className="pagination-btn"
+          >
+            &lt;
+          </button>
+          {pageNumbers.map((p) => (
             <button
               key={p}
               onClick={() => { setOpenId(null); setEditor({id:null,text:""}); fetchList(p); }}
-              className={`page-dot ${page === p ? 'page-active' : ''}`}
+              className={`pagination-btn ${page === p ? 'active' : ''}`}
             >
-              {p+1}
+              {p + 1}
             </button>
           ))}
+          <button
+            onClick={() => setPage(page + 1)}
+            disabled={page === totalPages - 1}
+            className="pagination-btn"
+          >
+            &gt;
+          </button>
         </div>
       </section>
       <ConfirmModal 
