@@ -82,7 +82,8 @@ export default function MyReviewWrite() {
             });
             console.log("리뷰 저장 성공:", response.data);
             alert("리뷰가 성공적으로 등록되었습니다!");
-            navigate("/mypage/reviews", { state: { tab: "done" } });
+            //productInfo.productId
+            navigate(`/shop/${productInfo.productId}/detail#reviews`, { state: { tab: "done" } });
         } catch (err) {
             console.error("리뷰 저장 실패:", err.response ? err.response.data : err.message);
             alert("리뷰 저장에 실패했습니다. 다시 시도해 주세요.");
