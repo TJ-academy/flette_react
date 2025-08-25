@@ -160,7 +160,7 @@ export default function FlowerAdmin() {
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="outline-btn"
+            className="oBtn"
             style={{ padding: "6px 10px" }}
           >
             <option value="">전체 카테고리</option>
@@ -172,7 +172,7 @@ export default function FlowerAdmin() {
           <select
             value={show}
             onChange={(e) => setShow(e.target.value)}
-            className="outline-btn"
+            className="oBtn"
             style={{ padding: "6px 10px" }}
           >
             <option value="">전체 노출</option>
@@ -180,7 +180,7 @@ export default function FlowerAdmin() {
             <option value="false">숨김</option>
           </select>
 
-          <button className="outline-btn" onClick={openAdd}>
+          <button className="oBtn" onClick={openAdd}>
             새 꽃 추가
           </button>
         </div>
@@ -219,7 +219,7 @@ export default function FlowerAdmin() {
                       </button>
                     </td>
                     <td className="td">
-                      <button className="outline-btn" onClick={() => openEdit(f)}>
+                      <button className="oBtn" onClick={() => openEdit(f)}>
                         수정
                       </button>
                       <button
@@ -350,7 +350,7 @@ export default function FlowerAdmin() {
               <button className="gray-btn" onClick={() => setModalOpen(false)}>
                 취소
               </button>
-              <button className="primary-btn" onClick={save}>
+              <button className="pBtn" onClick={save}>
                 저장
               </button>
             </div>

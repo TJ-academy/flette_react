@@ -75,7 +75,7 @@ function Join() {
         <div className="join_container">
           {/* form 태그 제거, 또는 onSubmit 이벤트 제거 */}
             <label className="joinLabel">아이디를 입력하세요.</label>
-            <div className="input-group" style={{ margin: 0}}>
+            <div className="input-group-one" style={{ margin: 0}}>
               <input
                 type="text"
                 value={userid}
@@ -84,12 +84,12 @@ function Join() {
                   setIdCheckMsg('');
                   setIsIdChecked(false);
                 }}
-                className="inputClass"
+                className="inputClass-one"
               />
               <button
                 type="button"
                 onClick={checkIdDuplicate}
-                className="dupliBtn"
+                className="dupliBtn-one"
               >
                 중복체크
               </button>
@@ -97,21 +97,21 @@ function Join() {
             <span className="error" style={{ marginBottom: 10}}>{idCheckMsg}</span>
 
             <label className="joinLabel">비밀번호를 입력하세요.</label>
-            <div className="input-group">
+            <div className="input-group-one">
               <input
                 type="password"
                 value={passwd}
                 onChange={(e) => setPasswd(e.target.value)}
-                className="inputClass"
+                className="inputClass-one"
               />
             </div>
             <label className="joinLabel">비밀번호를 다시 입력하세요.</label>
-            <div className="input-group" style={{ margin: 0}}>
+            <div className="input-group-one" style={{ margin: 0}}>
               <input
                 type="password"
                 value={confirmPasswd}
                 onChange={(e) => setConfirmPasswd(e.target.value)}
-                className="inputClass"
+                className="inputClass-one"
               />
             </div>
             <p className="error">{errorMsg}</p>

@@ -29,27 +29,28 @@
   font-weight: 500;
 }
 
-.input-group {
+.input-group-one {
   display: flex;
   align-items: center;
   margin-bottom: 15px;
 }
 
-.inputClass {
+.inputClass-one {
   flex: 1;
   border-radius: 20px;
   border: 1px solid #F3D0D4;
   font-size: 14px;
   color: #6B4F3B;
   transition: border-color 0.3s ease;
+  padding: 8px;
 }
 
-.inputClass:focus {
+.inputClass-one:focus {
   outline: none;
   border-color: #F2778C;
 }
 
-.dupliBtn {
+.dupliBtn-one {
   margin-left: 10px;
   padding: 8px 15px;
   background-color: #F2778C;
@@ -59,7 +60,6 @@
   border-radius: 20px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  height: 42px;
 }
 
 .dupliBtn:hover {

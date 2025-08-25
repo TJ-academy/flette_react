@@ -13,7 +13,7 @@ const ConfirmModal = ({ isOpen, title, message, onConfirm, onCancel }) => {
         <p className="modal-message">{message}</p>
         <div className="modal-actions">
           {onCancel && <button className="gray-btn" onClick={onCancel}>취소</button>}
-          {onConfirm && <button className="primary-btn" onClick={onConfirm}>확인</button>}
+          {onConfirm && <button className="pBtn" onClick={onConfirm}>확인</button>}
         </div>
       </div>
     </div>

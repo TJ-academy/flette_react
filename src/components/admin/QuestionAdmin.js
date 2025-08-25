@@ -153,7 +153,7 @@ export default function QuestionAdmin() {
                             <span className="text-sm text-gray-500">
                               {(editor.id === q.questionId ? editor.text.length : 0)}/1000
                             </span>
-                            <button className="primary-btn" onClick={() => submitAnswer(q)}>등록</button>
+                            <button className="pBtn" onClick={() => submitAnswer(q)}>등록</button>
                           </div>
                         </div>
                       ) : (
@@ -171,7 +171,7 @@ export default function QuestionAdmin() {
                               />
                               <div className="btn-row">
                                 <button className="gray-btn" onClick={() => setEditor({ id:null, text:"" })}>취소</button>
-                                <button className="primary-btn" onClick={() => updateAnswer(q)}>수정</button>
+                                <button className="pBtn" onClick={() => updateAnswer(q)}>수정</button>
                               </div>
                             </>
                           ) : (

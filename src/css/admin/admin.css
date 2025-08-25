@@ -203,10 +203,10 @@
 }
 
 /* Buttons: 공통 규격(크기 완전 동일) */
-.primary-btn,
+.pBtn,
 .gray-btn,
 .danger-btn,
-.outline-btn {
+.oBtn {
   padding: 10px 20px;
   min-height: 44px;     /* 동일 높이 */
   min-width: 120px;     /* 동일 너비 */
@@ -223,8 +223,8 @@
 }
 
 /* 개별 색상 */
-.primary-btn { background: #ff88a0; color: #fff; }
-.primary-btn:hover { filter: brightness(0.95); }
+.pBtn { background: #ff88a0; color: #fff; }
+.pBtn:hover { filter: brightness(0.95); }
 
 .gray-btn { background: #f2f2f2; color: #333; }
 .gray-btn:hover { filter: brightness(0.97); }
@@ -232,18 +232,18 @@
 .danger-btn { background: #ff6b6b; color: #fff; }
 .danger-btn:hover { filter: brightness(0.95); }
 
-.outline-btn {
+.oBtn {
   background: #fff;
   color: #444;
   border: 1px solid #f4b7c0;
 }
-.outline-btn:hover { background: #fff6f8; }
+.oBtn:hover { background: #fff6f8; }
 
 /* 접근성 포커스 */
-.primary-btn:focus,
+.pBtn:focus,
 .gray-btn:focus,
 .danger-btn:focus,
-.outline-btn:focus {
+.oBtn:focus {
   outline: 2px solid #ffd2da;
   outline-offset: 2px;
 }
