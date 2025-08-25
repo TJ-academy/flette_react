@@ -72,34 +72,42 @@ export default function ReviewsIndex() {
     setSelectedReview(null);
   };
 
-  const Card = ({ review }) => (
-    <article className="rv-card" onClick={() => openModal(review)}>
-      {/* 이미지 */}
-      <div className="rv-thumb-wrap">
-        <img
-          src={`/img/reviews/${review.reviewImage}`}
-          alt={review.reviewId}
-          className="rv-thumb"
-        />
+const Card = ({ review }) => (
+  <article className="rv-card" onClick={() => openModal(review)}>
+    {/* 이미지 */}
+    <div className="rv-thumb-wrap">
+      <img
+        src={`/img/reviews/${review.reviewImage}`}
+        alt={review.reviewId}
+        className="rv-thumb"
+      />
+    </div>
+    {/* 내용 */}
+    <div className="rv-body">
+      <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+        <StarRating rating={review.score} />
+        <span>{review.score}점</span>
       </div>
-      {/* 내용 */}
-      <div className="rv-body">
-        <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-          <StarRating rating={review.score} />
-          <span>{review.score}점</span>
-        </div>
-        <div className="rv-meta">
-          <span className="rv-meta-dim">{review.writer} | {formatDate(review.reviewDate)}</span>
-        </div>
-        <p className="rv-text">{review.reviewContent}</p>
-        <div className="rv-foot">
-          <button onClick={() => onLike(review.reviewId)} style={{ cursor: "pointer" }}>
-            👍 {review.luv}
-          </button>
-        </div>
+      <div className="rv-meta">
+        <span className="rv-meta-dim">{review.writer} | {formatDate(review.reviewDate)}</span>
       </div>
-    </article>
-  );
+      <p className="rv-text">{review.reviewContent}</p>
+      <div className="rv-foot">
+        <button 
+          className="rv-like-btn" 
+          onClick={(e) => {
+            e.stopPropagation();        // 모달 열리지 않게!
+            onLike(review.reviewId);
+          }}
+        >
+          <span className="rv-like-icon">👍</span>
+          {review.luv}
+        </button>
+      </div>
+    </div>
+  </article>
+);
+
 
   return (
     <main className="rv-page">

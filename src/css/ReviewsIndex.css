@@ -65,10 +65,11 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
-  justify-items: center; /* 수평 중앙 정렬 */
-  align-items: center; /* 수직 중앙 정렬 */
+  justify-items: center;
+  align-items: start;
 }
 
+/* ===== 카드 크기 통일 ===== */
 .rv-card {
   position: relative;
   background: #fff;
@@ -76,6 +77,11 @@
   border-radius: 25px;
   overflow: hidden;
   transition: border-color .25s, box-shadow .25s;
+
+  width: 100%;
+  height: 380px;             /* 카드 전체 높이 고정 */
+  display: flex;
+  flex-direction: column;
 }
 
 .rv-card:hover {
@@ -83,12 +89,14 @@
   box-shadow: 0 6px 18px rgba(0, 0, 0, .06);
 }
 
+/* 이미지 영역 고정 */
 .rv-thumb-wrap {
   position: relative;
   margin: 12px 12px 0 12px;
-  height: 190px;
+  height: 190px;             /* 이미지 고정 높이 */
   border-radius: 14px;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .rv-thumb {
@@ -122,7 +130,12 @@
   text-shadow: 0 1px 4px rgba(0, 0, 0, .25);
 }
 
+/* 본문 */
 .rv-body {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
   padding: 12px 16px 14px 16px;
 }
 
@@ -131,10 +144,13 @@
   color: #666;
   line-height: 1.45;
   margin: 0 0 12px 0;
+
   display: -webkit-box;
   -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;   /* 3줄까지만 */
   overflow: hidden;
-  min-height: 38px;
+  text-overflow: ellipsis;
+  min-height: calc(1.45em * 3); /* 3줄 공간 확보 */
 }
 
 .rv-meta {
@@ -148,8 +164,8 @@
 
 .rv-foot {
   display: flex;
-  align-items: center;
-  gap: 8px;
+  justify-content: flex-end;
+  padding: 0 4px 8px 4px; /* 카드 안쪽 여백 */
 }
 
 .rv-avatar {
@@ -186,6 +202,7 @@
   color: var(--rv-primary);
 }
 
+/* 반응형 */
 @media (max-width: 1100px) {
   .rv-grid {
     grid-template-columns: repeat(3, 1fr);
@@ -202,7 +219,6 @@
   .rv-grid {
     grid-template-columns: 1fr;
   }
-
   .rv-hero-sub {
     font-size: 20px;
   }
@@ -256,7 +272,7 @@
   font-weight: lighter;
 }
 
-/* 모달 오버레이 */
+/* 모달 */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -270,7 +286,6 @@
   z-index: 9999;
 }
 
-/* 모달 내용 */
 .modal-content {
   background: white;
   padding: 20px;
@@ -279,56 +294,12 @@
   max-width: 800px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   display: flex;
-  flex-direction: row; /* 왼쪽에 이미지, 오른쪽에 내용 배치 */
+  flex-direction: column;
 }
 
-/* 모달 이미지 영역 */
-.modal-image-wrap {
-  width: 40%; /* 이미지 크기 */
-  padding-right: 20px;
-}
-
-.modal-image {
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
-}
-
-/* 따봉 버튼 제외 */
-.rv-foot {
-  display: none; /* 따봉 버튼 영역 숨기기 */
-}
-
-/* 모달 오버레이 */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-/* 모달 내용 */
-.modal-content {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  width: 80%;
-  max-width: 800px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  display: flex;
-  flex-direction: column; /* 세로 정렬 */
-}
-
-/* 모달 헤더 */
 .modal-header {
   display: flex;
-  justify-content: space-between; /* "리뷰 상세"와 "X" 버튼을 양쪽 끝에 배치 */
+  justify-content: space-between;
   align-items: center;
   padding-bottom: 10px;
   border-bottom: 2px solid #f0f0f0;
@@ -348,7 +319,7 @@
 }
 
 .modal-body .modal-image-wrap {
-  width: 40%; /* 이미지 영역 크기 */
+  width: 40%;
 }
 
 .modal-image {
@@ -358,7 +329,7 @@
 }
 
 .modal-text {
-  flex-grow: 1; /* 내용 영역이 남은 공간 차지 */
+  flex-grow: 1;
 }
 
 .modal-body p {
@@ -370,4 +341,34 @@
 .modal-body div {
   font-size: 14px;
   color: #888;
+}
+
+.rv-like-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: 1px solid var(--rv-border);
+  border-radius: 999px;
+  background: #fff;
+  color: #666;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.rv-like-btn:hover {
+  border-color: var(--rv-primary);
+  color: var(--rv-primary);
+  background: #fff5f7;
+}
+
+.rv-like-btn:active {
+  transform: translateY(1px);
+}
+
+.rv-like-icon {
+  font-size: 16px;
+  line-height: 1;
 }
