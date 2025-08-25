@@ -44,6 +44,7 @@ function CustomDropdown({ options, value, onChange }) {
 export default function ReviewsIndex() {
   const [sort, setSort] = useState("latest");
   const [page, setPage] = useState(1);
+  const [data, setData] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -55,8 +56,10 @@ export default function ReviewsIndex() {
     axios
       .get(`http://localhost/api/all/reviews?page=${page}&size=${PAGE_SIZE}`)
       .then((response) => {
-        setReviews(response.data.content);
-        setTotalPages(response.data.totalPages);
+        setData(response.data);
+        //console.log(response.data);
+        //setReviews(response.data.fdate.content);
+        setTotalPages(response.data.fdate.totalPages);
       })
       .catch((error) => console.error("Error fetching reviews:", error));
   }, [page]);
@@ -73,12 +76,23 @@ export default function ReviewsIndex() {
 
   // 정렬
   const sorted = useMemo(() => {
-    const arr = [...reviews];
-    if (sort === "rating") arr.sort((a, b) => b.score - a.score);
-    else if (sort === "likes") arr.sort((a, b) => b.luv - a.luv);
-    else arr.sort((a, b) => new Date(b.reviewDate) - new Date(a.reviewDate));
-    return arr;
-  }, [reviews, sort]);
+    if (!data || !data.fdate || !data.fluv || !data.fscore) return [];
+    //const arr = [...reviews];
+    if (sort === "rating") {
+      return data.fscore.content;
+      // arr.sort((a, b) => b.score - a.score);
+    }
+    else if (sort === "likes") {
+      return data.fluv.content;
+      // arr.sort((a, b) => b.luv - a.luv);
+    }
+    else {
+      return data.fdate.content;
+      //arr.sort((a, b) => new Date(b.reviewDate) - new Date(a.reviewDate));
+    }
+    // return arr;
+    
+  }, [data, sort]);
 
   // 좋아요
   const onLike = (id) => {
