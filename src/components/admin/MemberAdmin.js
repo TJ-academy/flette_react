@@ -136,11 +136,7 @@ export default function MemberAdmin() {
                             <div className="detail-row">
                               <span className="label">주소</span>
                               <span>
-                                {[
-                                  m.zipcode,
-                                  m.address1,
-                                  m.address2
-                                ]
+                                {[m.zipcode, m.address1, m.address2]
                                   .filter(Boolean)
                                   .join(" ") || "-"}
                               </span>
@@ -170,18 +166,31 @@ export default function MemberAdmin() {
           </table>
         </div>
 
+        {/* 페이징 영역 */}
         <div className="paging">
+          <button
+            onClick={() => setCurrentPage(currentPage - 1)}
+            disabled={currentPage === 0}
+            className="pagination-btn"
+          >
+            &lt;
+          </button>
           {pageNumbers.map((p) => (
             <button
               key={p}
-              type="button"
               onClick={() => fetchMembers(p)}
-              className={`page-dot ${currentPage === p ? 'page-active' : ''}`}
-              aria-current={currentPage === p ? "page" : undefined}
+              className={`pagination-btn ${currentPage === p ? "active" : ""}`}
             >
               {p + 1}
             </button>
           ))}
+          <button
+            onClick={() => setCurrentPage(currentPage + 1)}
+            disabled={currentPage === totalPages - 1}
+            className="pagination-btn"
+          >
+            &gt;
+          </button>
         </div>
       </section>
       <ConfirmModal 

@@ -7,14 +7,17 @@ function OrderAdmin() {
   const [selectedOrderId, setSelectedOrderId] = useState(null); // 선택된 주문 ID
   const [selectedOrder, setSelectedOrder] = useState(null); // 선택된 주문의 상세 정보
   const [selectedStatus, setSelectedStatus] = useState("");
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
 
   // 주문 목록 로드
   const loadOrders = async () => {
     try {
       const res = await axios.get("/api/admin/orders", {
-        params: { page: 0, size: 10 },
+        params: { page: currentPage, size: 10 },
       });
       setOrders(res.data.content || []);
+      setTotalPages(res.data.totalPages || 1);
     } catch (err) {
       console.error("주문 목록 불러오기 실패", err);
     }
@@ -61,7 +64,7 @@ function OrderAdmin() {
 
   useEffect(() => {
     loadOrders();
-  }, []);
+  }, [currentPage]);
 
   const toggleOrderDetails = (orderId) => {
     setSelectedOrderId((prevOrderId) => (prevOrderId === orderId ? null : orderId));
@@ -69,6 +72,8 @@ function OrderAdmin() {
       loadOrderDetail(orderId); // 선택한 주문에 대한 상세 정보를 로드
     }
   };
+
+  const pageNumbers = Array.from({ length: totalPages }, (_, i) => i);
 
   return (
     <div className="page">
@@ -78,7 +83,7 @@ function OrderAdmin() {
         <div className="table-wrap">
           <table className="table">
             <thead>
-              <tr className>
+              <tr>
                 <th className="th">주문번호</th>
                 <th className="th">회원ID</th>
                 <th className="th">결제금액</th>
@@ -193,6 +198,33 @@ function OrderAdmin() {
               )}
             </tbody>
           </table>
+        </div>
+
+        {/* 페이징 영역 */}
+        <div className="paging">
+          <button
+            onClick={() => setCurrentPage(currentPage - 1)}
+            disabled={currentPage === 0}
+            className="pagination-btn"
+          >
+            &lt;
+          </button>
+          {Array.from({ length: totalPages }, (_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentPage(i)}
+              className={`pagination-btn ${currentPage === i ? "active" : ""}`}
+            >
+              {i + 1}
+            </button>
+          ))}
+          <button
+            onClick={() => setCurrentPage(currentPage + 1)}
+            disabled={currentPage === totalPages - 1}
+            className="pagination-btn"
+          >
+            &gt;
+          </button>
         </div>
       </div>
     </div>
