@@ -191,7 +191,6 @@ const Order = () => {
               </div>
             </div>
           ))}
-          
 
           <div className="order-price">
             주문 금액: {orderTable.money?.toLocaleString() ?? '??'}원
@@ -199,8 +198,13 @@ const Order = () => {
           <div className="delivery">
             배달비: {orderTable.delivery?.toLocaleString() ?? '??'}원
           </div>
-          <div className="total-price">
-            총 결제 금액: {orderTable.totalMoney?.toLocaleString() ?? '??'}원
+
+          {/* ✅ 총 결제 금액 중앙 강조 */}
+          <div className="order-total">
+            총 결제 금액&nbsp;
+            <span className="order-total-value">
+              {orderTable.totalMoney?.toLocaleString() ?? '??'}원
+            </span>
           </div>
         </div>
 
@@ -288,8 +292,6 @@ const Order = () => {
             />
           </div>
         </div>
-
-        
 
         <button className="submit-button" onClick={handleSubmit}>
           결제하기

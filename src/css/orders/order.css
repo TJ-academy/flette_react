@@ -45,10 +45,10 @@
 /* 주문상품 */
 .order-item {
   display: grid;
-  grid-template-columns: 92px 1fr; 
+  grid-template-columns: 92px 1fr auto;   /* ✅ 이미지 | 상품정보 | 가격 */
   gap: 16px;
-  align-items: flex-start;  
-  padding: 12px 0;
+  align-items: flex-start;
+  padding: 16px 0;
   border-bottom: 1px dashed var(--line);
 }
 .order-item:last-of-type { border-bottom: none; }
@@ -56,46 +56,61 @@
 .order-item img {
   width: 92px;
   height: 92px;
-  object-fit: cover;
+  object-fit: cover;      
   border-radius: 10px;
   border: 1px solid var(--line);
   background: #fff;
-
-  flex-shrink: 0;       
-  align-self: flex-start; 
-  margin-bottom: 0;     
+  flex-shrink: 0;         
+  align-self: start;      /* ✅ 위쪽 정렬 */
+  margin: 0;
+  display: block;
 }
 
 .item-info {
   min-width: 0;
 }
+
 .item-info > div:first-child {
   font-weight: 600;
   margin-bottom: 6px;
+  font-size: 15px;
+  color: var(--ink);
 }
+
 .item-info > div:last-child {
   color: var(--sub-ink);
   font-size: 13px;
-  line-height: 1.4;
-  word-break: keep-all;
+  line-height: 1.5;
+  white-space: pre-line;  /* ✅ 줄바꿈 유지 */
+}
+
+/* 가격 */
+.order-price-value {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--ink);
+  align-self: center;     /* 가격은 가운데 맞춤 */
 }
 
 
 /* 주문합계 */
 .order-price,
-.delivery,
-.total-price {
+.delivery {
   text-align: right;
   font-size: 14px;
   margin-top: 6px;
+  color: #444;
 }
-.total-price {
-  font-size: 18px;
-  font-weight: 800;
-  color: var(--ink);
-  margin-top: 10px;
-  margin-right: -220px;
+
+
+.order-total {
+  margin-top: 14px;
+  text-align: right;      
+  font-size: 20px;         
+  font-weight: 700;
+  color: #222;          
 }
+
 
 /* 배송지 */
 .section-header {

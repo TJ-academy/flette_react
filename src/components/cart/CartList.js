@@ -127,7 +127,7 @@ export default function CartList() {
     const isAllSelected = items.length > 0 && selectedCartIds.length === items.length;
 
     return (
-        <div className="cart-page">{/* ✅ 상위 스코프 추가 */}
+        <div className="cart-page">
             <div className="page">
                 <div className="wrap">
                     <div className="title">장바구니</div>
@@ -180,7 +180,6 @@ export default function CartList() {
                                                     className="cart-quantity"
                                                 />
                                             </td>
-                                            <td className="td">{item.totalPrice.toLocaleString()}원</td>
                                             <td className="td">
                                                 <button
                                                     className="danger-btn"
@@ -202,10 +201,11 @@ export default function CartList() {
                         </table>
                     </div>
 
-                    <div className="btn-row">
-                        <div className="total-price">
+                    <div className="cart-total">
                             총 금액: {totalPrice.toLocaleString()}원
                         </div>
+
+                    <div className="btn-row">
                         <button className="clean-btn" onClick={removeAll}>
                             장바구니 비우기
                         </button>
