@@ -192,87 +192,66 @@
   color: #666;
 }
 
+
 .detail-btns {
   display: flex;
-  gap: 12px;
   justify-content: center;
+  align-items: center;
+  gap: 12px;
   margin-top: 14px;
+  flex-wrap: wrap;
 }
 
-/* Buttons */
+.primary-btn,
+.gray-btn,
+.danger-btn,
+.outline-btn {
+  padding: 10px 0;           /* 좌우 여백은 무시 */
+  height: 44px;              /* ✅ 동일한 높이 */
+  width: 140px;              /* ✅ 동일한 너비 (원하는 값으로 조절) */
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.5;          /* 텍스트 세로 중앙 정렬 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: filter .15s ease, background-color .15s ease, color .15s ease, border-color .15s ease;
+}
+
+/* 개별 색상 */
+.primary-btn { background: #ff88a0; color: #fff; }
+.primary-btn:hover { filter: brightness(0.95); }
+
+.gray-btn { background: #f2f2f2; color: #333; }
+.gray-btn:hover { filter: brightness(0.97); }
+
+.danger-btn { background: #ff6b6b; color: #fff; }
+.danger-btn:hover { filter: brightness(0.95); }
+
+.outline-btn {
+  background: #fff;
+  color: #444;
+  border: 1px solid #f4b7c0;
+}
+.outline-btn:hover { background: #fff6f8; }
+
+.primary-btn:focus,
+.gray-btn:focus,
+.danger-btn:focus,
+.outline-btn:focus {
+  outline: 2px solid #ffd2da;
+  outline-offset: 2px;
+}
+
+
 .btn-row {
   display: flex;
   gap: 8px;
   justify-content: flex-end;
   margin-top: 10px;
-}
-
-.primary-btn {
-  padding: 10px 20px;
-  border-radius: 999px;
-  border: none;
-  background: #ff88a0;
-  color: #fff;
-  cursor: pointer;
-  font-weight: 700;
-  font-size: 14px; /* 글자 크기 통일 */
-  line-height: 1.5; /* 줄 간격 통일 */
-  min-height: 44px; /* 버튼 높이 최소 설정 */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.gray-btn {
-  padding: 10px 20px;
-  border-radius: 999px;
-  border: none;
-  background: #f2f2f2;
-  color: #333;
-  cursor: pointer;
-  font-weight: 700;
-  font-size: 14px; /* 글자 크기 통일 */
-  line-height: 1.5; /* 줄 간격 통일 */
-  min-height: 44px; /* 버튼 높이 최소 설정 */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.danger-btn {
-  padding: 10px 20px;
-  border-radius: 999px;
-  border: none;
-  background: #ff6b6b;
-  color: #fff;
-  cursor: pointer;
-  font-weight: 700;
-  font-size: 14px; /* 글자 크기 통일 */
-  line-height: 1.5; /* 줄 간격 통일 */
-  min-height: 44px; /* 버튼 높이 최소 설정 */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.outline-btn {
-  padding: 10px 20px;
-  border: 1px solid #f4b7c0;
-  border-radius: 999px;
-  background: #fff;
-  cursor: pointer;
-  color: #444;
-  font-weight: 700;
-  font-size: 14px; /* 글자 크기 통일 */
-  line-height: 1.5; /* 줄 간격 통일 */
-  min-height: 44px; /* 버튼 높이 최소 설정 */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.no-underline {
-  text-decoration: none;
 }
 
 /* Modal */
@@ -297,10 +276,8 @@
   max-width: 400px;
   width: 90%;
   text-align: center;
-
-  /* 이 두 줄을 추가하세요 */
-  max-height: 80vh; /* 화면 높이의 80%로 최대 높이 제한 */
-  overflow-y: auto; /* 내용이 넘치면 스크롤바 생성 */
+  max-height: 80vh;
+  overflow-y: auto;
 }
 
 .modal-title {
@@ -337,13 +314,11 @@
   border-radius: 4px;
 }
 
-.pagination-btn:hover {
-  background-color: #f0f0f0;
-}
+.pagination-btn:hover { background-color: #f0f0f0; }
 
 .pagination-btn.active {
   background-color: #007bff;
-  color: white;
+  color: #fff;
   border-color: #007bff;
 }
 
@@ -364,7 +339,7 @@
 }
 
 .admin-link-btn:hover {
-  background-color: #F2778C; /* hover 시 진핑크 */
-  transform: translateY(-1px); /* 살짝 뜨는 효과 */
+  background-color: #F2778C;
+  transform: translateY(-1px);
   color: #ddd;
 }
