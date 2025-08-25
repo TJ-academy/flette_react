@@ -28,6 +28,7 @@ function ShopReview() {
     `http://localhost/api/shop/${productId}/review`
   );
   const [reviews, setReviews] = useState([]);
+  const loginId = sessionStorage.getItem("loginId");
 
   useEffect(() => {
     if (data && Array.isArray(data.rlist)) {
@@ -61,9 +62,21 @@ function ShopReview() {
 
   // 좋아요
   const onLike = (id) => {
+    if (!loginId) {
+      alert("로그인 후 좋아요를 누를 수 있습니다.");
+      return;
+    }
+
     setReviews((prev) =>
       prev.map((r) => (r.reviewId === id ? { ...r, luv: (r.luv || 0) + 1 } : r))
     );
+
+    axios
+      .post(`/api/shop/${productId}/review/${id}/like`)
+      .catch((err) => {
+        console.error("좋아요 실패", err);
+        alert("좋아요 처리 중 오류가 발생했습니다.");
+    });
   };
 
   // 날짜 포맷
