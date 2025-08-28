@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const API_BASE = "http://localhost/api/flower";
+const API_BASE = "https://sure-dyane-flette-f3f77cc0.koyeb.app/api/flower";
 
 export function useFlowerList() {
   const [data, setData] = useState(null);

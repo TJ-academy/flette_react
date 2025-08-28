@@ -4,7 +4,7 @@ import "../../css/OrderList.css";
 import axios from "axios";
 
 // API 기본 URL 설정
-const API_BASE_URL = "http://localhost/api/orders";
+const API_BASE_URL = "https://sure-dyane-flette-f3f77cc0.koyeb.app/api/orders";
 
 // 주문 상태를 CSS 클래스명으로 변환하는 함수 추가
 const getStatusClass = (status) => {
@@ -110,7 +110,7 @@ function OrderList() {
                 {order.details.map((item) => (
                   <div key={item.detailId} className="orderlist-item">
                     <img
-                      src={`/img/product/${item.imageName}`} // 실제 이미지 경로로 수정
+                      src={`https://sure-dyane-flette-f3f77cc0.koyeb.app/img/product/${item.imageName}`} // 실제 이미지 경로로 수정
                       alt={item.productName}
                       className="orderlist-thumb"
                     />

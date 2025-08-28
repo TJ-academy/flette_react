@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import "../../css/FlowerDetail.css";
 import { useFlowerDetail, useFlowerList } from "./FlowerHooks";
 
-const IMAGE_BASE = "http://localhost/img/flower";
+const IMAGE_BASE = "https://sure-dyane-flette-f3f77cc0.koyeb.app/img/flower";
 
 const CATEGORY_FOLDER = {
   "메인": "main",

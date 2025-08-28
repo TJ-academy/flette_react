@@ -39,7 +39,7 @@ function MyPwdEdit() {
     };
 
     try {
-      const response = await fetch(`/api/mypage/password/update/${loginId}`, {
+      const response = await fetch(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/mypage/password/update/${loginId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

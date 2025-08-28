@@ -33,7 +33,7 @@ export default function MainAdmin() {
   });
 
   useEffect(() => {
-    fetch('/api/admin/dashboard')
+    fetch('https://sure-dyane-flette-f3f77cc0.koyeb.app/api/admin/dashboard')
       .then(res => res.json())
       .then(data => setStats(data))
       .catch(err => console.error('대시보드 데이터 불러오기 실패:', err));

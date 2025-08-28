@@ -20,7 +20,7 @@ export default function MyInfoEdit() {
   useEffect(() => {
     const loginId = sessionStorage.getItem("loginId");
     if (loginId) {
-      fetch(`/api/mypage/member/${loginId}`)
+      fetch(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/mypage/member/${loginId}`)
         .then((response) => {
           if (!response.ok) {
             throw new Error("네트워크 응답이 올바르지 않습니다.");
@@ -57,7 +57,7 @@ export default function MyInfoEdit() {
       tel: memberInfo.phone,
     };
 
-    fetch(`/api/mypage/member/update/${loginId}`, {
+    fetch(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/mypage/member/update/${loginId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -97,7 +97,7 @@ export default function MyInfoEdit() {
     setStatusMessage("");
 
     try {
-      const response = await fetch(`/api/mypage/member/delete/${loginId}`, {
+      const response = await fetch(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/mypage/member/delete/${loginId}`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
       });

@@ -11,7 +11,7 @@ function ShopList() {
   // 상품 데이터 불러오기
   const loadProducts = async () => {
     try {
-      const res = await axios.get(`http://localhost/api/shop`);
+      const res = await axios.get(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/shop`);
       setProducts(res.data);
     } catch (error) {
       console.error("상품 데이터를 불러오는 데 실패했습니다:", error);
@@ -62,7 +62,7 @@ function ShopList() {
               <span className={`select-dot ${selectedProduct === product.productId ? 'on' : ''}`}></span>
 
               <img
-                src={`http://localhost:80/img/product/${product.imageName}`}
+                src={`https://sure-dyane-flette-f3f77cc0.koyeb.app/img/product/${product.imageName}`}
                 alt={product.productName}
                 className="product-image"
               />

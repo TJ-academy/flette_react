@@ -12,7 +12,7 @@ function OrderDelivery() {
     const fetchOrder = async () => {
       try {
 
-        const res = await axios.get(`/api/orders/${id}/detail`);
+        const res = await axios.get(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/orders/${id}/detail`);
         console.log("배송 데이터:", res.data); // 디버깅 로그
         setOrder(res.data);
       } catch (err) {
@@ -65,7 +65,7 @@ function OrderDelivery() {
         {order.details?.map((item, i) => (
           <div key={i} className="order-item">
             <img
-              src={`/img/product/${item.imageName}`}
+              src={`https://sure-dyane-flette-f3f77cc0.koyeb.app/img/product/${item.imageName}`}
               alt={item.productName}
             />
             <div>

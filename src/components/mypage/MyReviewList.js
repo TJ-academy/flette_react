@@ -24,7 +24,7 @@ function MyReviewList() {
     const fetchReviews = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`/api/mypage/reviews/${userId}`);
+        const response = await axios.get(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/mypage/reviews/${userId}`);
         const { todoList, doneList } = response.data;
         setTodoReviews(todoList);
         setDoneReviews(doneList);
@@ -86,14 +86,14 @@ const renderCard = (item, type) => (
     {/* 이미지: 오른쪽에만 표시 */}
     {type === "todo" ? (
       <img
-        src={`/img/product/${item.imageName || "default.png"}`}
+        src={`https://sure-dyane-flette-f3f77cc0.koyeb.app/img/product/${item.imageName || "default.png"}`}
         alt="상품 이미지"
         className="review-image"
       />
     ) : (
       item.reviewImage && (
         <img
-          src={`/img/reviews/${item.reviewImage}`}
+          src={`https://sure-dyane-flette-f3f77cc0.koyeb.app/img/reviews/${item.reviewImage}`}
           alt="리뷰 이미지"
           className="review-image"
         />
@@ -101,7 +101,7 @@ const renderCard = (item, type) => (
     )}
 
     <div className="review-arrow">
-      <img src="/img/arrow_left.png" alt="arrow" className="arrow-icon" />
+      <img src="https://sure-dyane-flette-f3f77cc0.koyeb.app/img/arrow_left.png" alt="arrow" className="arrow-icon" />
     </div>
   </div>
 );

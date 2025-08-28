@@ -28,7 +28,7 @@ const Order = () => {
 
   const loadOrderItems = async () => {
     try {
-      const res = await axios.get(`http://localhost/api/orders/${orderId}`);
+      const res = await axios.get(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/orders/${orderId}`);
       setDetailList(res.data.detailList);
       setOrderTable(res.data.order);
       setUserInfo(res.data.userInfo);
@@ -42,7 +42,7 @@ const Order = () => {
     if (!confirmed) return;
 
     try {
-      await axios.delete(`http://localhost/api/orders/${orderId}`);
+      await axios.delete(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/orders/${orderId}`);
       navigate(-1);
     } catch (error) {
       console.error("주문 삭제 실패:", error);
@@ -96,7 +96,7 @@ const Order = () => {
       setStatus("결제 준비 중...");
 
       // 1) 결제 사전 등록
-      const prepareResponse = await axios.post('/api/orders/prepare', payload);
+      const prepareResponse = await axios.post('https://sure-dyane-flette-f3f77cc0.koyeb.app/api/orders/prepare', payload);
       const merchantUid = prepareResponse.data;
 
       const firstItemName = detailList[0]?.productName ?? '주문상품';
@@ -124,7 +124,7 @@ const Order = () => {
             try {
               setStatus("결제 성공. 백엔드 검증 시작...");
               // 3) 결제 검증
-              const verifyResponse = await axios.post('/api/orders/verify', {
+              const verifyResponse = await axios.post('https://sure-dyane-flette-f3f77cc0.koyeb.app/api/orders/verify', {
                 imp_uid: rsp.imp_uid,
                 merchant_uid: rsp.merchant_uid,
               });
@@ -180,7 +180,7 @@ const Order = () => {
           {detailList.map((item) => (
             <div key={item.id} className="order-item">
               <img
-                src={`http://localhost:80/img/product/${item.imageName}`}
+                src={`https://sure-dyane-flette-f3f77cc0.koyeb.app/img/product/${item.imageName}`}
                 alt={item.productName}
               />
               <div className="item-info">

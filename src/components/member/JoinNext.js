@@ -64,7 +64,7 @@ function JoinNext() {
     
     console.log("최종 제출 데이터:", formData);
 
-    fetch('/api/member/insert', {
+    fetch('https://sure-dyane-flette-f3f77cc0.koyeb.app/api/member/insert', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

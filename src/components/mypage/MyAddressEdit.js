@@ -31,7 +31,7 @@ export default function MyAddressEdit() {
   useEffect(() => {
     const loginId = sessionStorage.getItem("loginId");
     if (loginId) {
-      fetch(`/api/mypage/member/${loginId}`)
+      fetch(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/mypage/member/${loginId}`)
         .then((r) => r.json())
         .then((d) => {
           setMemberInfo({
@@ -80,7 +80,7 @@ export default function MyAddressEdit() {
       address1: newAddress1,
       address2: memberInfo.address2,
     };
-    fetch(`/api/mypage/member/update/${loginId}`, {
+    fetch(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/mypage/member/update/${loginId}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedData),

@@ -141,7 +141,7 @@ export default function OrderDetail() {
     const nameFromSession = sessionStorage.getItem("loginName");
     if (nameFromSession) setCustomerName(nameFromSession);
 
-    axios.get("/api/member/me")
+    axios.get("https://sure-dyane-flette-f3f77cc0.koyeb.app/api/member/me")
       .then((res) => {
         if (!nameFromSession && res?.data?.username) {
           setCustomerName(res.data.username);
@@ -156,7 +156,7 @@ export default function OrderDetail() {
     const fetchOrderDetail = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`/api/orders/${id}/detail`);
+        const response = await axios.get(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/orders/${id}/detail`);
         setOrderDetail(response.data);
       } catch (err) {
         console.error("주문 상세 정보를 불러오는 데 실패했습니다.", err);
@@ -175,7 +175,7 @@ export default function OrderDetail() {
 
   const handleConfirmCancel = async () => {
     try {
-      await axios.patch(`/api/orders/cancel/${id}`);
+      await axios.patch(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/orders/cancel/${id}`);
       // Replaced alert with custom modal
       setShowCancelModal(false);
       navigate(`/orders/cancel/${id}`);
@@ -210,7 +210,7 @@ export default function OrderDetail() {
   const handleConfirmPurchase = async () => {
     try {
       // API call: endpoint to change delivery status to '구매확정'
-      await axios.patch(`/api/orders/confirm/${id}`);
+      await axios.patch(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/orders/confirm/${id}`);
       // Replaced alert with custom modal
       setShowConfirmModal(false);
 
@@ -327,7 +327,7 @@ return (
             <div className="orderdetail-body">
               <img
                 className="orderdetail-thumb"
-                src={`/img/product/${item.imageName}`}
+                src={`https://sure-dyane-flette-f3f77cc0.koyeb.app/img/product/${item.imageName}`}
                 alt={item.productName}
               />
               <div className="orderdetail-text">

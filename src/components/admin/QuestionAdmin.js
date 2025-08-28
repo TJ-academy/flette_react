@@ -23,7 +23,7 @@ export default function QuestionAdmin() {
 
   const fetchList = async (p = 0, unanswered = isUnansweredOnly) => {
     try {
-      const { data } = await axios.get("/api/admin/qna", {
+      const { data } = await axios.get("https://sure-dyane-flette-f3f77cc0.koyeb.app/api/admin/qna", {
         params: { 
           page: p, 
           size: 10,
@@ -55,7 +55,7 @@ export default function QuestionAdmin() {
     }
     try {
       // Send the answer to the backend
-      await axios.post(`/api/admin/qna/${q.questionId}/answer`, { answerContent: editor.text });
+      await axios.post(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/admin/qna/${q.questionId}/answer`, { answerContent: editor.text });
       await fetchList(page); // Reload the list of questions
       setEditor({ id: null, text: "" }); // Reset editor state
       showModal("성공", "답변이 성공적으로 등록되었습니다.", closeModal);
@@ -71,7 +71,7 @@ export default function QuestionAdmin() {
     }
     try {
       // 🚨 백틱(``)으로 수정
-      await axios.put(`/api/admin/qna/${q.questionId}/answer`, { answerContent: editor.text });
+      await axios.put(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/admin/qna/${q.questionId}/answer`, { answerContent: editor.text });
       await fetchList(page);
       setEditor({ id: null, text: "" });
       showModal("성공", "답변이 성공적으로 수정되었습니다.", closeModal);
@@ -84,7 +84,7 @@ export default function QuestionAdmin() {
     showModal("삭제 확인", "정말 삭제하시겠습니까?", async () => {
       try {
         // 🚨 백틱(``)으로 수정
-        await axios.delete(`/api/admin/qna/${q.questionId}/answer`);
+        await axios.delete(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/admin/qna/${q.questionId}/answer`);
         await fetchList(page);
         showModal("성공", "답변이 삭제되었습니다.");
       } catch (e) {

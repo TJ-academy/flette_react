@@ -31,7 +31,7 @@ function Join() {
       return;
     }
 
-    fetch(`/api/member/exist?userid=${encodeURIComponent(userid)}`)
+    fetch(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/member/exist?userid=${encodeURIComponent(userid)}`)
       .then(response => response.text())
       .then(result => {
         if (result === 'false') {

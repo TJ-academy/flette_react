@@ -12,7 +12,7 @@ export default function MyQuestionList() {
     useEffect(() => {
         const userid = sessionStorage.getItem("loginId") || "guy123"; // 로그인 사용자
         axios
-            .get("http://localhost:80/api/mypage/qna", {
+            .get("https://sure-dyane-flette-f3f77cc0.koyeb.app/api/mypage/qna", {
                 params: { userid, page: currentPage, size: pageSize } // 페이지 번호와 크기를 파라미터로 전달
             })
             .then(({ data }) => {
@@ -38,7 +38,7 @@ export default function MyQuestionList() {
         if (!confirmDelete) return;
 
         axios
-            .delete(`http://localhost:80/api/mypage/qna/${questionId}`)
+            .delete(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/mypage/qna/${questionId}`)
             .then(() => {
                 // 삭제 후 목록을 다시 불러오거나 상태를 업데이트
                 setRows((prevRows) => prevRows.filter((row) => row.questionId !== questionId));

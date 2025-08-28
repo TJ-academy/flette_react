@@ -25,7 +25,7 @@ function ShopReview() {
   const [expandedReviewId, setExpandedReviewId] = useState(null);
   const { productId } = useParams();
   const [data, loading, error] = useFetch(
-    `http://localhost/api/shop/${productId}/review`
+    `https://sure-dyane-flette-f3f77cc0.koyeb.app/api/shop/${productId}/review`
   );
   const [reviews, setReviews] = useState([]);
   const loginId = sessionStorage.getItem("loginId");
@@ -72,7 +72,7 @@ function ShopReview() {
     );
 
     axios
-      .post(`/api/reviews/${id}/like`)
+      .post(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/reviews/${id}/like`)
       .catch((err) => {
         console.error("좋아요 실패", err);
         alert("좋아요 처리 중 오류가 발생했습니다.");
@@ -133,7 +133,7 @@ const ReviewCard = ({ review }) => {
         {/* 펼친 상태일 때: 큰 이미지 본문 아래로 */}
         {isExpanded && review.reviewImage && (
           <img
-            src={`/img/reviews/${review.reviewImage}`}
+            src={`https://sure-dyane-flette-f3f77cc0.koyeb.app/img/reviews/${review.reviewImage}`}
             alt="리뷰 이미지"
             className="review-image-large"
             onClick={() => onExpandToggle(review.reviewId)} // 클릭으로 접기 가능
@@ -146,7 +146,7 @@ const ReviewCard = ({ review }) => {
         {/* 접힌 상태일 때만 작은 썸네일 표시 */}
         {!isExpanded && review.reviewImage && (
           <img
-            src={`/img/reviews/${review.reviewImage}`}
+            src={`https://sure-dyane-flette-f3f77cc0.koyeb.app/img/reviews/${review.reviewImage}`}
             alt="리뷰 이미지"
             className="review-thumb"
             onClick={() => onExpandToggle(review.reviewId)}

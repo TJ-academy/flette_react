@@ -98,7 +98,7 @@ function OrderCancel() {
     const fetchCancelInfo = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`/api/orders/cancel/${orderId}/info`);
+        const response = await axios.get(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/orders/cancel/${orderId}/info`);
         setOrderCancelInfo(response.data);
       } catch (err) {
         console.error("주문 취소 정보를 불러오는 데 실패했습니다.", err);
@@ -151,7 +151,7 @@ function OrderCancel() {
           <h3 className="cancel-section-title">취소 상품 1개</h3>
           <div className="canceled-item">
             <img 
-              src={`/img/product/${orderCancelInfo.imageName}`} 
+              src={`https://sure-dyane-flette-f3f77cc0.koyeb.app/img/product/${orderCancelInfo.imageName}`} 
               alt={orderCancelInfo.productName} 
               className="item-image" 
             />

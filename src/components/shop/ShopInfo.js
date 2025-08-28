@@ -49,7 +49,7 @@ return (
             />
 
             <img
-              src={`http://localhost:80/img/${type}/${item.imageName}`}
+              src={`https://sure-dyane-flette-f3f77cc0.koyeb.app/img/${type}/${item.imageName}`}
               alt={item.flowerName || item.decorationName}
             />
             <strong>{item.flowerName || item.decorationName}</strong>
@@ -125,7 +125,7 @@ function ShopInfo() {
   const loadLists = async () => {
     try {
       const res = await axios.get(
-        `http://localhost/api/shop/${productId}/info`
+        `https://sure-dyane-flette-f3f77cc0.koyeb.app/api/shop/${productId}/info`
       );
       setLists(res.data);
     } catch (error) {
@@ -189,7 +189,7 @@ function ShopInfo() {
 
     try {
       const res = await axios.post(
-        `http://localhost/api/shop/${productId}/bouquet/insert`,
+        `https://sure-dyane-flette-f3f77cc0.koyeb.app/api/shop/${productId}/bouquet/insert`,
         payload
       );
       return res.data.success ? res.data : null;
@@ -220,7 +220,7 @@ function ShopInfo() {
           // totalPrice: bouquetData.totalMoney,
           userid: loginId,
         };
-        const res = await axios.post(`http://localhost/api/cart/insert`, payload)
+        const res = await axios.post(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/cart/insert`, payload)
         if(res.data.success) {
           console.log("장바구니에 추가되었습니다.");
           navigate("/cart");
@@ -248,7 +248,7 @@ function ShopInfo() {
     if (!bouquetData) return;
 
     try {
-        const res = await axios.post(`http://localhost/api/orders/shop/${loginId}/${bouquetData.bouquetCode}`)
+        const res = await axios.post(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/orders/shop/${loginId}/${bouquetData.bouquetCode}`)
         navigate(`/orders/${res.data}`);
     } catch (e) {
       console.log("꽃다발 구매 중 오류 발생");

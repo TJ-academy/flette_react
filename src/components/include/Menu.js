@@ -11,7 +11,7 @@ function Menu({ isLoggedIn, loginName, userLevel, handleLogout }) {
 
   const handleClientLogout = () => {
     handleLogout();
-    fetch('/api/member/logout', { method: 'POST' })
+    fetch('https://sure-dyane-flette-f3f77cc0.koyeb.app/api/member/logout', { method: 'POST' })
       .then(() => navigate('/'))
       .catch((e) => console.error('로그아웃 실패:', e));
   };

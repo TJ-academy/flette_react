@@ -24,7 +24,7 @@ export default function MemberAdmin() {
   const fetchMembers = async (page = 0) => {
     setLoading(true);
     try {
-      const { data } = await axios.get("/api/admin/members", {
+      const { data } = await axios.get("https://sure-dyane-flette-f3f77cc0.koyeb.app/api/admin/members", {
         params: { page, size: 10 },
       });
       const { content = [], totalPages = 1, number = page } = data || {};
@@ -51,7 +51,7 @@ export default function MemberAdmin() {
       `정말 ${userid} 회원을 삭제하시겠습니까?`,
       async () => {
         try {
-          await axios.delete(`/api/admin/members/${userid}`);
+          await axios.delete(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/admin/members/${userid}`);
           showModal("성공", "회원 삭제에 성공했습니다.");
           await fetchMembers(currentPage);
         } catch (e) {

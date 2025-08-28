@@ -156,7 +156,7 @@ function OrderRefund() {
     const fetchCancelInfo = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`/api/orders/refund/${orderId}/info`);
+        const response = await axios.get(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/orders/refund/${orderId}/info`);
         setOrderCancelInfo(response.data);
         setBank(response.data.bank || "");
         setAccount(response.data.account || "");
@@ -200,7 +200,7 @@ function OrderRefund() {
       };
 
       // 프록시 설정에 맞게 수정: `/api/orders/refund/...`로 변경
-      const response = await axios.patch(`/api/orders/refund/${orderId}`, refundData);
+      const response = await axios.patch(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/orders/refund/${orderId}`, refundData);
       
       alert(response.data);
       navigate("/mypage/order");
@@ -238,7 +238,7 @@ function OrderRefund() {
           <h3 className="cancel-section-title">환불 요청 상품 1개</h3>
           <div className="canceled-item">
             <img 
-              src={`/img/product/${orderCancelInfo.imageName}`} 
+              src={`https://sure-dyane-flette-f3f77cc0.koyeb.app/img/product/${orderCancelInfo.imageName}`} 
               alt={orderCancelInfo.productName} 
               className="item-image" 
             />

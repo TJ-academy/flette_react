@@ -19,7 +19,7 @@ function Login({ handleLogin }) {
       return;
     }
 
-    fetch('/api/member/login', {
+    fetch('https://sure-dyane-flette-f3f77cc0.koyeb.app/api/member/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -26,7 +26,7 @@ function ShopDetail() {
   const { productId } = useParams();
   const location = useLocation();
   const [data, loading] = useFetch(
-    `http://localhost/api/shop/${productId}/detail`
+    `https://sure-dyane-flette-f3f77cc0.koyeb.app/api/shop/${productId}/detail`
   );
   const [activeTab, setActiveTab] = useState("details");
   const navigate = useNavigate();
@@ -92,7 +92,7 @@ function ShopDetail() {
         {data.dto.imageName && (
           <img
             className="shop-detail-image"
-            src={`http://localhost:80/img/product/${data.dto.imageName}`}
+            src={`https://sure-dyane-flette-f3f77cc0.koyeb.app/img/product/${data.dto.imageName}`}
             alt={data.dto.productName}
           />
         )}

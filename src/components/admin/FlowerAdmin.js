@@ -33,7 +33,7 @@ export default function FlowerAdmin() {
       if (category) params.category = category;
       if (show !== "") params.show = show === "true";
 
-      const res = await axios.get("/api/admin/flowers", { params });
+      const res = await axios.get("https://sure-dyane-flette-f3f77cc0.koyeb.app/api/admin/flowers", { params });
       setFlowers(res.data.content || []);
       setCurrentPage(res.data.number || 0);
       setTotalPages(res.data.totalPages || 1);
@@ -83,11 +83,11 @@ export default function FlowerAdmin() {
 
     try {
       if (editingId == null) {
-        await axios.post("/api/admin/flowers", formData, {
+        await axios.post("https://sure-dyane-flette-f3f77cc0.koyeb.app/api/admin/flowers", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
       } else {
-        await axios.put(`/api/admin/flowers/${editingId}`, formData, {
+        await axios.put(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/admin/flowers/${editingId}`, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
       }
@@ -130,7 +130,7 @@ export default function FlowerAdmin() {
   const deleteFlower = async (flowerId) => {
     if (!window.confirm("정말 삭제하시겠습니까?")) return;
     try {
-      await axios.delete(`/api/admin/flowers/${flowerId}`);
+      await axios.delete(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/admin/flowers/${flowerId}`);
       loadFlowers(0);
     } catch (e) {
       console.error("삭제 실패", e);
@@ -140,7 +140,7 @@ export default function FlowerAdmin() {
 
   const toggleShow = async (flower) => {
     try {
-      await axios.patch(`/api/admin/flowers/${flower.flowerId}/show`, {
+      await axios.patch(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/admin/flowers/${flower.flowerId}/show`, {
         show: !flower.show,
       });
       loadFlowers(0);

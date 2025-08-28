@@ -13,7 +13,7 @@ export default function CartList() {
     // 장바구니 목록 로드
     const loadCartItems = async () => {
         try {
-            const res = await axios.get(`/api/cart/list/${userid}`);
+            const res = await axios.get(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/cart/list/${userid}`);
             console.log("장바구니 로딩 성공");
             setItems(res.data.carts);
             setSelectedCartIds(res.data.carts.map(item => item.cartId));
@@ -56,7 +56,7 @@ export default function CartList() {
         );
 
         try {
-            await axios.patch(`/api/cart/update/${cartId}`, { quantity: newQuantity });
+            await axios.patch(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/cart/update/${cartId}`, { quantity: newQuantity });
         } catch (err) {
             console.error("수량 업데이트 실패", err);
         }
@@ -66,7 +66,7 @@ export default function CartList() {
     const removeFromCart = async (cartId) => {
         if (window.confirm("정말로 삭제하시겠습니까?")) {
             try {
-                await axios.delete(`/api/cart/remove/${cartId}`);
+                await axios.delete(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/cart/remove/${cartId}`);
                 loadCartItems();
             } catch (err) {
                 console.error("삭제 실패", err);
@@ -78,7 +78,7 @@ export default function CartList() {
     const removeSelected = async () => {
         if (window.confirm("선택한 장바구니를 삭제하시겠습니까?")) {
             try {
-                await axios.delete(`/api/cart/remove/selected/${userid}`, {data: selectedCartIds});
+                await axios.delete(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/cart/remove/selected/${userid}`, {data: selectedCartIds});
                 loadCartItems();
             } catch (err) {
                 console.error("장바구니 삭제 중 오류가 발생했습니다.", err);
@@ -90,7 +90,7 @@ export default function CartList() {
     const removeAll = async () => {
         if (window.confirm("장바구니를 비우시겠습니까?")) {
             try {
-                const res = await axios.delete(`/api/cart/remove/all/${userid}`);
+                const res = await axios.delete(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/cart/remove/all/${userid}`);
                 alert(res.data.message);
                 loadCartItems();
             } catch (err) {
@@ -108,7 +108,7 @@ export default function CartList() {
         }
 
         try {
-            const res = await axios.post(`/api/orders/cart/${userid}`, selectedCartIds);
+            const res = await axios.post(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/orders/cart/${userid}`, selectedCartIds);
             navigate(`/orders/${res.data}`);
         } catch (err) {
             console.error("주문 실패", err);
@@ -164,7 +164,7 @@ export default function CartList() {
                                             <td>{index + 1}</td>
                                             <td className="td text-left">
                                                 <img
-                                                    src={`http://localhost:80/img/product/${item.productImageName}`}
+                                                    src={`https://sure-dyane-flette-f3f77cc0.koyeb.app/img/product/${item.productImageName}`}
                                                     alt={item.flowerName || item.decorationName}
                                                     className="cart-img"
                                                 />

@@ -44,7 +44,7 @@ function CustomDropdown({ options, value, onChange }) {
 export default function ReviewsIndex() {
   const [sort, setSort] = useState("latest");
   const [page, setPage] = useState(1);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -54,12 +54,13 @@ export default function ReviewsIndex() {
   // 리뷰 데이터 가져오기
   useEffect(() => {
     axios
-      .get(`http://localhost/api/all/reviews?page=${page}&size=${PAGE_SIZE}`)
+      .get(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/all/reviews?page=${page}&size=${PAGE_SIZE}`)
       .then((response) => {
         setData(response.data);
         //console.log(response.data);
         //setReviews(response.data.fdate.content);
-        setTotalPages(response.data.fdate.totalPages);
+        //setReviews(response.data.content);
+        setTotalPages(response.data.totalPages);
       })
       .catch((error) => console.error("Error fetching reviews:", error));
   }, [page]);
@@ -76,18 +77,19 @@ export default function ReviewsIndex() {
 
   // 정렬
   const sorted = useMemo(() => {
-    if (!data || !data.fdate || !data.fluv || !data.fscore) return [];
+    if (!data || !Array.isArray(data.content)) return [];
+    const arr = [...data.content];
     //const arr = [...reviews];
     if (sort === "rating") {
-      return data.fscore.content;
+      return arr.sort((a, b) => b.score - a.score);
       // arr.sort((a, b) => b.score - a.score);
     }
     else if (sort === "likes") {
-      return data.fluv.content;
+      return arr.sort((a, b) => (b.luv || 0) - (a.luv || 0)); // luv가 없을 경우 0으로 처리
       // arr.sort((a, b) => b.luv - a.luv);
     }
     else {
-      return data.fdate.content;
+      return arr.sort((a, b) => new Date(b.reviewDate) - new Date(a.reviewDate));
       //arr.sort((a, b) => new Date(b.reviewDate) - new Date(a.reviewDate));
     }
     // return arr;
@@ -107,7 +109,7 @@ export default function ReviewsIndex() {
     );
 
     axios
-      .post(`/api/reviews/${id}/like`)
+      .post(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/reviews/${id}/like`)
       .catch((err) => {
         console.error("좋아요 실패", err);
         alert("좋아요 처리 중 오류가 발생했습니다.");
@@ -138,7 +140,7 @@ export default function ReviewsIndex() {
     <article className="rv-card" onClick={() => openModal(review)}>
       <div className="rv-thumb-wrap">
         <img
-          src={`http://localhost:80/img/reviews/${review.reviewImage}`}
+          src={`https://sure-dyane-flette-f3f77cc0.koyeb.app/img/reviews/${review.reviewImage}`}
           alt={review.reviewId}
           className="rv-thumb"
         />
@@ -239,7 +241,7 @@ export default function ReviewsIndex() {
             <div className="modal-body vertical">
               {selectedReview.reviewImage && (
                 <img
-                  src={`/img/reviews/${selectedReview.reviewImage}`}
+                  src={`https://sure-dyane-flette-f3f77cc0.koyeb.app/img/reviews/${selectedReview.reviewImage}`}
                   alt={selectedReview.reviewId}
                   className="modal-image-large"
                 />

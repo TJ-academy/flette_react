@@ -18,7 +18,7 @@ function ShopQa({ onWriteClick }) {
     const navigate = useNavigate();
 
     const loadLists = async (page = 1) => {
-        const res = await axios.get(`http://localhost/api/shop/${productId}/qa?page=${page - 1}&size=${itemsPerPage}`);
+        const res = await axios.get(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/shop/${productId}/qa?page=${page - 1}&size=${itemsPerPage}`);
         
         setLists(res.data.list);
         setTotalPages(res.data.totalPages);
@@ -51,7 +51,7 @@ function ShopQa({ onWriteClick }) {
     const checkPassword = async (questionId) => {
         try {
             const res = await axios.post(
-                `http://localhost/api/shop/${productId}/qa/${questionId}/check`,
+                `https://sure-dyane-flette-f3f77cc0.koyeb.app/api/shop/${productId}/qa/${questionId}/check`,
                 { passwd: passwordInputs[questionId] }
             );
             if (res.data.success) {

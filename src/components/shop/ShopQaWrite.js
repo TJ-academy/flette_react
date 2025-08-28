@@ -14,7 +14,7 @@ const ShopQaWrite = ({ onCancel, onSubmitSuccess }) => {
         event.preventDefault();
 
         try {
-            await axios.post(`http://localhost/api/shop/${productId}/qa/write`, {
+            await axios.post(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/shop/${productId}/qa/write`, {
                 productId,
                 userid,
                 title,

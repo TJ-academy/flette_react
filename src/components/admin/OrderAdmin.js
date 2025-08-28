@@ -13,7 +13,7 @@ function OrderAdmin() {
   // 주문 목록 로드
   const loadOrders = async () => {
     try {
-      const res = await axios.get("/api/admin/orders", {
+      const res = await axios.get("https://sure-dyane-flette-f3f77cc0.koyeb.app/api/admin/orders", {
         params: { page: currentPage, size: 10 },
       });
       setOrders(res.data.content || []);
@@ -26,7 +26,7 @@ function OrderAdmin() {
   // 주문 상세 로드
   const loadOrderDetail = async (orderId) => {
     try {
-      const res = await axios.get(`/api/admin/orders/${orderId}`);
+      const res = await axios.get(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/admin/orders/${orderId}`);
       setSelectedStatus(res.data.order.status);
       // 주문 상태와 상세 정보를 업데이트
       setSelectedOrder(res.data.order);
@@ -43,7 +43,7 @@ function OrderAdmin() {
     if (!selectedOrderId) return;
 
     try {
-      await axios.patch(`/api/admin/orders/${selectedOrderId}/status`, {
+      await axios.patch(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/admin/orders/${selectedOrderId}/status`, {
         status: selectedStatus,
       });
       alert(`주문 #${selectedOrderId}의 상태가 '${selectedStatus}'(으)로 변경되었습니다.`);
@@ -55,7 +55,7 @@ function OrderAdmin() {
   };
 
   const handleRefundOrder = async () => {
-    await axios.patch(`/api/admin/orders/${selectedOrderId}/status`, {
+    await axios.patch(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/admin/orders/${selectedOrderId}/status`, {
         status: '환불완료',
       });
       alert(`주문 #${selectedOrderId}를 환불 처리합니다.`);

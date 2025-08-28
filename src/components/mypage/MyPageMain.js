@@ -22,7 +22,7 @@ function MyPageMain() {
 
     const userid = sessionStorage.getItem("loginId") || "guy123"; // 로그인 사용자
     axios
-      .get(`http://localhost:80/api/mypage/stats`, { params: { userid } })
+      .get(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/mypage/stats`, { params: { userid } })
       .then(({ data }) => {
         setStats(data); // 서버에서 받아온 통계 데이터
       })

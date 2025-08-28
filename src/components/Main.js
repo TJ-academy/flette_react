@@ -1,4 +1,4 @@
-// src/pages/MainPage.jsx  (또는 main.js)
+// src/pages/MainPage.jsx (또는 main.js)
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -22,10 +22,11 @@ function Main() {
     setErr(null);
 
     axios
-      .get("http://localhost/api/all/reviews?page=1&size=20")
+      .get("https://sure-dyane-flette-f3f77cc0.koyeb.app/api/all/reviews?page=1&size=20")
       .then((res) => {
         if (ignore) return;
-        const list = Array.isArray(res?.data?.fdate.content) ? res.data.fdate.content : [];
+        // ✅ 서버 응답의 content 속성에서 리뷰 배열을 가져옵니다.
+        const list = res.data?.content || [];
         setReviews(list);
       })
       .catch((e) => {
@@ -68,7 +69,7 @@ function Main() {
         {reviews.slice(startIdx, startIdx + visible).map((r) => (
           <Link to="/reviews" key={r.reviewId} className="thumb-card">
             <img
-              src={`/img/reviews/${r.reviewImage}`} // ReviewsIndex와 동일 규칙
+              src={`https://sure-dyane-flette-f3f77cc0.koyeb.app/img/reviews/${r.reviewImage}`} // ReviewsIndex와 동일 규칙
               alt={r.reviewId}
               className="thumb-img"
               loading="lazy"

@@ -24,7 +24,7 @@ export default function MyReviewWrite() {
             try {
                 setLoading(true);
                 setError(null);
-                const response = await axios.get(`/api/reviews/write-info/${bouquetCode}`);
+                const response = await axios.get(`https://sure-dyane-flette-f3f77cc0.koyeb.app/api/reviews/write-info/${bouquetCode}`);
                 setProductInfo(response.data);
             } catch (err) {
                 console.error("상품 정보를 불러오는 데 실패했습니다.", err);
@@ -75,7 +75,7 @@ export default function MyReviewWrite() {
 
         try {
             // FormData를 포함한 POST 요청
-            const response = await axios.post("/api/reviews/save", formData, {
+            const response = await axios.post("https://sure-dyane-flette-f3f77cc0.koyeb.app/api/reviews/save", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
@@ -129,7 +129,7 @@ export default function MyReviewWrite() {
                 </div>
 
                 <div style={{ textAlign: "center", marginTop: 14 }}>
-                    <img src={`/img/product/${productInfo.imageName}`} alt={productInfo.productName} style={styles.hero} />
+                    <img src={`https://sure-dyane-flette-f3f77cc0.koyeb.app/img/product/${productInfo.imageName}`} alt={productInfo.productName} style={styles.hero} />
                     <div style={{ marginTop: 8, color: "#666" }}>{productInfo.productName}</div>
                     <div style={{ fontSize: 12, color: "#9c9c9c" }}>
                         옵션 {optionString} · {formatPrice(productInfo.totalMoney)} · {formatDate(productInfo.orderDate)}

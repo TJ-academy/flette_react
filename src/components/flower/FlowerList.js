@@ -26,7 +26,7 @@ const TAB_TO_KOR = {
 };
 
 // IMAGE_BASE 경로를 백엔드 서버의 정적 파일 경로로 수정
-const IMAGE_BASE = "http://localhost/img/flower";
+const IMAGE_BASE = "https://sure-dyane-flette-f3f77cc0.koyeb.app/img/flower";
 
 export function FlowerList() {
   const { data, loading, error } = useFlowerList();
