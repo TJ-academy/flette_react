@@ -93,7 +93,7 @@ const renderCard = (item, type) => (
     ) : (
       item.reviewImage && (
         <img
-          src={`https://sure-dyane-flette-f3f77cc0.koyeb.app/img/reviews/${item.reviewImage}`}
+          src={`${item.reviewImage}`}
           alt="리뷰 이미지"
           className="review-image"
         />
@@ -101,7 +101,7 @@ const renderCard = (item, type) => (
     )}
 
     <div className="review-arrow">
-      <img src="https://sure-dyane-flette-f3f77cc0.koyeb.app/img/arrow_left.png" alt="arrow" className="arrow-icon" />
+      <img src="/img/arrow_left.png" alt="arrow" className="arrow-icon" />
     </div>
   </div>
 );

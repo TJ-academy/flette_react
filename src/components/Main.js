@@ -69,7 +69,7 @@ function Main() {
         {reviews.slice(startIdx, startIdx + visible).map((r) => (
           <Link to="/reviews" key={r.reviewId} className="thumb-card">
             <img
-              src={`https://sure-dyane-flette-f3f77cc0.koyeb.app/img/reviews/${r.reviewImage}`} // ReviewsIndex와 동일 규칙
+              src={`${r.reviewImage}`} // ReviewsIndex와 동일 규칙
               alt={r.reviewId}
               className="thumb-img"
               loading="lazy"

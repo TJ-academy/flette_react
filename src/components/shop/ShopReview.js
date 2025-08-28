@@ -146,7 +146,7 @@ const ReviewCard = ({ review }) => {
         {/* 접힌 상태일 때만 작은 썸네일 표시 */}
         {!isExpanded && review.reviewImage && (
           <img
-            src={`https://sure-dyane-flette-f3f77cc0.koyeb.app/img/reviews/${review.reviewImage}`}
+            src={`${review.reviewImage}`}
             alt="리뷰 이미지"
             className="review-thumb"
             onClick={() => onExpandToggle(review.reviewId)}

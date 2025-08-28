@@ -140,7 +140,7 @@ export default function ReviewsIndex() {
     <article className="rv-card" onClick={() => openModal(review)}>
       <div className="rv-thumb-wrap">
         <img
-          src={`https://sure-dyane-flette-f3f77cc0.koyeb.app/img/reviews/${review.reviewImage}`}
+          src={`${review.reviewImage}`}
           alt={review.reviewId}
           className="rv-thumb"
         />
@@ -241,7 +241,7 @@ export default function ReviewsIndex() {
             <div className="modal-body vertical">
               {selectedReview.reviewImage && (
                 <img
-                  src={`https://sure-dyane-flette-f3f77cc0.koyeb.app/img/reviews/${selectedReview.reviewImage}`}
+                  src={`${selectedReview.reviewImage}`}
                   alt={selectedReview.reviewId}
                   className="modal-image-large"
                 />
